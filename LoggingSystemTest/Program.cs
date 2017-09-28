@@ -12,7 +12,6 @@ namespace LoggingSystemTest
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
             //try
             //{
             //    LoggerTest.TestNullLogger();
@@ -27,22 +26,7 @@ namespace LoggingSystemTest
             //Console.WriteLine();
             //Console.WriteLine("Press any key to exit.");
             //Console.ReadKey();
-=======
-            try
-            {
-                LoggerTest.TestNullLogger();
-                Console.WriteLine();
-                LoggerTest.TestConsoleLogger();
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            Console.WriteLine();
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
->>>>>>> parent of 6ad426b... Add TextReadWrite Class
         }
     }
 }

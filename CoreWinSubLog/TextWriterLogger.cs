@@ -25,7 +25,6 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public override void Log(LogRecord recoder, params object[] args)
         {
-
         }
     }
 

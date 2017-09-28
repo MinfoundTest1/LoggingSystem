@@ -20,12 +20,18 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
+<<<<<<< HEAD
         public void Debug(LogRecord recoder, params object[] args)
         {
         }
 
         public void Debug(string msg, params object[] args)
         {
+=======
+        public void Debug(string msg, params object[] args)
+        {
+            this.Log(LogLevel.Debug, msg, args);
+>>>>>>> parent of 6ad426b... Add TextReadWrite Class
         }
 
         /// <summary>
@@ -35,6 +41,10 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Info(LogRecord recoder,  params object[] args)
         {
+<<<<<<< HEAD
+=======
+            this.Log(LogLevel.Info, msg, args);
+>>>>>>> parent of 6ad426b... Add TextReadWrite Class
         }
 
         /// <summary>
@@ -44,6 +54,10 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Warn(LogRecord recoder, params object[] args)
         {
+<<<<<<< HEAD
+=======
+            this.Log(LogLevel.Warning, msg, args);
+>>>>>>> parent of 6ad426b... Add TextReadWrite Class
         }
 
         /// <summary>
@@ -51,12 +65,18 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
+<<<<<<< HEAD
         public void Error(LogRecord recoder, params object[] args)
         {
         }
         public void Error(string msg, params object[] args)
         {
 
+=======
+        public void Error(string msg, params object[] args)
+        {
+            this.Log(LogLevel.Error, msg, args);
+>>>>>>> parent of 6ad426b... Add TextReadWrite Class
         }
 
         /// <summary>
@@ -66,7 +86,11 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Fatal(LogRecord recoder, params object[] args)
         {
+<<<<<<< HEAD
 
+=======
+            this.Log(LogLevel.Fatal, msg, args);
+>>>>>>> parent of 6ad426b... Add TextReadWrite Class
         }
 
         private static readonly Regex CurlyBracePairRegex = new Regex(@"{.*?}");
