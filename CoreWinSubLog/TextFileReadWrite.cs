@@ -48,14 +48,14 @@ namespace CoreWinSubLog
         /// <param name="pMessage"></param>
         /// <param name="pLogLevel"></param>
         /// <param name="pLogtime"></param>
-        public void Write(LogRecord recoder,params object[] args)
+        public void Write(DateTime time,LogLevel level, string message, params object[] args)
         {
             if (FilePath == null)
                 return;
             try
             {
                 _readAndWriterLock.EnterWriteLock();
-                string log = string.Format("{0} {1} {2} {3}", recoder.ModuleName,recoder.DateTime,recoder.Level,recoder.Message);
+                string log = string.Format("{0} {1} {2} {3}",time,level,message);
                 if (args != null)
                 {
                     if (args.Count() > 0)
