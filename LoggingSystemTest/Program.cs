@@ -13,9 +13,12 @@ namespace LoggingSystemTest
         {
             try
             {
-                LoggerTest.TestNullLogger();
-                Console.WriteLine();
-                LoggerTest.TestConsoleLogger();
+                //LoggerTest.TestNullLogger();
+                //Console.WriteLine();
+                //LoggerTest.TestConsoleLogger();
+                LoggerTest.TestWcfLogger();
+          //      LoggerTest.TestLogRecordString();                
+
             }
             catch (Exception ex)
             {
