@@ -26,11 +26,11 @@ namespace LoggingSystemTest
 
         private static void TestLogger(Logger logger)
         {
-            logger.Debug("This is a test message with {level}.",DateTime.Now, "Debug");
-            logger.Info("This is a test message with {level}.", DateTime.Now, "Info");
-            logger.Warn("This is a test message with {level}.", DateTime.Now, "Warn");
-            logger.Error("This is a test message with {level}.", DateTime.Now, "Error");
-            logger.Fatal("This is a test message with {level}.", DateTime.Now, "Fatal");
+            //logger.Debug("This is a test message with {level}.",DateTime.Now, "Debug");
+            //logger.Info("This is a test message with {level}.", DateTime.Now, "Info");
+            //logger.Warn("This is a test message with {level}.", DateTime.Now, "Warn");
+            //logger.Error("This is a test message with {level}.", DateTime.Now, "Error");
+            //logger.Fatal("This is a test message with {level}.", DateTime.Now, "Fatal");
         }
     }
 }
