@@ -24,15 +24,28 @@ namespace CoreWinSubLog
             set { filePath = value;}
         }
 
+
+        /// <summary>
+        /// the log file path
+        /// </summary>
+        private string modelName;
+        public string ModelName
+        {
+            get { return filePath; }
+            set { filePath = value; }
+        }
+
         #endregion
+
         /// <summary>
         /// init the class
         /// </summary>
         /// <param name="filePath">the log file path</param>
-        /// <param name="modelName">the log orgin </param>
-        public TextFileReadWrite(string filePath)
+        /// <param name="modelName">the process name</param>
+        public TextFileReadWrite(string filePath,string modelName)
         {
             FilePath = filePath;
+            ModelName = modelName;
             if (filePath != null)
             {
                 if (!File.Exists(filePath))
@@ -41,13 +54,13 @@ namespace CoreWinSubLog
                 }
             }
         }
-
         /// <summary>
-        /// to write log
+        /// 
         /// </summary>
-        /// <param name="pMessage"></param>
-        /// <param name="pLogLevel"></param>
-        /// <param name="pLogtime"></param>
+        /// <param name="time">the log create time</param>
+        /// <param name="level">the log level</param>
+        /// <param name="message">the log message info</param>
+        /// <param name="args">parames args</param>
         public void Write(DateTime time,LogLevel level, string message, params object[] args)
         {
             if (FilePath == null)
@@ -55,7 +68,7 @@ namespace CoreWinSubLog
             try
             {
                 _readAndWriterLock.EnterWriteLock();
-                string log = string.Format("{0} {1} {2} {3}",time,level,message);
+                string log = string.Format("{0} {1} {2} {3}", ModelName, time, level, message);
                 if (args != null)
                 {
                     if (args.Count() > 0)
@@ -78,6 +91,10 @@ namespace CoreWinSubLog
            
         }
 
+        /// <summary>
+        /// write the message to file
+        /// </summary>
+        /// <param name="pMessage"></param>
         private void WriteLine(string pMessage)
         {
             if (FilePath == null)
