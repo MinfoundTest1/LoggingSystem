@@ -1,4 +1,6 @@
-﻿namespace CoreWinSubLog
+﻿using System.ServiceModel;
+
+namespace CoreWinSubLog
 {
     /// <summary>
     /// Logger for output to a WCF service implmentation.
@@ -23,6 +25,16 @@
             string content = string.Format(NameFormatToPositionalFormat(msg), args);
             LogRecord record = LogRecord.Create(level, content);
             TryLog(record);
+        }
+
+        public bool IsValid()
+        {
+            var client = _logService as ClientBase<ILogService>;
+            if (client != null)
+            {
+                return (client.State != CommunicationState.Closed) && (client.State != CommunicationState.Faulted) && (client.State != CommunicationState.Closing);
+            }
+            return false;
         }
 
         /// <summary>

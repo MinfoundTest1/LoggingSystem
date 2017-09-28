@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace CoreWinSubLog
 {
-    public class TextFileReadWrite : TextWriter
+    public class TextFileReadWrite 
     {
 
         #region property
@@ -38,13 +38,6 @@ namespace CoreWinSubLog
              set { modelName = value; }
         }
 
-        public override Encoding Encoding
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
 
         #endregion
 
