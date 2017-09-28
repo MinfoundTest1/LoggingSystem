@@ -240,3 +240,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+*.cs
+CoreWinSubLog/Logger.cs
+LoggingSystemTest/Program.cs
+LoggingSystemTest/Program.cs
