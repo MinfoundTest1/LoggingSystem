@@ -14,18 +14,6 @@ namespace CoreWinSubLog
         /// the read and writer lock
         /// </summary>
         private static ReaderWriterLockSlim _readAndWriterLock = new ReaderWriterLockSlim();
-
-        //private Queue<string> _logFromTextQueue = new Queue<string>();
-        /// <summary>
-        /// the process model name
-        /// </summary>
-        private string processName;
-        public  string ProcessName
-        {
-            get { return processName; }
-            set { processName = value; }
-        }
-
         /// <summary>
         /// the log file path
         /// </summary>
@@ -42,10 +30,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="filePath">the log file path</param>
         /// <param name="modelName">the log orgin </param>
-        public TextFileReadWrite(string filePath,string modelName)
+        public TextFileReadWrite(string filePath)
         {
             FilePath = filePath;
-            processName = modelName;
             if (filePath != null)
             {
                 if (!File.Exists(filePath))
@@ -56,19 +43,29 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
-        /// the anacy way to write log
+        /// to write log
         /// </summary>
         /// <param name="pMessage"></param>
         /// <param name="pLogLevel"></param>
         /// <param name="pLogtime"></param>
-        public void Write(string pMessage,LogLevel pLogLevel,DateTime pLogtime)
+        public void Write(LogRecord recoder,params object[] args)
         {
             if (FilePath == null)
                 return;
             try
             {
                 _readAndWriterLock.EnterWriteLock();
-                string log = string.Format("{0} {1} {2} {3}", ProcessName, pLogtime, pLogLevel, pMessage);
+                string log = string.Format("{0} {1} {2} {3}", recoder.ModuleName,recoder.DateTime,recoder.Level,recoder.Message);
+                if (args != null)
+                {
+                    if (args.Count() > 0)
+                    {
+                        foreach (var item in args)
+                        {
+                            log += args;
+                        }
+                    }
+                }
                 using (StreamWriter writer = new StreamWriter(FilePath, true))
                 {
                     writer.WriteLine(log);
@@ -101,7 +98,6 @@ namespace CoreWinSubLog
             if (FilePath == null)
                 return string.Empty;
             string message = string.Empty;
-            string allLinesText = string.Empty;
             _readAndWriterLock.EnterReadLock();
             using (StreamReader read = new StreamReader(FilePath))
             {
@@ -114,7 +110,7 @@ namespace CoreWinSubLog
         /// <summary>
         /// delete the first read line 
         /// </summary>
-        public void DeteReadLine()
+        public void DeleteReadLine()
         {
             if (FilePath == null)
             {

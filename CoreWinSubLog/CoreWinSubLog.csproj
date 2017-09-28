@@ -33,6 +33,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,9 +47,15 @@
     <Compile Include="Logger.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="LogManager.cs" />
+    <Compile Include="LogRecord.cs" />
+    <Compile Include="LogService\ILogService.cs" />
+    <Compile Include="LogService\LogClient.cs" />
+    <Compile Include="LogService\LogServiceBinding.cs" />
+    <Compile Include="LogService\WcfLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextFileReadWrite.cs" />
     <Compile Include="TextWriterLogger.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -30,9 +30,9 @@ namespace CoreWinSubLog
         /// <param name="level">Log level.</param>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public override void Log(LogLevel level, string msg, params object[] args)
+        public override void Log(LogRecord recoder, params object[] args)
         {
-            _textWriter.Write(msg,level,DateTime.Now);
+            _textWriter.Write(recoder,args);
         }
     }
 
@@ -41,11 +41,7 @@ namespace CoreWinSubLog
     /// </summary>
     public class TextWriterLogManager : LogManager
     {
-        #region FIELDS
-
         private readonly Logger _loggerImpl;
-
-        #endregion
 
         /// <summary>
         /// Initializes an instance of the <see cref="TextWriterLogManager"/>.

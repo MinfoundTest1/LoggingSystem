@@ -13,16 +13,16 @@ namespace CoreWinSubLog
         /// <param name="level">Log level.</param>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public abstract void Log(LogLevel level, string msg, params object[] args);
+        public abstract void Log(LogRecord recoder, params object[] args);
 
         /// <summary>
         /// Log a debug message to the logger.
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Debug(string msg,  params object[] args)
+        public void Debug(LogRecord recoder,  params object[] args)
         {
-            this.Log(LogLevel.Debug, msg,DateTime.Now, args);
+            this.Log(recoder, args);
         }
 
         /// <summary>
@@ -30,9 +30,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Info(string msg,  params object[] args)
+        public void Info(LogRecord recoder,  params object[] args)
         {
-            this.Log(LogLevel.Info, msg, DateTime.Now, args);
+            this.Log(recoder, DateTime.Now, args);
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Warn(string msg, params object[] args)
+        public void Warn(LogRecord recoder, params object[] args)
         {
-            this.Log(LogLevel.Warning, msg, DateTime.Now, args);
+            this.Log(recoder,DateTime.Now, args);
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Error(string msg,  params object[] args)
+        public void Error(LogRecord recoder,  params object[] args)
         {
-            this.Log(LogLevel.Error, msg, DateTime.Now, args);
+            this.Log(recoder, args);
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Fatal(string msg, params object[] args)
+        public void Fatal(LogRecord recoder, params object[] args)
         {
-            this.Log(LogLevel.Fatal, msg, DateTime.Now, args);
+            this.Log(recoder, args);
         }
 
         private static readonly Regex CurlyBracePairRegex = new Regex(@"{.*?}");

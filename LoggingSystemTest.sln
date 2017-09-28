@@ -4,8 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingSystemTest", "LoggingSystemTest\LoggingSystemTest.csproj", "{47FF17C8-299F-4764-B131-BFD8F41E7179}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9B400FDB-441F-4AFD-8210-13A40AA524C0} = {9B400FDB-441F-4AFD-8210-13A40AA524C0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWinSubLog", "CoreWinSubLog\CoreWinSubLog.csproj", "{00133E43-ABB0-4987-A1E4-A241C274283F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWinSubLogService", "CoreWinSubLogService\CoreWinSubLogService.csproj", "{9B400FDB-441F-4AFD-8210-13A40AA524C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{00133E43-ABB0-4987-A1E4-A241C274283F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00133E43-ABB0-4987-A1E4-A241C274283F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00133E43-ABB0-4987-A1E4-A241C274283F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B400FDB-441F-4AFD-8210-13A40AA524C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B400FDB-441F-4AFD-8210-13A40AA524C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B400FDB-441F-4AFD-8210-13A40AA524C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B400FDB-441F-4AFD-8210-13A40AA524C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
