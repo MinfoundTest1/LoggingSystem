@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace CoreWinSubLog
 {
-    public class TextFileReadWrite
+    public class TextFileReadWrite : TextWriter
     {
 
         #region property
@@ -14,6 +15,8 @@ namespace CoreWinSubLog
         /// the read and writer lock
         /// </summary>
         private static ReaderWriterLockSlim _readAndWriterLock = new ReaderWriterLockSlim();
+
+
         /// <summary>
         /// the log file path
         /// </summary>
@@ -21,7 +24,7 @@ namespace CoreWinSubLog
         public string FilePath
         {
             get { return filePath; }
-            set { filePath = value;}
+            private set { filePath = value;}
         }
 
 
@@ -31,8 +34,16 @@ namespace CoreWinSubLog
         private string modelName;
         public string ModelName
         {
-            get { return filePath; }
-            set { filePath = value; }
+            get { return modelName; }
+             set { modelName = value; }
+        }
+
+        public override Encoding Encoding
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         #endregion
@@ -65,9 +76,9 @@ namespace CoreWinSubLog
         {
             if (FilePath == null)
                 return;
+            _readAndWriterLock.EnterWriteLock();
             try
             {
-                _readAndWriterLock.EnterWriteLock();
                 string log = string.Format("{0} {1} {2} {3}", ModelName, time, level, message);
                 if (args != null)
                 {
@@ -105,22 +116,28 @@ namespace CoreWinSubLog
             }
         }
 
-        /// <summary>
-        /// read a line from log file
-        /// </summary>
-        /// <param name="pIsDeletLine"></param>
-        /// <returns></returns>
+       /// <summary>
+       /// read a line from file
+       /// </summary>
+       /// <returns></returns>
         public string ReadLine()
         {
             if (FilePath == null)
                 return string.Empty;
             string message = string.Empty;
             _readAndWriterLock.EnterReadLock();
-            using (StreamReader read = new StreamReader(FilePath))
+            try
             {
-                message = read.ReadLine();
+                using (StreamReader read = new StreamReader(FilePath))
+                {
+                    message = read.ReadLine();
+                }
             }
-            _readAndWriterLock.ExitReadLock();
+            finally
+            {
+                _readAndWriterLock.ExitReadLock();
+            }
+            DeleteReadLine();
             return message;
         }
 
@@ -133,13 +150,13 @@ namespace CoreWinSubLog
             {
                 return;
             }
+            _readAndWriterLock.EnterUpgradeableReadLock();
             try
             {
-                _readAndWriterLock.EnterUpgradeableReadLock();
                 List<string> allTexts = File.ReadAllLines(FilePath).ToList();
+                _readAndWriterLock.EnterWriteLock();
                 try
                 {
-                    _readAndWriterLock.EnterWriteLock();
                     if (allTexts.Count > 0)
                     {
                         allTexts.RemoveAt(0);
