@@ -7,7 +7,7 @@ namespace CoreWinSubLog
     /// </summary>
     public class TextWriterLogger : Logger
     {
-        private readonly TextFileReadWrite _textWriter;
+        private readonly TextWriter _textWriter;
 
         /// <summary>
         /// Initializes an instance of the <see cref="TextWriterLogger"/>.
@@ -23,9 +23,10 @@ namespace CoreWinSubLog
         /// <param name="level">Log level.</param>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public override void Log(LogLevel level,string message, params object[] args)
+        public override void Log(LogLevel level, string msg, params object[] args)
         {
-            _textWriter.Write();
+            _textWriter.Write($"[{level.ToString().ToUpperInvariant()}] ");
+            _textWriter.WriteLine(NameFormatToPositionalFormat(msg), args);
         }
     }
 
@@ -34,7 +35,11 @@ namespace CoreWinSubLog
     /// </summary>
     public class TextWriterLogManager : LogManager
     {
+        #region FIELDS
+
         private readonly Logger _loggerImpl;
+
+        #endregion
 
         /// <summary>
         /// Initializes an instance of the <see cref="TextWriterLogManager"/>.

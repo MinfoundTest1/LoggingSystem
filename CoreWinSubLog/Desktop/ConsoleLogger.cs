@@ -10,14 +10,14 @@ namespace CoreWinSubLog
         /// <summary>
         /// Singleton instance of the <see cref="ConsoleLogger"/>.
         /// </summary>
-        public static readonly Logger Instance = new ConsoleLogger(new TextFileReadWrite("",""));
+        public static readonly Logger Instance = new ConsoleLogger();
 
         private readonly object _lock = new object();
 
         /// <summary>
         /// Initializes an instance of the <see cref="ConsoleLogger"/>.
         /// </summary>
-        private ConsoleLogger(TextFileReadWrite readAndWrite) : base(readAndWrite)
+        private ConsoleLogger() : base(Console.Out)
         {
         }
 
