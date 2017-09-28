@@ -16,7 +16,6 @@ namespace LoggingSystemTest
                 LoggerTest.TestNullLogger();
                 Console.WriteLine();
                 LoggerTest.TestConsoleLogger();
-
             }
             catch (Exception ex)
             {

@@ -35,11 +35,7 @@ namespace CoreWinSubLog
     /// </summary>
     public class TextWriterLogManager : LogManager
     {
-        #region FIELDS
-
         private readonly Logger _loggerImpl;
-
-        #endregion
 
         /// <summary>
         /// Initializes an instance of the <see cref="TextWriterLogManager"/>.
