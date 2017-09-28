@@ -26,14 +26,11 @@ namespace LoggingSystemTest
 
         private static void TestLogger(Logger logger)
         {
-<<<<<<< HEAD
-=======
             logger.Debug("This is a test message with {level}.", "Debug");
             logger.Info("This is a test message with {level}.", "Info");
             logger.Warn("This is a test message with {level}.", "Warn");
             logger.Error("This is a test message with {level}.", "Error");
             logger.Fatal("This is a test message with {level}.", "Fatal");
->>>>>>> parent of 6ad426b... Add TextReadWrite Class
         }
     }
 }
