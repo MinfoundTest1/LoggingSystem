@@ -30,9 +30,8 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Info(string msg, params object[] args)
+        public void Info(string msg,  params object[] args)
         {
-            this.Log(LogLevel.Info, msg, args);
             this.Log(LogLevel.Info, msg, DateTime.Now, args);
         }
 
