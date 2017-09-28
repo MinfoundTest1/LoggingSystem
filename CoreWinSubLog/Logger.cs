@@ -20,9 +20,12 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Debug(LogRecord recoder,  params object[] args)
+        public void Debug(LogRecord recoder, params object[] args)
         {
-            this.Log(recoder, args);
+        }
+
+        public void Debug(string msg, params object[] args)
+        {
         }
 
         /// <summary>
@@ -32,7 +35,6 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Info(LogRecord recoder,  params object[] args)
         {
-            this.Log(recoder, DateTime.Now, args);
         }
 
         /// <summary>
@@ -42,7 +44,6 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Warn(LogRecord recoder, params object[] args)
         {
-            this.Log(recoder,DateTime.Now, args);
         }
 
         /// <summary>
@@ -50,9 +51,12 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Error(LogRecord recoder,  params object[] args)
+        public void Error(LogRecord recoder, params object[] args)
         {
-            this.Log(recoder, args);
+        }
+        public void Error(string msg, params object[] args)
+        {
+
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Fatal(LogRecord recoder, params object[] args)
         {
-            this.Log(recoder, args);
+
         }
 
         private static readonly Regex CurlyBracePairRegex = new Regex(@"{.*?}");

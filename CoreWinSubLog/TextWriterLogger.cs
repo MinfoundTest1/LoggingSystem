@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace CoreWinSubLog
 {
@@ -8,18 +7,12 @@ namespace CoreWinSubLog
     /// </summary>
     public class TextWriterLogger : Logger
     {
-        private TextWriter @out;
-        private readonly TextFileReadWrite _textWriter;
-
-        public TextWriterLogger(TextWriter @out)
-        {
-            this.@out = @out;
-        }
+        private readonly TextWriter _textWriter;
 
         /// <summary>
         /// Initializes an instance of the <see cref="TextWriterLogger"/>.
         /// </summary>
-        protected internal TextWriterLogger(TextFileReadWrite textWriter)
+        protected internal TextWriterLogger(TextWriter textWriter)
         {
             _textWriter = textWriter;
         }
@@ -32,7 +25,7 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public override void Log(LogRecord recoder, params object[] args)
         {
-            _textWriter.Write(recoder,args);
+
         }
     }
 
@@ -46,7 +39,7 @@ namespace CoreWinSubLog
         /// <summary>
         /// Initializes an instance of the <see cref="TextWriterLogManager"/>.
         /// </summary>
-        public TextWriterLogManager(TextFileReadWrite textWriter)
+        public TextWriterLogManager(TextWriter textWriter)
         {
             _loggerImpl = new TextWriterLogger(textWriter);
         }
