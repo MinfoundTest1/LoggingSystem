@@ -20,9 +20,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Debug(string msg, params object[] args)
+        public void Debug(string msg,  params object[] args)
         {
-            this.Log(LogLevel.Debug, msg, args);
+            this.Log(LogLevel.Debug, msg,DateTime.Now, args);
         }
 
         /// <summary>
@@ -33,6 +33,7 @@ namespace CoreWinSubLog
         public void Info(string msg, params object[] args)
         {
             this.Log(LogLevel.Info, msg, args);
+            this.Log(LogLevel.Info, msg, DateTime.Now, args);
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Warn(string msg, params object[] args)
         {
-            this.Log(LogLevel.Warning, msg, args);
+            this.Log(LogLevel.Warning, msg, DateTime.Now, args);
         }
 
         /// <summary>
@@ -50,9 +51,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public void Error(string msg, params object[] args)
+        public void Error(string msg,  params object[] args)
         {
-            this.Log(LogLevel.Error, msg, args);
+            this.Log(LogLevel.Error, msg, DateTime.Now, args);
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public void Fatal(string msg, params object[] args)
         {
-            this.Log(LogLevel.Fatal, msg, args);
+            this.Log(LogLevel.Fatal, msg, DateTime.Now, args);
         }
 
         private static readonly Regex CurlyBracePairRegex = new Regex(@"{.*?}");

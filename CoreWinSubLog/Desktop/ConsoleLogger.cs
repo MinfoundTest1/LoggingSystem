@@ -35,7 +35,7 @@ namespace CoreWinSubLog
                 switch (level)
                 {
                     case LogLevel.Debug:
-                        ConsoleForegroundColor = ConsoleColor.Blue;
+                        ConsoleForegroundColor = ConsoleColor.Green;
                         break;
                     case LogLevel.Info:
                         ConsoleForegroundColor = ConsoleColor.White;
