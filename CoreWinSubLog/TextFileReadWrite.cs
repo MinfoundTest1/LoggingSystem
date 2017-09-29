@@ -9,14 +9,11 @@ namespace CoreWinSubLog
 {
     public class TextFileReadWrite 
     {
-
         #region property
         /// <summary>
         /// the read and writer lock
         /// </summary>
         private static ReaderWriterLockSlim _readAndWriterLock = new ReaderWriterLockSlim();
-
-
         /// <summary>
         /// the log file path
         /// </summary>
@@ -27,7 +24,6 @@ namespace CoreWinSubLog
             private set { filePath = value;}
         }
 
-
         /// <summary>
         /// the log file path
         /// </summary>
@@ -35,28 +31,32 @@ namespace CoreWinSubLog
         public string ModelName
         {
             get { return modelName; }
-             set { modelName = value; }
+            private set { modelName = value; }
         }
 
 
+        /// <summary>
+        /// the log file path
+        /// </summary>
+        private string directoryPath;
+        public string DirectoryPath
+        {
+            get { return directoryPath; }
+            private set { DirectoryPath = value; }
+        }
+
         #endregion
 
+        #region Public Function
         /// <summary>
         /// init the class
         /// </summary>
-        /// <param name="filePath">the log file path</param>
-        /// <param name="modelName">the process name</param>
-        public TextFileReadWrite(string filePath,string modelName)
+        /// <param name="pDirectoryPath">the log directory path</param>
+        /// <param name="pProcessName">the log create source process</param>
+        public TextFileReadWrite(string pDirectoryPath,string pProcessName)
         {
-            FilePath = filePath;
-            ModelName = modelName;
-            if (filePath != null)
-            {
-                if (!File.Exists(filePath))
-                {
-                    File.Create(filePath);
-                }
-            }
+            DirectoryPath = pDirectoryPath;
+            ModelName = pProcessName;
         }
         /// <summary>
         /// 
@@ -65,14 +65,14 @@ namespace CoreWinSubLog
         /// <param name="level">the log level</param>
         /// <param name="message">the log message info</param>
         /// <param name="args">parames args</param>
-        public void Write(DateTime time,LogLevel level, string message, params object[] args)
+        public void Write(LogRecord recoder, params object[] args)
         {
             if (FilePath == null)
                 return;
             _readAndWriterLock.EnterWriteLock();
             try
             {
-                string log = string.Format("{0} {1} {2} {3}", ModelName, time, level, message);
+                string log = string.Format("{0} {1} {2} {3}", recoder.ModuleName,recoder.DateTime, recoder.Level, recoder.Message);
                 if (args != null)
                 {
                     if (args.Count() > 0)
@@ -93,20 +93,6 @@ namespace CoreWinSubLog
                 _readAndWriterLock.ExitWriteLock();
             }
            
-        }
-
-        /// <summary>
-        /// write the message to file
-        /// </summary>
-        /// <param name="pMessage"></param>
-        private void WriteLine(string pMessage)
-        {
-            if (FilePath == null)
-                return;
-            using (StreamWriter writer = new StreamWriter(FilePath))
-            {
-                writer.WriteLine(pMessage);
-            }
         }
 
        /// <summary>
@@ -166,5 +152,51 @@ namespace CoreWinSubLog
                 _readAndWriterLock.ExitUpgradeableReadLock();
             }
         }
+
+        /// <summary>
+        /// create the log file
+        /// </summary>
+        /// <returns>the log file path</returns>
+        public string CreateFilePath()
+        {
+            if (DirectoryPath != null)
+            {
+                if (!DirectoryPath.EndsWith(ModelName))
+                {
+                    DirectoryPath = Path.Combine(DirectoryPath, ModelName);
+                }
+                if (!Directory.Exists(DirectoryPath))
+                {
+                    Directory.CreateDirectory(DirectoryPath);
+                }
+            }
+            string[] files = Directory.GetFiles(directoryPath);
+            int index = files.Count() + 1;
+            string fileName = DateTime.Now.ToString("YYMMDD"+".txt");
+            FilePath = Path.Combine(directoryPath,fileName);
+            if (!File.Exists(FilePath))
+            {
+                File.Create(FilePath);
+            }
+
+            return FilePath;
+        }
+        #endregion
+
+        #region Private Function
+        /// <summary>
+        /// write the message to file
+        /// </summary>
+        /// <param name="pMessage"></param>
+        private void WriteLine(string pMessage)
+        {
+            if (FilePath == null)
+                return;
+            using (StreamWriter writer = new StreamWriter(FilePath))
+            {
+                writer.WriteLine(pMessage);
+            }
+        }
+        #endregion
     }
 }

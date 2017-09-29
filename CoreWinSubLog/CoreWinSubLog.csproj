@@ -55,6 +55,8 @@
     <Compile Include="Base\BlockingAction.cs" />
     <Compile Include="Desktop\ConsoleLogger.cs" />
     <Compile Include="Desktop\MinLogger.cs" />
+    <Compile Include="FileLogger.cs" />
+    <Compile Include="FileWriteLogger.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="LogManager.cs" />
