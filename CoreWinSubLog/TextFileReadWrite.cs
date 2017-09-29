@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace CoreWinSubLog
 {
-    public class TextFileReadWrite 
+    public class TextFileReadWrite
     {
         #region property
         /// <summary>
@@ -21,7 +21,7 @@ namespace CoreWinSubLog
         public string FilePath
         {
             get { return filePath; }
-            private set { filePath = value;}
+            private set { filePath = value; }
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace CoreWinSubLog
         public string DirectoryPath
         {
             get { return directoryPath; }
-            private set { DirectoryPath = value; }
+            private set { directoryPath = value; }
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="pDirectoryPath">the log directory path</param>
         /// <param name="pProcessName">the log create source process</param>
-        public TextFileReadWrite(string pDirectoryPath,string pProcessName)
+        public TextFileReadWrite(string pDirectoryPath, string pProcessName)
         {
             DirectoryPath = pDirectoryPath;
             ModelName = pProcessName;
@@ -72,7 +72,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterWriteLock();
             try
             {
-                string log = string.Format("{0} {1} {2} {3}", recoder.ModuleName,recoder.DateTime, recoder.Level, recoder.Message);
+                string log = string.Format("{0} {1} {2} {3}", recoder.ModuleName, recoder.DateTime, recoder.Level, recoder.Message);
                 if (args != null)
                 {
                     if (args.Count() > 0)
@@ -92,13 +92,13 @@ namespace CoreWinSubLog
             {
                 _readAndWriterLock.ExitWriteLock();
             }
-           
+
         }
 
-       /// <summary>
-       /// read a line from file
-       /// </summary>
-       /// <returns></returns>
+        /// <summary>
+        /// read a line from file
+        /// </summary>
+        /// <returns></returns>
         public string ReadLine()
         {
             if (FilePath == null)
@@ -172,8 +172,8 @@ namespace CoreWinSubLog
             }
             string[] files = Directory.GetFiles(directoryPath);
             int index = files.Count() + 1;
-            string fileName = DateTime.Now.ToString("YYMMDD"+".txt");
-            FilePath = Path.Combine(directoryPath,fileName);
+            string fileName = DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            FilePath = Path.Combine(directoryPath, fileName);
             if (!File.Exists(FilePath))
             {
                 File.Create(FilePath);
