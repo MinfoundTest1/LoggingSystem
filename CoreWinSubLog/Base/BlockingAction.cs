@@ -35,7 +35,9 @@ namespace CoreWinSubLog
             _blockCollection.Add(item);
         }
 
-        // Run an task to consume the items in blocking collection.
+        /// <summary>
+        ///  Run a task to consume the items in blocking collection.
+        /// </summary>
         private Task ConsumeAsync()
         {
             return Task.Run(() =>
@@ -46,6 +48,5 @@ namespace CoreWinSubLog
                 }
             });
         }
-
     }
 }

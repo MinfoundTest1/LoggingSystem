@@ -3,8 +3,15 @@ using System.ServiceModel;
 
 namespace CoreWinSubLog
 {
+    /// <summary>
+    /// WCF binding for log service.
+    /// </summary>
     public static class LogServiceBinding
     {
+        /// <summary>
+        /// Tcp binding for WCF service.
+        /// </summary>
+        /// <returns></returns>
         public static NetTcpBinding TcpBinding()
         {
             NetTcpBinding myBinding = new NetTcpBinding(SecurityMode.None);
@@ -26,6 +33,11 @@ namespace CoreWinSubLog
             return myBinding;
         }
 
+        /// <summary>
+        /// WCF service remote address.
+        /// </summary>
+        /// <param name="ipAddress">Host ip address</param>
+        /// <returns></returns>
         public static Uri Uri(string ipAddress)
         {
             return new Uri("net.tcp://" + ipAddress + ":8200/LogbookService"); 

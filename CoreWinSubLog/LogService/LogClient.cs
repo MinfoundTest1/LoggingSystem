@@ -3,6 +3,9 @@ using System.ServiceModel.Channels;
 
 namespace CoreWinSubLog
 {
+    /// <summary>
+    /// Log client of WCF connection.
+    /// </summary>
     class LogClient : ClientBase<ILogService>, ILogService
     {
         public LogClient(Binding binding, string ipAddress)

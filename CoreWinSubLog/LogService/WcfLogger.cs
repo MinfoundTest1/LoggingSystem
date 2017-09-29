@@ -1,4 +1,6 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.Collections.Concurrent;
+using System.ServiceModel;
 
 namespace CoreWinSubLog
 {
@@ -11,6 +13,7 @@ namespace CoreWinSubLog
         private ILogService _logService;
 
         private readonly BlockingAction<LogRecord> _blockingAction;
+        private readonly Action<LogRecord> _backupAction;
 
         /// <summary>
         /// Initializes an instace with given WCF service ip.
@@ -21,6 +24,14 @@ namespace CoreWinSubLog
             _remoteAddress = ipAddress;
             _logService = new LogClient(ipAddress);
             _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
+        }
+
+        internal WcfLogger(string ipAddress, Action<LogRecord> backupAction)
+        {
+            _remoteAddress = ipAddress;
+            _logService = new LogClient(ipAddress);
+            _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
+            _backupAction = backupAction;
         }
 
         public override void Log(LogLevel level, string msg, params object[] args)
@@ -35,6 +46,9 @@ namespace CoreWinSubLog
             _blockingAction.Post(logRecord);
         }
 
+        /// <summary>
+        /// Check if the WCF connection is valid.
+        /// </summary>
         public bool IsValid()
         {
             var client = _logService as ClientBase<ILogService>;
@@ -50,7 +64,15 @@ namespace CoreWinSubLog
         /// </summary>
         private void TryLog(LogRecord record)
         {
-            _logService.Log(record);
+            try
+            {
+                _logService.Log(record);
+            }
+            catch (Exception)
+            {
+                // If the garbage collection 
+                _backupAction?.Invoke(record);
+            }
         }
     }
 
