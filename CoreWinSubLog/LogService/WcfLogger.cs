@@ -8,7 +8,9 @@ namespace CoreWinSubLog
     public class WcfLogger : Logger
     {
         private readonly string _remoteAddress;
-        private ILogService _logService; 
+        private ILogService _logService;
+
+        private readonly BlockingAction<LogRecord> _blockingAction;
 
         /// <summary>
         /// Initializes an instace with given WCF service ip.
@@ -18,13 +20,19 @@ namespace CoreWinSubLog
         {
             _remoteAddress = ipAddress;
             _logService = new LogClient(ipAddress);
+            _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
         }
 
         public override void Log(LogLevel level, string msg, params object[] args)
         {
             string content = string.Format(NameFormatToPositionalFormat(msg), args);
             LogRecord record = LogRecord.Create(level, content);
-            TryLog(record);
+            _blockingAction.Post(record);
+        }
+
+        public void Log(LogRecord logRecord)
+        {
+            _blockingAction.Post(logRecord);
         }
 
         public bool IsValid()
