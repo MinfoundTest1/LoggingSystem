@@ -54,5 +54,20 @@ namespace LoggingSystemTest
             logger.Error("This is a test message with {level}.", "Error");
             logger.Fatal("This is a test message with {level}.", "Fatal");
         }
+
+        public static void TestWriteFile()
+        {
+            LogRecord record = LogRecord.Create(LogLevel.Fatal, "message");
+            string directoryPath = @"C:\temp";
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath,record.ModuleName));
+            Logger logger = LogManager.GetLogger("");
+            Parallel.For(0, 100, i => {
+                logger.Debug("this is a debug test");
+                logger.Info("this is a info test");
+                logger.Warn("this is a warnning test");
+                logger.Error("this is a error test");
+                logger.Fatal("this is a fatal test");
+            });
+        }
     }
 }

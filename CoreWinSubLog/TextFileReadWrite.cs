@@ -72,7 +72,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterWriteLock();
             try
             {
-                string log = string.Format("{0} {1} {2} {3}", recoder.ModuleName, recoder.DateTime, recoder.Level, recoder.Message);
+                string log = string.Format("{0} {1} {2}   {3}", recoder.ModuleName, recoder.DateTime, recoder.Level, recoder.Message);
                 if (args != null)
                 {
                     if (args.Count() > 0)
@@ -87,6 +87,10 @@ namespace CoreWinSubLog
                 {
                     writer.WriteLine(log);
                 }
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
             }
             finally
             {
@@ -176,9 +180,10 @@ namespace CoreWinSubLog
             FilePath = Path.Combine(directoryPath, fileName);
             if (!File.Exists(FilePath))
             {
-                File.Create(FilePath);
+                using (File.Create(FilePath))
+                {
+                }
             }
-
             return FilePath;
         }
         #endregion
