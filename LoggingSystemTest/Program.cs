@@ -19,6 +19,7 @@ namespace LoggingSystemTest
                 LoggerTest.TestConsoleLogger();
                 LoggerTest.TestWcfLogger();
                 LoggerTest.TestLogRecordString();
+                LoggerTest.TestWriteFile();
             }
             catch (Exception ex)
             {

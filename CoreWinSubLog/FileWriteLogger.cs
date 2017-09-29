@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreWinSubLog
 {
-    public class FileWriteLogger : FileLogger
+    public class FileWriteLogger : Logger
     {
         private readonly TextFileReadWrite _fileWriter;
 
@@ -19,34 +19,28 @@ namespace CoreWinSubLog
             _fileWriter = fileWriter;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="loglevel">log level</param>
-        /// <param name="time">the log create time</param>
-        /// <param name="modelName">the log create source</param>
-        /// <param name="msg">the log msg</param>
-        /// <param name="args">the log args</param>
-        public override void Log(LogLevel loglevel, DateTime time, string modelName,string msg,params object[] args)
+        public override void Log(LogLevel level, string message, params object[] args)
         {
-            LogRecord recoder = new LogRecord(loglevel,time,modelName,msg);
-            _fileWriter.Write(recoder,args);
+            string content = string.Format(NameFormatToPositionalFormat(message), args);
+            LogRecord record = LogRecord.Create(level, content);
+            _fileWriter.Write(record);
         }
     }
 
-    public class FileWriterLogManager
+    public class FileWriterLogManager:LogManager
     {
-        private readonly FileLogger _loggerImpl;
+        private readonly Logger _loggerImpl;
 
         public FileWriterLogManager(string directory,string modelName)
         {
             TextFileReadWrite fileWriter = new TextFileReadWrite(directory, modelName);
+            fileWriter.CreateFilePath();
             _loggerImpl = new FileWriteLogger(fileWriter);
         }
 
-        protected  FileLogger GetLoggerImpl(string name)
+        protected override Logger GetLoggerImpl(string name)
         {
-            return _loggerImpl;
+             return _loggerImpl;
         }
     }
 }
