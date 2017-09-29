@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CoreWinSubLog
 {
     /// <summary>
@@ -12,8 +7,10 @@ namespace CoreWinSubLog
     /// /// </summary>
     public class MinLogger : Logger
     {
+        // Logger to WCF service.
         private readonly WcfLogger _wcfLogger;
-        private Logger _localLogger;
+        // Logger to local file
+        private readonly FileWriteLogger _localLogger;
 
         /// <summary>
         /// Initializes an instance with host address and file path.
@@ -22,7 +19,7 @@ namespace CoreWinSubLog
         /// <param name="filePath">Text file directory</param>
         public MinLogger(string hostIPAddress, string filePath)
         {
-            _wcfLogger = new WcfLogger(hostIPAddress);
+            _wcfLogger = new WcfLogger(hostIPAddress, r => LogToLocal(r));
         }
 
         public override void Log(LogLevel level, string message, params object[] args)
@@ -31,6 +28,10 @@ namespace CoreWinSubLog
             logger.Log(level, message, args);
         }
 
+        /// <summary>
+        /// Get one valid logger. (WCFLogger > LocalLogger)
+        /// </summary>
+        /// <returns></returns>
         private Logger GetValidLogger()
         {
             if (_wcfLogger.IsValid())
@@ -41,6 +42,11 @@ namespace CoreWinSubLog
             {
                 return _localLogger;
             }
+        }
+
+        private void LogToLocal(LogRecord logRecord)
+        {
+
         }
     }
 }

@@ -16,7 +16,7 @@ namespace CoreWinSubLog
         private readonly Action<LogRecord> _backupAction;
 
         /// <summary>
-        /// Initializes an instace with given WCF service ip.
+        /// Initializes an instance with given WCF service ip.
         /// </summary>
         /// <param name="ipAddress">WCF service ip address</param>
         public WcfLogger(string ipAddress)
@@ -26,6 +26,11 @@ namespace CoreWinSubLog
             _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
         }
 
+        /// <summary>
+        /// Initializes an instance with given WCF service ip, and a back-up action for the logs when WCF connection is broken.
+        /// </summary>
+        /// <param name="ipAddress">WCF service ip Address</param>
+        /// <param name="backupAction">Action for the logs don't pass the conenction</param>
         internal WcfLogger(string ipAddress, Action<LogRecord> backupAction)
         {
             _remoteAddress = ipAddress;

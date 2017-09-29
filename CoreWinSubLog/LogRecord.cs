@@ -77,7 +77,7 @@ namespace CoreWinSubLog
                 Enum.TryParse(msg[0].Substring(1), out level);
 
                 DateTime dateTime;
-                DateTime.TryParseExact(msg[1], "yy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
+                DateTime.TryParseExact(msg[1], "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
                 if (msg.Length == 4)
                 {
                     return new LogRecord(level, dateTime, msg[2], msg[3].Substring(0, msg[3].Length - 1));
@@ -99,7 +99,7 @@ namespace CoreWinSubLog
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format($"[{Level}] [{DateTime.ToString("yy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture)}] [{ModuleName}] [{Message}]");
+            return string.Format($"[{Level}] [{DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture)}] [{ModuleName}] [{Message}]");
         }
     }
 }
