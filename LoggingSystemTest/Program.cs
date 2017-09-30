@@ -14,12 +14,12 @@ namespace LoggingSystemTest
         {
             try
             {
-                //LoggerTest.TestNullLogger();
-                //Console.WriteLine();
-                //LoggerTest.TestConsoleLogger();
-                //LoggerTest.TestWcfLogger();
-                //LoggerTest.TestLogRecordString();
-                //LoggerTest.TestWriteFile();
+                LoggerTest.TestNullLogger();
+                Console.WriteLine();
+                LoggerTest.TestConsoleLogger();
+                LoggerTest.TestWcfLogger();
+                LoggerTest.TestLogRecordString();
+                LoggerTest.TestWriteFile();
                 LoggerTest.TestAsyWriteFile();
                 //LoggerTest.TestFileOpenTime();
             }

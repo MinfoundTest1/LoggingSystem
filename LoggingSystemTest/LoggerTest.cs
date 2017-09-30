@@ -29,7 +29,7 @@ namespace LoggingSystemTest
         {
             LogManager.SetImplementation(new WcfLoggerManager("127.0.0.1"));
             Logger logger = LogManager.GetLogger("");
-            Enumerable.Range(0, 100).AsParallel().ForAll(t =>
+            Parallel.For(0, 100, t =>
             {
                 TestLogger(logger);
             });

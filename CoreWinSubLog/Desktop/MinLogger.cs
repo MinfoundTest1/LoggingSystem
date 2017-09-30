@@ -19,6 +19,7 @@ namespace CoreWinSubLog
         /// <param name="filePath">Text file directory</param>
         public MinLogger(string hostIPAddress, string filePath)
         {
+            _localLogger = new FileWriteLogger(filePath);
             _wcfLogger = new WcfLogger(hostIPAddress, r => LogToLocal(r));
         }
 
@@ -46,7 +47,7 @@ namespace CoreWinSubLog
 
         private void LogToLocal(LogRecord logRecord)
         {
-
+            _localLogger.Log(logRecord);
         }
     }
 }
