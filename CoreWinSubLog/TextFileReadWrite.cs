@@ -14,7 +14,6 @@ namespace CoreWinSubLog
         /// the read and writer lock
         /// </summary>
         private static ReaderWriterLockSlim _readAndWriterLock = new ReaderWriterLockSlim();
-        private string defaultDirectory= @"C:\temp";//the default directory
 
         /// <summary>
         /// the log file path
@@ -26,27 +25,6 @@ namespace CoreWinSubLog
             set { filePath = value; }
         }
 
-        /// <summary>
-        /// the log file path
-        /// </summary>
-        private string modelName;
-        public string ModelName
-        {
-            get { return modelName; }
-            private set { modelName = value; }
-        }
-
-
-        /// <summary>
-        /// the log directory path
-        /// </summary>
-        private string directoryPath;
-        public string DirectoryPath
-        {
-            get { return directoryPath; }
-            private set { directoryPath = value; }
-        }
-
         #endregion
 
         #region Public Function
@@ -55,10 +33,9 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="pDirectoryPath">the log directory path</param>
         /// <param name="pProcessName">the log create source process</param>
-        public TextFileReadWrite(string pDirectoryPath, string pProcessName)
+        public TextFileReadWrite(string pFilePath)
         {
-            ModelName = pProcessName;
-            DirectoryPath = pDirectoryPath;
+            FilePath = pFilePath;
         }
 
         /// <summary>
@@ -227,118 +204,20 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
-        /// create the log file
-        /// </summary>
-        /// <returns>the log file path</returns>
-        public string CreateNewFilePath()
-        {
-            string[] files = Directory.GetFiles(DirectoryPath);
-            int index = files.Count() + 1;
-            string fileName = DateTime.Now.ToString("yyyyMMdd_hhmmss_") + index + ".txt";
-            FilePath = Path.Combine(directoryPath, fileName);
-            if (!File.Exists(FilePath))
-            {
-                using (File.Create(FilePath))
-                {
-                }
-            }
-            return FilePath;
-        }
-
-        /// <summary>
-        /// get all files in directory
-        /// </summary>
-        /// <returns>all files path</returns>
-        public string[] GetAllFilesFromDir()
-        {
-            if (DirectoryPath == null)
-            {
-                return null;
-            }
-            return Directory.GetFiles(DirectoryPath);
-        }
-
-        /// <summary>
-        /// get the file size
-        /// </summary>
-        /// <param name="pFilePath"></param>
-        /// <returns>size(M)</returns>
-        public double GetFileSize(string pFilePath)
-        {
-            FileInfo info = new FileInfo(pFilePath);
-            return info.Length / 1024.00 / 1024.00;
-        }
-
-        /// <summary>
-        /// check the defualt directory
-        /// </summary>
-        public void CheckDirectory()
-        {
-            if (DirectoryPath == null)
-            {
-                DirectoryPath = defaultDirectory;
-            }
-            if (ModelName != null)
-            {
-                if (!DirectoryPath.EndsWith(ModelName))
-                {
-                    DirectoryPath = Path.Combine(DirectoryPath, ModelName);
-                }
-            }// if modelname==null, do nothing
-
-            if (!Directory.Exists(DirectoryPath))
-            {
-                Directory.CreateDirectory(DirectoryPath);
-            }
-        }
-
-        /// <summary>
-        /// check the file
-        /// </summary>
-        public void CheckFile()
-        {
-            string[] files = GetAllFilesFromDir();
-            if (files.Count() == 0)
-            {
-                FilePath = CreateNewFilePath();
-            }
-            else
-            {
-                FilePath = files.Last();
-            }
-
-        }
-
-        /// <summary>
-        /// get the file create time
-        /// </summary>
-        /// <param name="pFilePath"></param>
-        /// <returns></returns>
-        public DateTime GetDefualtFileCreateTime()
-        {
-            FileInfo info = new FileInfo(FilePath);
-            return info.CreationTime;
-        }
-
-        /// <summary>
-        /// set defulat directory
-        /// </summary>
-        /// <param name="pDirectoryPath">the defualt dirceory</param>
-        public void SetDefualtFilePath(string pDirectoryPath)
-        {
-            defaultDirectory = pDirectoryPath;
-        }
-
-        /// <summary>
         /// get the log count in defualt file 
         /// </summary>
         /// <returns>the log cout</returns>
         public double GetDefualtFileLogCout()
         {
-            List<LogRecord> records= ReadAllRecod();
+            List<LogRecord> records = ReadAllRecod();
             if (records == null)
                 return 0;
             return records.Count();
+        }
+
+        public void SetFilePath(string pFilePath)
+        {
+            FilePath = pFilePath;
         }
         #endregion
 

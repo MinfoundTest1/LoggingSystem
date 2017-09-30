@@ -59,11 +59,8 @@ namespace LoggingSystemTest
         {
             LogRecord record = LogRecord.Create(LogLevel.Fatal, "message");
             string directoryPath = @"C:\temp";
-            LogManager.SetImplementation(new FileWriterLogManager(directoryPath,record.ModuleName));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
             Logger logger = LogManager.GetLogger("");
-            //Parallel.For(0, 10000, i => {
-
-            //});
             for (int i = 0; i < 10000; i++)
             {
                 logger.Debug("This is a test message with {level}.", "Debug");
@@ -72,6 +69,22 @@ namespace LoggingSystemTest
                 logger.Error("This is a test message with {level}.", "Error");
                 logger.Fatal("This is a test message with {level}.", "Fatal");
             }
+        }
+
+        public static void TestAsyWriteFile()
+        {
+            LogRecord record = LogRecord.Create(LogLevel.Fatal, "message");
+            string directoryPath = @"C:\temp";
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
+            Logger logger = LogManager.GetLogger("");
+            Parallel.For(0, 10000, i =>
+            {
+                logger.Debug("{0} wirte this is a test message with {1}.",Task.CurrentId, "Debug");
+                logger.Info("{0} wirte this is a test message with {1}.", Task.CurrentId, "Info");
+                logger.Warn("{0} wirte this is a test message with {1}.", Task.CurrentId, "Warn");
+                logger.Error("{0} wirte this is a test message with {1}.", Task.CurrentId, "Error");
+                logger.Fatal("{0} wirte this is a test message with {1}.", Task.CurrentId, "Fatal");
+            });
         }
 
         //public static void TestFileOpenTime()
@@ -84,7 +97,7 @@ namespace LoggingSystemTest
         //    string msg = read.ReadLine();
         //    wtch.Stop();
         //    Console.WriteLine(wtch.ElapsedMilliseconds);
-         
+
         //    //result:
         //}
     }
