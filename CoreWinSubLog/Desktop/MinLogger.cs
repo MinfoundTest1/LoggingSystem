@@ -50,4 +50,31 @@ namespace CoreWinSubLog
             _localLogger.Log(logRecord);
         }
     }
+
+    /// <summary>
+    /// Manager for logging to a <see cref="MinLogger"/> implementation.
+    /// </summary>
+    public class MinLoggerManager : LogManager
+    {
+        readonly Logger _loggerImpl;
+
+        /// <summary>
+        /// Initializes an instance for MinLogger.
+        /// </summary>
+        /// <param name="ipAddress">WCF service ip address</param>
+        public MinLoggerManager(string ipAddress, string filePath)
+        {
+            _loggerImpl = new MinLogger(ipAddress, filePath);
+        }
+
+        /// <summary>
+        /// Get logger from the current log manager implementation.
+        /// </summary>
+        /// <param name="name">Classifier name, typically namespace or type name.</param>
+        /// <returns>Logger from the current log manager implementation.</returns>
+        protected override Logger GetLoggerImpl(string name)
+        {
+            return _loggerImpl;
+        }
+    }
 }

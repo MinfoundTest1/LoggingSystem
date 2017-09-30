@@ -100,5 +100,16 @@ namespace LoggingSystemTest
 
         //    //result:
         //}
+
+        public static void TestMinLogger()
+        {
+            LogManager.SetImplementation(new MinLoggerManager("127.0.0.1", "C:\\Temp\\Log"));
+            Logger logger = LogManager.GetLogger("");
+            Parallel.For(0, 10000, t =>
+            {
+                TestLogger(logger);
+            });
+            Console.WriteLine("Log completed.");
+        }
     }
 }
