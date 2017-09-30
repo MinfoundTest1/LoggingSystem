@@ -12,4 +12,13 @@
 
         Fatal
     }
+
+    public enum NewFileOpations
+    {
+        FileSize,
+
+        FileTime,
+
+        LogCount
+    }
 }

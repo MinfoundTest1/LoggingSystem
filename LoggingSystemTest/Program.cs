@@ -17,9 +17,9 @@ namespace LoggingSystemTest
                 //LoggerTest.TestNullLogger();
                 //Console.WriteLine();
                 //LoggerTest.TestConsoleLogger();
-                //        LoggerTest.TestWcfLogger();
-                //        LoggerTest.TestLogRecordString();
-                //        LoggerTest.TestWriteFile();
+        //        LoggerTest.TestWcfLogger();
+        //        LoggerTest.TestLogRecordString();
+                LoggerTest.TestWriteFile();
                 //LoggerTest.TestFileOpenTime();
                 LoggerTest.TestMinLogger();
             }
