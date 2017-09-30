@@ -61,13 +61,31 @@ namespace LoggingSystemTest
             string directoryPath = @"C:\temp";
             LogManager.SetImplementation(new FileWriterLogManager(directoryPath,record.ModuleName));
             Logger logger = LogManager.GetLogger("");
-            Parallel.For(0, 100, i => {
-                logger.Debug("this is a debug test");
-                logger.Info("this is a info test");
-                logger.Warn("this is a warnning test");
-                logger.Error("this is a error test");
-                logger.Fatal("this is a fatal test");
-            });
+            //Parallel.For(0, 10000, i => {
+
+            //});
+            for (int i = 0; i < 10000; i++)
+            {
+                logger.Debug("This is a test message with {level}.", "Debug");
+                logger.Info("This is a test message with {level}.", "Info");
+                logger.Warn("This is a test message with {level}.", "Warn");
+                logger.Error("This is a test message with {level}.", "Error");
+                logger.Fatal("This is a test message with {level}.", "Fatal");
+            }
         }
+
+        //public static void TestFileOpenTime()
+        //{
+        //    string path = @"C:\temp\LoggingSystemTest.vshost\20170929{1}.txt";
+        //    TextFileReadWrite read = new TextFileReadWrite(path);
+        //    Stopwatch wtch = new Stopwatch();
+        //    wtch.Start();
+        //    double size = read.GetFileSize(path);
+        //    string msg = read.ReadLine();
+        //    wtch.Stop();
+        //    Console.WriteLine(wtch.ElapsedMilliseconds);
+         
+        //    //result:
+        //}
     }
 }
