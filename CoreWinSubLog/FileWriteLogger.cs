@@ -37,7 +37,7 @@ namespace CoreWinSubLog
             string content = string.Format(NameFormatToPositionalFormat(message), args);
             LogRecord record = LogRecord.Create(level, content);
 
-            //The three method writes about the same speed
+            //The three method writes about the same speed abort 25-30k/s
             NewOrDefualtFileBySize();
             //NewOrDefualtFileByLogCout();
             //NewOrDefualtFileByHour();
