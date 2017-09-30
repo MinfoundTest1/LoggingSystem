@@ -1,4 +1,6 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.Collections.Concurrent;
+using System.ServiceModel;
 
 namespace CoreWinSubLog
 {
@@ -11,9 +13,10 @@ namespace CoreWinSubLog
         private ILogService _logService;
 
         private readonly BlockingAction<LogRecord> _blockingAction;
+        private readonly Action<LogRecord> _backupAction;
 
         /// <summary>
-        /// Initializes an instace with given WCF service ip.
+        /// Initializes an instance with given WCF service ip.
         /// </summary>
         /// <param name="ipAddress">WCF service ip address</param>
         public WcfLogger(string ipAddress)
@@ -21,6 +24,19 @@ namespace CoreWinSubLog
             _remoteAddress = ipAddress;
             _logService = new LogClient(ipAddress);
             _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
+        }
+
+        /// <summary>
+        /// Initializes an instance with given WCF service ip, and a back-up action for the logs when WCF connection is broken.
+        /// </summary>
+        /// <param name="ipAddress">WCF service ip Address</param>
+        /// <param name="backupAction">Action for the logs don't pass the conenction</param>
+        internal WcfLogger(string ipAddress, Action<LogRecord> backupAction)
+        {
+            _remoteAddress = ipAddress;
+            _logService = new LogClient(ipAddress);
+            _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
+            _backupAction = backupAction;
         }
 
         public override void Log(LogLevel level, string msg, params object[] args)
@@ -35,6 +51,9 @@ namespace CoreWinSubLog
             _blockingAction.Post(logRecord);
         }
 
+        /// <summary>
+        /// Check if the WCF connection is valid.
+        /// </summary>
         public bool IsValid()
         {
             var client = _logService as ClientBase<ILogService>;
@@ -50,7 +69,15 @@ namespace CoreWinSubLog
         /// </summary>
         private void TryLog(LogRecord record)
         {
-            _logService.Log(record);
+            try
+            {
+                _logService.Log(record);
+            }
+            catch (Exception)
+            {
+                // If the garbage collection 
+                _backupAction?.Invoke(record);
+            }
         }
     }
 
