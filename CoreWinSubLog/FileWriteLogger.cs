@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,9 +18,11 @@ namespace CoreWinSubLog
         ///  Initializes an instance of the <see cref="FileWriteLogger"/>.
         /// </summary>
         /// <param name="fileWriter">the file writer class</param>
-        protected internal FileWriteLogger(string directoryPath,string modelName)
+        protected internal FileWriteLogger(string directoryPath, string modelName = null)
         {
-            TextFileReadWrite fileWriter = new TextFileReadWrite(directoryPath, modelName);
+            string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
+
+            TextFileReadWrite fileWriter = new TextFileReadWrite(directoryPath, moduleName);
             _fileWriter = fileWriter;
             _fileWriter.CheckDirectory();
             _fileWriter.CheckFile();
@@ -43,6 +46,14 @@ namespace CoreWinSubLog
             //NewOrDefualtFileByHour();
 
             _fileWriter.Write(record);
+        }
+
+        /// <summary>
+        /// Log the record.
+        /// </summary>
+        public void Log(LogRecord logRecord)
+        {
+
         }
 
         /// <summary>
@@ -110,9 +121,9 @@ namespace CoreWinSubLog
     {
         private readonly Logger _loggerImpl;
 
-        public FileWriterLogManager(string directory,string modelName)
+        public FileWriterLogManager(string directory, string modelName = null)
         {
-            _loggerImpl = new FileWriteLogger(directory,modelName);
+            _loggerImpl = new FileWriteLogger(directory, modelName);
         }
 
         protected override Logger GetLoggerImpl(string name)
