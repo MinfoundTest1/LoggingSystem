@@ -20,6 +20,7 @@ namespace LoggingSystemTest
                 LoggerTest.TestWcfLogger();
                 LoggerTest.TestLogRecordString();
                 LoggerTest.TestWriteFile();
+                //LoggerTest.TestFileOpenTime();
             }
             catch (Exception ex)
             {
