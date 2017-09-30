@@ -13,6 +13,9 @@ namespace CoreWinSubLog
     [DataContract]
     public class LogRecord
     {
+        [DataMember]
+        public int LogId { get; private set; }
+
         /// <summary>
         /// Log level
         /// </summary>
@@ -64,28 +67,39 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
+        /// Reset the log id.
+        /// </summary>
+        /// <param name="id">Log Id</param>
+        public void ResetId(int id)
+        {
+            LogId = id;
+        }
+
+        /// <summary>
         /// Get log string
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
         public static LogRecord FromString(string content)
         {
-            string[] msg = content.Split(new string[] { "] [" }, 4, StringSplitOptions.None);
-            if (msg.Count() >= 3)
+            const int len = 5;
+            string[] msg = content.Split(new string[] { "] [" }, len, StringSplitOptions.None);
+            if (msg.Count() >= len - 1)
             { 
                 LogLevel level = LogLevel.Debug;
-                Enum.TryParse(msg[0].Substring(1), out level);
+                Enum.TryParse(msg[1], out level);
 
                 DateTime dateTime;
-                DateTime.TryParseExact(msg[1], "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
-                if (msg.Length == 4)
-                {
-                    return new LogRecord(level, dateTime, msg[2], msg[3].Substring(0, msg[3].Length - 1));
-                }
-                else
-                {
-                    return new LogRecord(level, dateTime, msg[2], "");
-                }
+                DateTime.TryParseExact(msg[2], "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
+
+                string mouduleName = msg[3];
+                string message = (msg.Length == len) ? msg[4].Substring(0, msg[4].Length - 1) : "";
+
+                LogRecord logRecord = new LogRecord(level, dateTime, mouduleName, message);
+                int id = 0;
+                int.TryParse(msg[0].Substring(1), out id);
+                logRecord.LogId = id;
+                return logRecord;
             }
             else
             {
@@ -94,12 +108,12 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
-        /// Convert log record to string (DateTime ("yy-MM-dd HH:mm:ss.fff")).
+        /// Convert log record to string (DateTime ("yyyy-MM-dd HH:mm:ss.fff")).
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format($"[{Level}] [{DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture)}] [{ModuleName}] [{Message}]");
+            return string.Format($"[{LogId}] [{Level}] [{DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture)}] [{ModuleName}] [{Message}]");
         }
     }
 }
