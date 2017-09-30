@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,10 @@ namespace CoreWinSubLog
         ///  Initializes an instance of the <see cref="FileWriteLogger"/>.
         /// </summary>
         /// <param name="fileWriter">the file writer class</param>
-        protected internal FileWriteLogger(string directoryPath,string modelName)
+        protected internal FileWriteLogger(string directoryPath,string modelName=null)
         {
-            _filePathHelper = new FilePathHelper(directoryPath, modelName);
+            string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
+            _filePathHelper = new FilePathHelper(directoryPath, moduleName);
             _fileWriter = new TextFileReadWrite(_filePathHelper.FilePath);
             _blockingAction = new BlockingAction<LogRecord>(r => WriteLog(r));
         }
@@ -33,6 +35,11 @@ namespace CoreWinSubLog
         {
             string content = string.Format(NameFormatToPositionalFormat(message), args);
             LogRecord record = LogRecord.Create(level, content);
+            _blockingAction.Post(record);
+        }
+
+        public void Log(LogRecord record)
+        {
             _blockingAction.Post(record);
         }
 
