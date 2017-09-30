@@ -10,7 +10,7 @@ namespace CoreWinSubLog
     public class FileWriteLogger : Logger
     {
         private TextFileReadWrite _fileWriter;
-        private FilePathHelper _filePathHelper;
+        private IFilePathHelper _filePathHelper;
         private readonly BlockingAction<LogRecord> _blockingAction;
 
         /// <summary>
@@ -20,8 +20,8 @@ namespace CoreWinSubLog
         protected internal FileWriteLogger(string directoryPath,string modelName=null)
         {
             string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
-            _filePathHelper = new FilePathHelper(directoryPath, moduleName);
-            _fileWriter = new TextFileReadWrite(_filePathHelper.FilePath);
+            _filePathHelper = new NewFileWithSizeHelper(directoryPath, moduleName);
+            _fileWriter = new TextFileReadWrite(_filePathHelper.GetFilePath());
             _blockingAction = new BlockingAction<LogRecord>(r => WriteLog(r));
         }
 
@@ -45,8 +45,10 @@ namespace CoreWinSubLog
 
         private void WriteLog(LogRecord record)
         {
-            _filePathHelper.NewFileOrDefualt(NewFileOpations.FileSize);
-            _fileWriter.SetFilePath(_filePathHelper.FilePath);
+            if (_filePathHelper.NewFileOrDefualt())
+            {
+                _fileWriter = new TextFileReadWrite(_filePathHelper.GetFilePath());
+            }
             _fileWriter.Write(record);
         }
     }
@@ -55,9 +57,9 @@ namespace CoreWinSubLog
     {
         private readonly Logger _loggerImpl;
 
-        public FileWriterLogManager(string directory,string modelName)
+        public FileWriterLogManager(string directoryPath, string modelName=null)
         {
-            _loggerImpl = new FileWriteLogger(directory,modelName);
+            _loggerImpl = new FileWriteLogger(directoryPath, modelName);
         }
 
         protected override Logger GetLoggerImpl(string name)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoggingSystemTest
@@ -87,6 +88,16 @@ namespace LoggingSystemTest
             });
         }
 
+        public static void TestDeleteFirstLine()
+        {
+            TextFileReadWrite read = new TextFileReadWrite(@"C:\temp\LoggingSystemTest.vshost\20170930_154523_5.txt");
+            while (true)
+            {
+                Console.WriteLine(read.DeleteFirstLine().Message);
+                Thread.Sleep(TimeSpan.FromSeconds(0.5));
+            }
+
+        }
         //public static void TestFileOpenTime()
         //{
         //    string path = @"C:\temp\LoggingSystemTest.vshost\20170929{1}.txt";
@@ -100,16 +111,5 @@ namespace LoggingSystemTest
 
         //    //result:
         //}
-
-        public static void TestMinLogger()
-        {
-            LogManager.SetImplementation(new MinLoggerManager("127.0.0.1", "C:\\Temp\\Log"));
-            Logger logger = LogManager.GetLogger("");
-            Parallel.For(0, 10000, t =>
-            {
-                TestLogger(logger);
-            });
-            Console.WriteLine("Log completed.");
-        }
     }
 }
