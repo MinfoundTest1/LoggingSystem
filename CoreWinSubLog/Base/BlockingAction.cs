@@ -7,7 +7,7 @@ namespace CoreWinSubLog
     /// <summary>
     /// Class to do the <see cref="Action&lt;"/> in another task.
     /// </summary>
-    public class BlockingAction<T>
+    internal class BlockingAction<T>
     {
         // Input buffer.
         private readonly BlockingCollection<T> _blockCollection = new BlockingCollection<T>();

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks.Dataflow;
 
 namespace CoreWinSubLogService
@@ -49,6 +50,7 @@ namespace CoreWinSubLogService
         {
             CoreWinSubDataLib.LogRecord record = new CoreWinSubDataLib.LogRecord();
             record.Epoch = logRecord.DateTime;
+            record.Classification = record.Epoch.Millisecond.ToString();
             record.SubOrigin = logRecord.ModuleName;
             record.Severity = logRecord.Level.ToString();
             record.Message = logRecord.Message;

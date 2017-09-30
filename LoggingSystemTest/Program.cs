@@ -17,8 +17,8 @@ namespace LoggingSystemTest
                 //LoggerTest.TestNullLogger();
                 //Console.WriteLine();
                 //LoggerTest.TestConsoleLogger();
-                LoggerTest.TestWcfLogger();
-                LoggerTest.TestLogRecordString();
+        //        LoggerTest.TestWcfLogger();
+        //        LoggerTest.TestLogRecordString();
                 LoggerTest.TestWriteFile();
             }
             catch (Exception ex)
