@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 
 namespace CoreWinSubLog
 {
@@ -47,20 +45,7 @@ namespace CoreWinSubLog
             ModuleName = moduleName;
             Message = message;
         }
-
-        /// <summary>
-        /// Create a log record with current time and current process name.
-        /// </summary>
-        /// <param name="level">Log level</param>
-        /// <param name="message">Log message</param>
-        /// <returns></returns>
-        public static LogRecord Create(LogLevel level, string message)
-        {
-            DateTime currentTime = DateTime.Now;
-            string moduleName = Process.GetCurrentProcess().ProcessName;
-            return new LogRecord(level, currentTime, moduleName, message);
-        }
-
+       
         public static LogRecord NullRecord()
         {
             return new LogRecord(LogLevel.Debug, DateTime.MinValue, "Default", "Null");
