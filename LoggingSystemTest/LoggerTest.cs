@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -62,6 +63,7 @@ namespace LoggingSystemTest
             string directoryPath = @"C:\temp";
             LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
             Logger logger = LogManager.GetLogger("");
+            Console.WriteLine(record.ModuleName);
             for (int i = 0; i < 10000; i++)
             {
                 logger.Debug("This is a test message with {level}.", "Debug");
@@ -90,7 +92,13 @@ namespace LoggingSystemTest
 
         public static void TestDeleteFirstLine()
         {
-            TextFileReadWrite read = new TextFileReadWrite(@"C:\temp\LoggingSystemTest.vshost\20170930_154523_5.txt");
+            string path = @"C:\temp\LoggingSystemTest\20171009_102217_3.txt";
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("No File");
+                return;
+            }
+            TextFileReadWrite read = new TextFileReadWrite(path);
             while (true)
             {
                 Console.WriteLine(read.DeleteFirstLine().Message);
@@ -101,7 +109,13 @@ namespace LoggingSystemTest
 
         public static void TestReadLine()
         {
-            TextFileReadWrite read = new TextFileReadWrite(@"C:\temp\LoggingSystemTest.vshost\20170930_154523_5.txt");
+            string path = @"C:\temp\LoggingSystemTest\20171009_102217_3.txt";
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("No File");
+                return;
+            }
+            TextFileReadWrite read = new TextFileReadWrite(path);
             for (int i = 0; i < 20; i++)
             {
                 Console.WriteLine(read.ReadLine());

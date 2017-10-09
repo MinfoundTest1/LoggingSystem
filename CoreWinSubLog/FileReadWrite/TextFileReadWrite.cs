@@ -23,11 +23,7 @@ namespace CoreWinSubLog
         #endregion
 
         #region Public Function
-        /// <summary>
-        /// init the class
-        /// </summary>
-        /// <param name="pDirectoryPath">the log directory path</param>
-        /// <param name="pProcessName">the log create source process</param>
+
         public TextFileReadWrite(string pFilePath)
         {
             if (pFilePath == null)
@@ -118,15 +114,15 @@ namespace CoreWinSubLog
         {
             string message = string.Empty;
             _readAndWriterLock.EnterReadLock();
-            int _index = 0;
+            int index = 0;
             try
             {
                 using (StreamReader read = new StreamReader(_filePath))
                 {
-                    while (_index < _readLine)
+                    while (index < _readLine)
                     {
                         message = read.ReadLine();
-                        _index++;
+                        index++;
                     }
                    
                 }

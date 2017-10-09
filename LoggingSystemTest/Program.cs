@@ -1,6 +1,7 @@
 ﻿using CoreWinSubLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,11 +20,9 @@ namespace LoggingSystemTest
                 //LoggerTest.TestConsoleLogger();
                 //LoggerTest.TestWcfLogger();
                 //LoggerTest.TestLogRecordString();
-                //LoggerTest.TestWriteFile();
+                LoggerTest.TestWriteFile();
                 //LoggerTest.TestAsyWriteFile();
-                ////LoggerTest.TestFileOpenTime();
                 //LoggerTest.TestDeleteFirstLine();
-                LoggerTest.TestReadLine();
             }
             catch (Exception ex)
             {
