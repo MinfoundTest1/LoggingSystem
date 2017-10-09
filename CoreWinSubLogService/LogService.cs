@@ -20,7 +20,7 @@ namespace CoreWinSubLogService
 
         static LogRepository _logRepository = new LogRepository();
 
-        IDisposable _link;
+        static IDisposable _link;
         static readonly object _mutex = new object();
 
         public LogService()
