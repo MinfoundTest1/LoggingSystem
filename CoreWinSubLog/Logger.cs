@@ -13,7 +13,7 @@ namespace CoreWinSubLog
         /// <param name="level">Log level.</param>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
-        public abstract void Log(LogLevel level, string msg, params object[] args);
+        public abstract void Log(LogLevel level,string message, params object[] args);
 
         /// <summary>
         /// Log a debug message to the logger.
@@ -50,6 +50,7 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="msg">Log message (format string).</param>
         /// <param name="args">Log message arguments.</param>
+
         public void Error(string msg, params object[] args)
         {
             this.Log(LogLevel.Error, msg, args);

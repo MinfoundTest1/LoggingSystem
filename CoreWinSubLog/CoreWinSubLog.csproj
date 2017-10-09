@@ -32,7 +32,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.8.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,12 +52,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BlockingAction.cs" />
     <Compile Include="Desktop\ConsoleLogger.cs" />
+    <Compile Include="Desktop\MinLogger.cs" />
+    <Compile Include="FileReadWrite\FileWriteLogger.cs" />
+    <Compile Include="FileReadWrite\FilePathHelper.cs" />
+    <Compile Include="FileReadWrite\NewFileWithSizeHelper.cs" />
+    <Compile Include="FileReadWrite\NewFileWithTimeHelper.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="LogManager.cs" />
+    <Compile Include="LogRecord.cs" />
+    <Compile Include="LogRecordFactory.cs" />
+    <Compile Include="LogService\ILogService.cs" />
+    <Compile Include="LogService\LogClient.cs" />
+    <Compile Include="LogService\LogServiceBinding.cs" />
+    <Compile Include="LogService\WcfLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FileReadWrite\TextFileReadWrite.cs" />
     <Compile Include="TextWriterLogger.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{47FF17C8-299F-4764-B131-BFD8F41E7179}</ProjectGuid>
+    <ProjectGuid>{9683E093-32AD-4876-8F60-5011CF7E12B6}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LoggingSystemTest</RootNamespace>
-    <AssemblyName>LoggingSystemTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>LoggingServiceHost</RootNamespace>
+    <AssemblyName>LoggingServiceHost</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,7 +34,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,15 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoggerTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeIt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoreWinSubLogService\CoreWinSubLogService.csproj">
+      <Project>{9b400fdb-441f-4afd-8210-13a40aa524c0}</Project>
+      <Name>CoreWinSubLogService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CoreWinSubLog\CoreWinSubLog.csproj">
       <Project>{00133e43-abb0-4987-a1e4-a241c274283f}</Project>
       <Name>CoreWinSubLog</Name>

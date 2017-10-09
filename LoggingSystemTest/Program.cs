@@ -1,8 +1,10 @@
 ﻿using CoreWinSubLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoggingSystemTest
@@ -13,10 +15,14 @@ namespace LoggingSystemTest
         {
             try
             {
-                LoggerTest.TestNullLogger();
-                Console.WriteLine();
-                LoggerTest.TestConsoleLogger();
-
+                //LoggerTest.TestNullLogger();
+                //Console.WriteLine();
+                //LoggerTest.TestConsoleLogger();
+                //LoggerTest.TestWcfLogger();
+                //LoggerTest.TestLogRecordString();
+                LoggerTest.TestWriteFile();
+                //LoggerTest.TestAsyWriteFile();
+                //LoggerTest.TestDeleteFirstLine();
             }
             catch (Exception ex)
             {
