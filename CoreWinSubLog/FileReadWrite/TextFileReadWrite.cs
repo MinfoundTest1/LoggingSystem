@@ -19,6 +19,7 @@ namespace CoreWinSubLog
         /// </summary>
         private string _filePath;
 
+        private int _readLine = 1;
         #endregion
 
         #region Public Function
@@ -57,29 +58,35 @@ namespace CoreWinSubLog
 
         }
 
-        ///// <summary>
-        ///// read a line from file
-        ///// </summary>
-        ///// <returns>string msg</returns>
-        //public string ReadLine()
-        //{
-        //    if (_filePath == null)
-        //        return string.Empty;
-        //    string message = string.Empty;
-        //    _readAndWriterLock.EnterReadLock();
-        //    try
-        //    {
-        //        using (StreamReader read = new StreamReader(_filePath))
-        //        {
-        //            message = read.ReadLine();
-        //        }
-        //    }
-        //    finally
-        //    {
-        //        _readAndWriterLock.ExitReadLock();
-        //    }
-        //    return message;
-        //}
+        /// <summary>
+        /// read a line from file
+        /// </summary>
+        /// <returns>string msg</returns>
+        public string ReadLine()
+        {
+            if (_filePath == null)
+                return string.Empty;
+            string message = string.Empty;
+            int index = 0;
+            _readAndWriterLock.EnterReadLock();
+            try
+            {
+                using (StreamReader read = new StreamReader(_filePath))
+                {
+                    while (index < _readLine)
+                    {
+                        message = read.ReadLine();
+                        index++;
+                    }
+                }
+            }
+            finally
+            {
+                _readAndWriterLock.ExitReadLock();
+            }
+            _readLine++;
+            return message;
+        }
 
         /// <summary>
         /// read the all text in file
@@ -103,28 +110,35 @@ namespace CoreWinSubLog
             return message;
         }
 
-        ///// <summary>
-        ///// read a line from file
-        ///// </summary>
-        ///// <returns>logrecoder msg</returns>
-        //public LogRecord ReadLogRecordLine()
-        //{
-        //    string message = string.Empty;
-        //    _readAndWriterLock.EnterReadLock();
-        //    try
-        //    {
-        //        using (StreamReader read = new StreamReader(_filePath))
-        //        {
-        //            message = read.ReadLine();
-        //        }
-        //    }
-        //    finally
-        //    {
-        //        _readAndWriterLock.ExitReadLock();
-        //    }
-        //    LogRecord recoder = LogRecord.FromString(message);
-        //    return recoder;
-        //}
+        /// <summary>
+        /// read a line from file
+        /// </summary>
+        /// <returns>logrecoder msg</returns>
+        public LogRecord ReadLogRecordLine()
+        {
+            string message = string.Empty;
+            _readAndWriterLock.EnterReadLock();
+            int _index = 0;
+            try
+            {
+                using (StreamReader read = new StreamReader(_filePath))
+                {
+                    while (_index < _readLine)
+                    {
+                        message = read.ReadLine();
+                        _index++;
+                    }
+                   
+                }
+            }
+            finally
+            {
+                _readAndWriterLock.ExitReadLock();
+            }
+            _readLine++;
+            LogRecord recoder = LogRecord.FromString(message);
+            return recoder;
+        }
 
         /// <summary>
         /// read all log in the file
@@ -141,6 +155,7 @@ namespace CoreWinSubLog
                     while (read.Peek() >= 0)
                     {
                         message = read.ReadLine();
+                        
                         if (message != null)
                         {
                             yield return LogRecord.FromString(message);

@@ -98,6 +98,16 @@ namespace LoggingSystemTest
             }
 
         }
+
+        public static void TestReadLine()
+        {
+            TextFileReadWrite read = new TextFileReadWrite(@"C:\temp\LoggingSystemTest.vshost\20170930_154523_5.txt");
+            for (int i = 0; i < 20; i++)
+            {
+                Console.WriteLine(read.ReadLine());
+                Thread.Sleep(TimeSpan.FromSeconds(0.5));
+            }
+        }
         //public static void TestFileOpenTime()
         //{
         //    string path = @"C:\temp\LoggingSystemTest.vshost\20170929{1}.txt";
