@@ -42,7 +42,7 @@ namespace CoreWinSubLog
         public override void Log(LogLevel level, string msg, params object[] args)
         {
             string content = string.Format(NameFormatToPositionalFormat(msg), args);
-            LogRecord record = LogRecord.Create(level, content);
+            LogRecord record = LogRecordFactory.Create(level, content);
             _blockingAction.Post(record);
         }
 

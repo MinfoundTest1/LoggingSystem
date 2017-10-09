@@ -37,9 +37,32 @@ namespace LoggingSystemTest
             });
         }
 
+        public static void TestMinLogger()
+        {
+            LogManager.SetImplementation(new MinLoggerManager("127.0.0.1", "C:\\Temp\\Log"));
+            Logger logger = LogManager.GetLogger("");
+            Parallel.For(0, 10000, t =>
+            {
+                TestLogger(logger);
+            });
+        }
+
+        public static void TestFormat()
+        {
+            Logger logger = LogManager.GetLogger("");
+
+            using (TimeIt test = new TimeIt("Fortmat 10000 times"))
+            {
+                for (int i = 0; i < 10000; i++)
+                {
+                    TestLogger(logger);
+                }
+            }
+        }
+
         public static void TestLogRecordString()
         {
-            LogRecord record = LogRecord.Create(LogLevel.Fatal, "message");
+            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
             string recordString = record.ToString();
             LogRecord r2 = LogRecord.FromString(recordString);
             Debug.Assert(r2.Level == LogLevel.Fatal);
@@ -50,16 +73,16 @@ namespace LoggingSystemTest
 
         private static void TestLogger(Logger logger)
         {
-            logger.Debug("This is a test message with {level}.", "Debug");
-            logger.Info("This is a test message with {level}.", "Info");
-            logger.Warn("This is a test message with {level}.", "Warn");
-            logger.Error("This is a test message with {level}.", "Error");
-            logger.Fatal("This is a test message with {level}.", "Fatal");
+            logger.Debug("This is a test message with {0}.", "Debug");
+            logger.Info("This is a test message with {0}.", "Info");
+            logger.Warn("This is a test message with {0}.", "Warn");
+            logger.Error("This is a test message with {0}.", "Error");
+            logger.Fatal("This is a test message with {0}.", "Fatal");
         }
 
         public static void TestWriteFile()
         {
-            LogRecord record = LogRecord.Create(LogLevel.Fatal, "message");
+            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
             string directoryPath = @"C:\temp";
             LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
             Logger logger = LogManager.GetLogger("");
@@ -76,7 +99,7 @@ namespace LoggingSystemTest
 
         public static void TestAsyWriteFile()
         {
-            LogRecord record = LogRecord.Create(LogLevel.Fatal, "message");
+            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
             string directoryPath = @"C:\temp";
             LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
             Logger logger = LogManager.GetLogger("");

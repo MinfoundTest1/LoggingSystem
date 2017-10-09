@@ -63,6 +63,7 @@
     <Compile Include="LogLevel.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="LogRecord.cs" />
+    <Compile Include="LogRecordFactory.cs" />
     <Compile Include="LogService\ILogService.cs" />
     <Compile Include="LogService\LogClient.cs" />
     <Compile Include="LogService\LogServiceBinding.cs" />
