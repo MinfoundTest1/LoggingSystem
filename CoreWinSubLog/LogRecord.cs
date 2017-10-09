@@ -85,7 +85,7 @@ namespace CoreWinSubLog
             const int len = 5;
             string[] msg = content.Split(new string[] { "] [" }, len, StringSplitOptions.None);
             if (msg.Count() >= len - 1)
-            { 
+            {
                 LogLevel level = LogLevel.Debug;
                 Enum.TryParse(msg[1], out level);
 
