@@ -6,16 +6,12 @@ namespace CoreWinSubLog
     /// <summary>
     /// Log client of WCF connection.
     /// </summary>
-    class LogClient : ClientBase<ILogService>, ILogService
+    class LogClientBase : ClientBase<ILogService>, ILogService
     {
-        public LogClient(Binding binding, string ipAddress)
-            : base(binding, new EndpointAddress(LogServiceBinding.Uri(ipAddress)))
+        public LogClientBase(Binding binding, EndpointAddress endpointAddress)
+            : base(binding, endpointAddress)
         {
         }
-
-        public LogClient(string ipAddress)
-            : this(LogServiceBinding.TcpBinding(), ipAddress)
-        { }
 
         public void Log(LogRecord logRecord)
         {
@@ -26,5 +22,29 @@ namespace CoreWinSubLog
         {
             Channel.Log(logRecords);
         }
+    }
+
+    class LogTcpClient : LogClientBase
+    {
+        public LogTcpClient(Binding binding, string ipAddress)
+            : base(binding, new EndpointAddress(LogServiceBinding.TcpUri(ipAddress)))
+        {
+        }
+
+        public LogTcpClient(string ipAddress)
+            : this(LogServiceBinding.TcpBinding(), ipAddress)
+        { }
+    }
+
+    class LogHttpClient : LogClientBase
+    {
+        public LogHttpClient(Binding binding, string ipAddress)
+            : base(binding, new EndpointAddress(LogServiceBinding.HttpUri(ipAddress)))
+        {
+        }
+
+        public LogHttpClient(string ipAddress)
+            : this(LogServiceBinding.HttpBinding(), ipAddress)
+        { }
     }
 }

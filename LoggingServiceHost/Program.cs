@@ -12,7 +12,8 @@ namespace LoggingServiceHost
             ServiceHost host = new ServiceHost(typeof(LogService));
             try
             {             
-                host.AddServiceEndpoint(typeof(ILogService), LogServiceBinding.TcpBinding(), LogServiceBinding.Uri("127.0.0.1"));
+     //           host.AddServiceEndpoint(typeof(ILogService), LogServiceBinding.TcpBinding(), LogServiceBinding.TcpUri("127.0.0.1"));
+                host.AddServiceEndpoint(typeof(ILogService), LogServiceBinding.HttpBinding(), LogServiceBinding.HttpUri("127.0.0.1"));
                 host.Open();
                 Console.WriteLine("Log service is running...");
             }

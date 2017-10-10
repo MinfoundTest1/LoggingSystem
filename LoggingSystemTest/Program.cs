@@ -20,9 +20,10 @@ namespace LoggingSystemTest
                 //LoggerTest.TestConsoleLogger();
                 //LoggerTest.TestWcfLogger();
                 //LoggerTest.TestLogRecordString();
-                LoggerTest.TestWriteFile();
+                //LoggerTest.TestWriteFile();
                 //LoggerTest.TestAsyWriteFile();
                 //LoggerTest.TestDeleteFirstLine();
+                LoggerTest.TestMinLogger();
             }
             catch (Exception ex)
             {
