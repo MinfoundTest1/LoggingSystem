@@ -12,17 +12,17 @@ namespace CoreWinSubLog
         /// <summary>
         /// the log file path
         /// </summary>
-        public string FilePath { get; set; }
+        public string FilePath { get; private set; }
 
         /// <summary>
         /// the log file path
         /// </summary>
-        public string ModelName { get; set; }
+        public string ModelName { get; protected set; }
 
         /// <summary>
         /// the log directory path
         /// </summary>
-        public string DirectoryPath { get; set; }
+        public string DirectoryPath { get; protected set; }
 
         private string _defaultDirectory = @"C:\temp";//the default directory
 
@@ -30,7 +30,7 @@ namespace CoreWinSubLog
         /// new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public abstract bool NewFileOrDefualt();
+        public abstract bool CreateNewOrDefualt();
 
         /// <summary>
         /// check the defualt directory

@@ -27,7 +27,7 @@ namespace CoreWinSubLog
         /// create new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public override bool NewFileOrDefualt()
+        public override bool CreateNewOrDefualt()
         {
             FileInfo info = new FileInfo(FilePath);
             DateTime fileTime = info.CreationTime;
