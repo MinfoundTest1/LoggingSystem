@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace CoreWinSubLog
 {
-    public class NewFileWithSizeHelper:FilePathHelper
+    public class NewFileWithSizeHelper : FilePathHelper
     {
         #region Property
         /// <summary>
         /// the log file path
         /// </summary>
-        private double _maxFileSize = 2;//M
+        private double _maxFileSize = 10;//M
         #endregion
 
         public NewFileWithSizeHelper(string pDirectory, string pModelName)
@@ -28,7 +28,7 @@ namespace CoreWinSubLog
         /// create new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public override bool NewFileOrDefualt()
+        public override bool CreateNewOrDefualt()
         {
             FileInfo info = new FileInfo(FilePath);
             double filesize = info.Length / 1024.00 / 1024.00;

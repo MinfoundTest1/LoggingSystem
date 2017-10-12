@@ -45,7 +45,7 @@ namespace CoreWinSubLog
 
         private void WriteLog(LogRecord record)
         {
-            if (_filePathHelper.NewFileOrDefualt())
+            if (_filePathHelper.CreateNewOrDefualt())
             {
                 _fileWriter = new TextFileReadWrite(_filePathHelper.FilePath);
             }
