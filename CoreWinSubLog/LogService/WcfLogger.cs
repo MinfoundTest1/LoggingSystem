@@ -30,12 +30,10 @@ namespace CoreWinSubLog
         /// Initializes an instance with given WCF service ip, and a back-up action for the logs when WCF connection is broken.
         /// </summary>
         /// <param name="ipAddress">WCF service ip Address</param>
-        /// <param name="backupAction">Action for the logs don't pass the conenction</param>
+        /// <param name="backupAction">Action for the logs which don't pass the conenction</param>
         internal WcfLogger(string ipAddress, Action<LogRecord> backupAction)
+            : this(ipAddress)
         {
-            _remoteAddress = ipAddress;
-            _logService = new LogHttpClient(ipAddress);
-            _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
             _backupAction = backupAction;
         }
 

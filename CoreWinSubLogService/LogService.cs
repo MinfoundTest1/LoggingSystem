@@ -46,6 +46,9 @@ namespace CoreWinSubLogService
             _actionBlock.Post(logRecords.Select(r => Transform(r)).ToArray());               
         }
 
+        /// <summary>
+        /// Translate the CoreWinSubLog.LogRecord to CoreWinSubDataLib.LogRecord.
+        /// </summary>
         private CoreWinSubDataLib.LogRecord Transform(LogRecord logRecord)
         {
             CoreWinSubDataLib.LogRecord record = new CoreWinSubDataLib.LogRecord();
