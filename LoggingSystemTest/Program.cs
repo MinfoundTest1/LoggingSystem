@@ -22,11 +22,8 @@ namespace LoggingSystemTest
                 //LoggerTest.TestLogRecordString();
                 //LoggerTest.TestWriteFile();
                 //LoggerTest.TestAsyWriteFile();
-                //LoggerTest.TestDeleteFirstLine();
-                //LoggerTest.TestMinLogger();
-                //LoggerTest.TestInsertIntoSql();
-                //LoggerTest.TestWcfLoggerClient();
-                LoggerTest.TestReadAllFile();
+                //LoggerTest.TestDeleteFirstLine();s
+
             }
             catch (Exception ex)
             {

@@ -22,7 +22,7 @@ namespace CoreWinSubLog
         public WcfLogger(string ipAddress)
         {
             _remoteAddress = ipAddress;
-            _logService = new LogClient(ipAddress);
+            _logService = new LogHttpClient(ipAddress);
             _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
         }
 
@@ -34,7 +34,7 @@ namespace CoreWinSubLog
         internal WcfLogger(string ipAddress, Action<LogRecord> backupAction)
         {
             _remoteAddress = ipAddress;
-            _logService = new LogClient(ipAddress);
+            _logService = new LogHttpClient(ipAddress);
             _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
             _backupAction = backupAction;
         }
@@ -59,7 +59,7 @@ namespace CoreWinSubLog
             var client = _logService as ClientBase<ILogService>;
             if (client != null)
             {
-                return (client.State != CommunicationState.Closed) && (client.State != CommunicationState.Faulted) && (client.State != CommunicationState.Closing);
+                return (client.State != CommunicationState.Closed) && (client.State != CommunicationState.Faulted);
             }
             return false;
         }
@@ -73,7 +73,19 @@ namespace CoreWinSubLog
             {
                 _logService.Log(record);
             }
-            catch (Exception)
+            catch (CommunicationException)
+            {
+                var client = _logService as ClientBase<ILogService>;
+                if (client != null)
+                {
+                    lock (client)
+                    {
+                        client.Close();
+                    }
+                }
+            }
+            catch (Exception) { }
+            finally
             {
                 // If the garbage collection 
                 _backupAction?.Invoke(record);
