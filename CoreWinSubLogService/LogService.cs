@@ -38,6 +38,10 @@ namespace CoreWinSubLogService
 
         public void Log(LogRecord logRecord)
         {
+            if (logRecord.IsNull())
+            {
+                Console.WriteLine("Null record got.");
+            }
             _batchBlock.Post(Transform(logRecord));
         }
 

@@ -52,7 +52,7 @@ namespace LoggingSystemTest
         {
             LogManager.SetImplementation(new MinLoggerManager("127.0.0.1", "C:\\Temp\\Log"));
             Logger logger = LogManager.GetLogger("");
-            Parallel.For(0, 2000, t =>
+            Parallel.For(0, 20000, t =>
             {
                 TestLogger(logger);
             });

@@ -12,31 +12,31 @@ namespace CoreWinSubLog
     public class LogRecord
     {
         [DataMember]
-        public int LogId { get; private set; }
+        public int LogId { get; protected set; }
 
         /// <summary>
         /// Log level
         /// </summary>
         [DataMember]
-        public LogLevel Level { get; private set; }
+        public LogLevel Level { get; protected set; }
 
         /// <summary>
         /// DateTime when log create
         /// </summary>
         [DataMember]
-        public DateTime DateTime { get; private set; }
+        public DateTime DateTime { get; protected set; }
 
         /// <summary>
         /// Name of module (Process) 
         /// </summary>
         [DataMember]
-        public string ModuleName { get; private set; }
+        public string ModuleName { get; protected set; }
 
         /// <summary>
         /// Message
         /// </summary>
         [DataMember]
-        public string Message { get; private set; }
+        public string Message { get; protected set; }
 
         public LogRecord(LogLevel level, DateTime dateTime, string moduleName, string message)
         {
@@ -45,10 +45,23 @@ namespace CoreWinSubLog
             ModuleName = moduleName;
             Message = message;
         }
-       
+
+        /// <summary>
+        /// Get the null record.
+        /// </summary>
+        /// <returns>Default log record</returns>
         public static LogRecord NullRecord()
         {
-            return new LogRecord(LogLevel.Debug, DateTime.MinValue, "Default", "Null");
+            return new LogRecord(LogLevel.Debug, DateTime.MinValue, "Null", "Null");
+        }
+       
+        /// <summary>
+        /// Check if this log record is null record.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsNull()
+        {
+            return (DateTime == DateTime.MinValue) && (ModuleName == "Null");
         }
 
         /// <summary>
