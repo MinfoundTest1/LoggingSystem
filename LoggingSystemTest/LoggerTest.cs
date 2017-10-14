@@ -222,6 +222,28 @@ namespace LoggingSystemTest
             return record;
         }
 
+        public static void TestReadLogFromSql()
+        {
+            LogRepository _logRepository = new LogRepository();
+            Console.WriteLine("正在读取……");
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            CoreWinSubDataLib.LogRecord[] records = _logRepository.QueryLogWithLimit(0,300000);
+            watch.Stop();
+            Console.WriteLine("cout:" + records.Count() + "Time:" + watch.ElapsedMilliseconds);
+        }
+
+        public static void TestWcfReadLogger()
+        {
+
+            //LogManager.SetImplementation(new WcfLoggerManager("127.0.0.1"));
+            Console.WriteLine("正在读取……");
+            WcfLogger logger = new WcfLogger("127.0.0.1");
+            LogRecord [] records= logger.QueryLogWithLimit(0,250000);
+            Console.WriteLine(records.Count());
+
+        }
+
         //public static void TestFileOpenTime()
         //{
         //    string path = @"C:\temp\LoggingSystemTest.vshost\20170929{1}.txt";

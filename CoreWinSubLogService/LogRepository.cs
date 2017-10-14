@@ -26,7 +26,10 @@ namespace CoreWinSubLogService
             _loggerMySqlProxy.InsertLog(records.ToList());
         }
 
-
+        public LogRecord[] QueryLogWithLimit(int offset, int count)
+        {
+            return _loggerMySqlProxy.QueryLogWithLimit(offset, count);
+        }
         LoggerMySqlProxy _loggerMySqlProxy;
 
         private LoggerMySqlProxy GetOrCreateMySqlProxy()

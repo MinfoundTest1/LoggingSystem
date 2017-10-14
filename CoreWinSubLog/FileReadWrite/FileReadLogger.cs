@@ -8,88 +8,94 @@ using System.Threading.Tasks;
 
 namespace CoreWinSubLog
 {
-    public  class FileReadLogger
+    public class FileReadLogger
     {
-        //private TextFileReadWrite _fileReader;
+        private TextFileReadWrite _fileReader;
 
-        //public string DirectoryPath { private set; get; }
+        public string DirectoryPath { private set; get; }
 
-        //private int _fileIndex = 0;
-        //public FileReadLogger(string pDirectory, string modelName = null)
-        //{
-        //    DirectoryPath = CheckDirectoryPath(pDirectory, modelName);
-        //}
+        private int _fileIndex = 0;
 
-        //private string CheckDirectoryPath(string pDirectory, string modelName)
-        //{
-        //    if (pDirectory == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(pDirectory));
-        //    }
+        public FileReadLogger(string directoryName, string modelName = null)
+        {
+            DirectoryPath = CheckDirectoryPath(directoryName, modelName);
+        }
 
-        //    string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
+        private string CheckDirectoryPath(string pDirectory, string modelName)
+        {
+            if (pDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(pDirectory));
+            }
 
-        //    if (!pDirectory.EndsWith(moduleName))
-        //    {
-        //        pDirectory = Path.Combine(pDirectory, moduleName);
-        //    }
+            string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
 
-        //    if (!Directory.Exists(pDirectory))
-        //    {
-        //        throw new DirectoryNotFoundException(pDirectory);
-        //    }
+            if (!pDirectory.EndsWith(moduleName))
+            {
+                pDirectory = Path.Combine(pDirectory, moduleName);
+            }
 
-        //    return pDirectory;
-        //}
+            if (!Directory.Exists(pDirectory))
+            {
+                throw new DirectoryNotFoundException(pDirectory);
+            }
 
-        //public string ReadLine()
-        //{
-        //    string[] files = Directory.GetFiles(DirectoryPath);
-        //    if (files.Count() == 0)
-        //    {
-        //        return string.Empty;
-        //    }
-        //    string filePath = files[_fileIndex];
-        //    if (_fileReader.FilePath != filePath)
-        //    {
-        //        _fileReader = new TextFileReadWrite(filePath);
-        //    }
-        //    string message = string.Empty;
-        //    bool isReadEnd = _fileReader.ReadLine(ref message);
-        //    if (isReadEnd)
-        //    {
-        //        _fileIndex++;
-        //        if (_fileIndex >= files.Count())
-        //        {
-        //            _fileIndex = 0;
-        //        }
-        //    }
-        //    return message;
-        //}
+            return pDirectory;
+        }
 
-        ////public IEnumerable<LogRecord> ReadAllFileRecord()
-        ////{
-        ////    string[] files = Directory.GetFiles(DirectoryPath);
-        ////    List<LogRecord> records = new List<LogRecord>();
-        ////    foreach (string item in files)
-        ////    {
-        ////        _fileReader = new TextFileReadWrite(item);
-        ////        records.AddRange(_fileReader.ReadAllRecord());
-        ////    }
-        ////    return records;
-        ////}
+        public string ReadLine()
+        {
+            string[] files = Directory.GetFiles(DirectoryPath);
+            if (files.Count() == 0)
+            {
+                return string.Empty;
+            }
+            string filePath = files[_fileIndex];
+            if (_fileReader.FilePath != filePath)
+            {
+                _fileReader = new TextFileReadWrite(filePath);
+            }
+            string message = string.Empty;
+            bool isReadEnd = _fileReader.ReadLine(ref message);
+            if (isReadEnd)
+            {
+                _fileIndex++;
+                if (_fileIndex >= files.Count())
+                {
+                    _fileIndex = 0;
+                }
+            }
+            return message;
+        }
 
-        //public void ReadAllFileRecord(ref List<LogRecord> records)
-        //{
-        //    records = records ?? new List<LogRecord>();
-        //    string[] files = Directory.GetFiles(DirectoryPath);
-        //    foreach (string item in files)
-        //    {
-        //        _fileReader = new TextFileReadWrite(item);
-        //        records.AddRange(_fileReader.ReadAllRecord());
-        //    }
-        //}
+        public void ReadAllFileRecord(ref List<LogRecord> records)
+        {
+            records = records ?? new List<LogRecord>();
+            string[] files = Directory.GetFiles(DirectoryPath);
+            foreach (string item in files)
+            {
+                _fileReader = new TextFileReadWrite(item);
+                records.AddRange(_fileReader.ReadAllRecord());
+            }
+        }
 
+        public IEnumerable<LogRecord> ReadLogWithLimit(int offset, int count)
+        {
+            LogRecord[] record = { };
+            while (count > 0)
+            {
+                string message = ReadLine();
+                if (offset <= 0)
+                {
+                    yield return LogRecord.FromString(message);
+                    count--;
+                }
+                else
+                {
+                    offset--;
+                }
+            }
+        }
 
     }
 }
