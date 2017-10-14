@@ -38,6 +38,10 @@ namespace CoreWinSubLogService
 
         public void Log(LogRecord logRecord)
         {
+            if (logRecord.IsNull())
+            {
+                Console.WriteLine("Null record got.");
+            }
             _batchBlock.Post(Transform(logRecord));
         }
 
@@ -46,6 +50,9 @@ namespace CoreWinSubLogService
             _actionBlock.Post(logRecords.Select(r => Transform(r)).ToArray());               
         }
 
+        /// <summary>
+        /// Translate the CoreWinSubLog.LogRecord to CoreWinSubDataLib.LogRecord.
+        /// </summary>
         private CoreWinSubDataLib.LogRecord Transform(LogRecord logRecord)
         {
             CoreWinSubDataLib.LogRecord record = new CoreWinSubDataLib.LogRecord();

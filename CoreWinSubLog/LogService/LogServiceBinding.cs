@@ -33,6 +33,10 @@ namespace CoreWinSubLog
             return myBinding;
         }
 
+        /// <summary>
+        /// Http binding for WCF service.
+        /// </summary>
+        /// <returns></returns>
         public static NetHttpBinding HttpBinding()
         {
             NetHttpBinding myBinding = new NetHttpBinding(BasicHttpSecurityMode.None);
@@ -53,15 +57,20 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
-        /// WCF service remote address.
+        /// WCF service remote address which is tcp connection.
         /// </summary>
         /// <param name="ipAddress">Host ip address</param>
-        /// <returns></returns>
+        /// <returns>Tcp Uri</returns>
         public static Uri TcpUri(string ipAddress)
         {
             return new Uri("net.tcp://" + ipAddress + ":8202/LogbookService"); 
         }
 
+        /// <summary>
+        /// WCF service remote address which is http connection.
+        /// </summary>
+        /// <param name="ipAddress">Host ip address</param>
+        /// <returns>Http uri</returns>
         public static Uri HttpUri(string ipAddress)
         {
             return new Uri("http://" + ipAddress + ":8200/LogbookService");

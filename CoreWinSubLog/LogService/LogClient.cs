@@ -26,6 +26,9 @@ namespace CoreWinSubLog
         }
     }
 
+    /// <summary>
+    /// Log client of WCF with Tcp connection.
+    /// </summary>
     class LogTcpClient : LogClientBase
     {
         public LogTcpClient(Binding binding, string ipAddress)
@@ -38,6 +41,9 @@ namespace CoreWinSubLog
         { }
     }
 
+    /// <summary>
+    /// Log client of WCF with Http connection.
+    /// </summary>
     class LogHttpClient : LogClientBase
     {
         public LogHttpClient(Binding binding, string ipAddress)

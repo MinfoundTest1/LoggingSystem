@@ -22,6 +22,5 @@ namespace CoreWinSubLog
             DateTime currentTime = DateTime.Now;
             return new LogRecord(level, currentTime, ModuleName, message);
         }
-
     }
 }
