@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 
 namespace CoreWinSubLog
@@ -21,6 +22,7 @@ namespace CoreWinSubLog
         public void Log(LogRecord[] logRecords)
         {
             Channel.Log(logRecords);
+         
         }
     }
 

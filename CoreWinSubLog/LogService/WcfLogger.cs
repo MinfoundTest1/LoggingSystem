@@ -54,7 +54,6 @@ namespace CoreWinSubLog
         {
             _blockingAction.Post(logRecord);
         }
-
         /// <summary>
         /// Check if the WCF connection is valid.
         /// </summary>
