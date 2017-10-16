@@ -10,31 +10,12 @@ using System.Threading.Tasks.Dataflow;
 
 namespace CoreWinSubLogService
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Reentrant, UseSynchronizationContext = false)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     public class LogService : ILogService
     {
-        // Batch block to batch the records and then insert to database.
-        static BatchBlock<CoreWinSubDataLib.LogRecord> _batchBlock;
         // Action block to save the record array to database.
-        static ActionBlock<CoreWinSubDataLib.LogRecord[]> _actionBlock = new ActionBlock<CoreWinSubDataLib.LogRecord[]>(t => _logRepository.Save(t));
-
+        static ActionBlock<CoreWinSubDataLib.LogRecord> _actionBlock = new ActionBlock<CoreWinSubDataLib.LogRecord>(t => Store(t), new ExecutionDataflowBlockOptions() { MaxDegreeOfParallelism = 1 });
         static LogRepository _logRepository = new LogRepository();
-
-        static IDisposable _link;
-        static readonly object _mutex = new object();
-
-        public LogService()
-        {
-            if (_link == null)
-            {
-                lock (_mutex)
-                {
-                    // Insert to database every 2 records.
-                    _batchBlock = new BatchBlock<CoreWinSubDataLib.LogRecord>(2);
-                    _link = _batchBlock.LinkTo(_actionBlock);
-                }
-            }
-        }
 
         public void Log(LogRecord logRecord)
         {
@@ -42,12 +23,28 @@ namespace CoreWinSubLogService
             {
                 Console.WriteLine("Null record got.");
             }
-            _batchBlock.Post(Transform(logRecord));
+            _actionBlock.Post(Transform(logRecord));
         }
 
         public void Log(LogRecord[] logRecords)
         {
-            _actionBlock.Post(logRecords.Select(r => Transform(r)).ToArray());               
+            foreach (var item in logRecords)
+            {
+                _actionBlock.Post(Transform(item));
+            }            
+        }
+
+        //static DateTime _firstTime = DateTime.MinValue;
+        //static ActionBlock<DateTime> _testBlock = new ActionBlock<DateTime>(t =>
+        //{
+        //    if (_firstTime == DateTime.MinValue)
+        //        _firstTime = t;
+        //    Console.WriteLine((t - _firstTime).Seconds);
+        //});
+        private static void Store(CoreWinSubDataLib.LogRecord logRecord)
+        {
+            _logRepository.Save(logRecord);
+  //          _testBlock.Post(DateTime.Now);
         }
 
         /// <summary>
