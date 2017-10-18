@@ -71,16 +71,18 @@ namespace LoggingSystemTest
             }
         }
 
-        public static void TestLogRecordString()
-        {
-            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
-            string recordString = record.ToString();
-            LogRecord r2 = LogRecord.FromString(recordString);
-            Debug.Assert(r2.Level == LogLevel.Fatal);
-            Debug.Assert((r2.DateTime - record.DateTime) < TimeSpan.FromSeconds(0.01));
-            Debug.Assert(r2.ModuleName == record.ModuleName);
-            Debug.Assert(r2.Message == "message");
-        }
+        //public static void TestLogRecordString()
+        //{
+        //    LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
+        //    string recordString = record.ToString();
+        //    LogRecord r2 = LogRecord.FromString(recordString);
+        //    r2.ResetModuleName(Process.GetCurrentProcess().ProcessName);
+
+        //    Debug.Assert(r2.Level == LogLevel.Fatal);
+        //    Debug.Assert((r2.DateTime - record.DateTime) < TimeSpan.FromSeconds(0.01));
+        //    Debug.Assert(r2.ModuleName == record.ModuleName);
+        //    Debug.Assert(r2.Message == "message");
+        //}
 
         private static void TestLogger(Logger logger)
         {
@@ -233,17 +235,6 @@ namespace LoggingSystemTest
             Console.WriteLine("cout:" + records.Count() + "Time:" + watch.ElapsedMilliseconds);
         }
 
-        public static void TestWcfReadLogger()
-        {
-
-            //LogManager.SetImplementation(new WcfLoggerManager("127.0.0.1"));
-            Console.WriteLine("正在读取……");
-            WcfLogger logger = new WcfLogger("127.0.0.1");
-            LogRecord [] records= logger.QueryLogWithLimit(0,250000);
-            Console.WriteLine(records.Count());
-
-        }
-
         //public static void TestFileOpenTime()
         //{
         //    string path = @"C:\temp\LoggingSystemTest.vshost\20170929{1}.txt";
@@ -256,5 +247,20 @@ namespace LoggingSystemTest
         //    Console.WriteLine(wtch.ElapsedMilliseconds);
         //    //result:
         //}
+        public static void TestBatchAction()
+        {
+            Action<int[]> action = new Action<int[]>(array =>
+            {
+                string s = string.Empty;
+                foreach (var item in array)
+                {
+                    s += $" {item}";
+                }
+                Console.WriteLine(s);
+            });
+
+            BatchAction<int> batchAction = new BatchAction<int>(action, 10);
+            batchAction.Batch(Enumerable.Range(1, 10003));
+        }
     }
 }

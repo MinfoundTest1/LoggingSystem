@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BatchAction.cs" />
     <Compile Include="Base\BlockingAction.cs" />
     <Compile Include="Desktop\ConsoleLogger.cs" />
     <Compile Include="Desktop\MinLogger.cs" />
