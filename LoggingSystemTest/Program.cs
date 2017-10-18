@@ -26,6 +26,7 @@ namespace LoggingSystemTest
                 //LoggerTest.TestDeleteFirstLine();s
                 //  LoggerTest.TestMinLogger();
                 //   LoggerTest.TestBatchAction();
+                LoggerTest.TestTextFileWrite();
 
             }
             catch (Exception ex)

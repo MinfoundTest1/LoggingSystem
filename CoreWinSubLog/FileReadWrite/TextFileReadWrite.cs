@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace CoreWinSubLog
 {
-    public class TextFileReadWrite
+    public class TextFileReadWrite : ILogTextWriter
     {
         #region property
         /// <summary>
@@ -34,24 +34,73 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
-        /// write the logrecord
+        /// Write the module information in first line. Do nothing if there is already module name in the file.
+        /// If only logs without module name, the log records will be lost after writing module name.
         /// </summary>
-        /// <param name="recoder">log recod</param>
-        public void Write(LogRecord recoder)
+        /// <param name="moduleName"></param>
+        public void WriteModuleName(string moduleName)
+        {
+            if (HasModuleName() == false)
+            {
+                _readAndWriterLock.EnterWriteLock();
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(FilePath))
+                    {
+                        writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                        writer.WriteLine(moduleName);
+                    }
+                }
+                finally
+                {
+                    _readAndWriterLock.ExitWriteLock();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Write a log record to the end of text file, which is a string line in text file.
+        /// </summary>
+        /// <param name="record">log recod</param>
+        public void WriteLogLine(LogRecord record)
         {
             _readAndWriterLock.EnterWriteLock();
             try
             {
                 using (StreamWriter writer = new StreamWriter(FilePath, true))
                 {
-                    writer.WriteLine(recoder.ToString());
+                    writer.WriteLine(record.ToString());
                 }
             }
             finally
             {
                 _readAndWriterLock.ExitWriteLock();
             }
+        }
 
+        private bool HasModuleName()
+        {
+            bool result = false;
+            _readAndWriterLock.EnterReadLock();
+            try
+            {
+                using (StreamReader reader = new StreamReader(FilePath))
+                {
+                    if (reader.Peek() >= 0)
+                    {
+                        string firstLine = reader.ReadLine();
+                        if (firstLine.Contains(" ") == false)
+                        {
+                            result = true;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _readAndWriterLock.ExitReadLock();
+            }
+            return result;
         }
 
         /// <summary>

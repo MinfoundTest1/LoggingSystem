@@ -262,5 +262,29 @@ namespace LoggingSystemTest
             BatchAction<int> batchAction = new BatchAction<int>(action, 10);
             batchAction.Batch(Enumerable.Range(1, 10003));
         }
+
+        public static void TestTextFileWrite()
+        {
+            string filename = "C:\\Temp\\Log\\1.txt";
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            using (File.Create(filename))
+            { }
+            
+            TextFileReadWrite textFileReadWrite = new TextFileReadWrite(filename);
+            //// Write module name 10 times. The result should be only one module name.
+            //Enumerable.Range(0, 10).ToList().ForEach(i => textFileReadWrite.WriteModuleName(Process.GetCurrentProcess().ProcessName));
+
+            Parallel.ForEach(Enumerable.Range(0, 10), i =>
+            {
+                LogRecord recordFatal = LogRecordFactory.Create(LogLevel.Fatal, $"{Task.CurrentId} wirte this is a test message {i} with Fatal");
+                textFileReadWrite.WriteLogLine(recordFatal);
+            });
+
+            // Write module name 10 times after the log records inserted. 
+            Enumerable.Range(0, 10).ToList().ForEach(i => textFileReadWrite.WriteModuleName(Process.GetCurrentProcess().ProcessName));
+        }
     }
 }
