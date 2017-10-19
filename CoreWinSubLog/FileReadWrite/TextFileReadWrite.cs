@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,13 @@ namespace CoreWinSubLog
         /// <summary>
         /// the read and writer lock
         /// </summary>
-        private static ReaderWriterLockSlim _readAndWriterLock = new ReaderWriterLockSlim();
+        private static readonly  ReaderWriterLockSlim _readAndWriterLock = new ReaderWriterLockSlim();
         /// <summary>
         /// the log file path
         /// </summary>
         public string FilePath { get; private set; }
+
+        private string _moduleName = string.Empty;
 
         private int _readLine = 1;
         #endregion
@@ -218,7 +221,7 @@ namespace CoreWinSubLog
                 _readAndWriterLock.ExitReadLock();
             }
             _readLine++;
-            LogRecord recoder = LogRecord.FromString(message);
+            LogRecord recoder = FromString(message);
             return recoder;
         }
 
@@ -249,7 +252,7 @@ namespace CoreWinSubLog
                 _readAndWriterLock.ExitReadLock();
             }
             _readLine++;
-            reocrd = LogRecord.FromString(message);
+            reocrd = FromString(message);
             return isReadEnd;
         }
 
@@ -271,7 +274,15 @@ namespace CoreWinSubLog
                         
                         if (message != null)
                         {
-                            yield return LogRecord.FromString(message);
+                            if (message.Contains(" "))
+                            {
+                                yield return FromString(message);
+                            }
+                            else
+                            {
+                                _moduleName = message;
+                            }
+                           
                         }
                     }
                 }
@@ -298,7 +309,7 @@ namespace CoreWinSubLog
                 {
                     if (allTexts.Count > 0)
                     {
-                        record = LogRecord.FromString(allTexts[0]);
+                        record = FromString(allTexts[0]);
                         allTexts.RemoveAt(0);
                         File.WriteAllLines(FilePath, allTexts.ToArray());
                     }
@@ -323,6 +334,42 @@ namespace CoreWinSubLog
         {
             List<LogRecord> records = ReadAllRecord() as List<LogRecord>;
             return records.Count();
+        }
+
+        /// <summary>
+        /// Get a log record form given string
+        /// </summary>
+        /// <param name="content">string matched to a log record</param>
+        /// <returns></returns>
+        private LogRecord FromString(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+            {
+                return null;
+            }
+            if (content.Length < 24)
+                return null;
+            string timeString = content.Substring(0, 23);
+            DateTime dateTime;
+            DateTime.TryParseExact(timeString, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
+
+            string otherString = content.Substring(24);
+
+            LogLevel logLevel = LogLevel.Info;
+            string theMessage = string.Empty;
+            if (otherString.StartsWith("["))
+            {
+                string[] msgs = otherString.Split(new string[] { " " }, 2, StringSplitOptions.None);
+                string levelString = msgs[0].TrimStart('[').TrimEnd(']');
+                Enum.TryParse(levelString, out logLevel);
+                theMessage = msgs[1];
+            }
+            else
+            {
+                theMessage = otherString;
+            }
+
+            return new LogRecord(logLevel, dateTime, _moduleName, theMessage);
         }
 
         #endregion

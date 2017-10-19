@@ -169,52 +169,48 @@ namespace LoggingSystemTest
           
         }
 
-        public static void TestReadMuiltFile()
-        {
-            FileReadLogger reader = new FileReadLogger(@"C:\temp\Log");
-            List<LogRecord> records = new List<LogRecord>();
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            reader.ReadAllFileRecord(ref records);
-            watch.Stop();
-            Console.WriteLine("共有数据{0}条  共耗时{1}",records.Count(),watch.ElapsedMilliseconds);
-        }
+        //public static void TestReadMuiltFile()
+        //{
+        //    LogFileReader reader = new LogFileReader(@"C:\temp\Log");
+        //    List<LogRecord> records = new List<LogRecord>();
+        //    Stopwatch watch = new Stopwatch();
+        //    watch.Start();
+        //    reader.ReadAllFileRecord(ref records);
+        //    watch.Stop();
+        //    Console.WriteLine("共有数据{0}条  共耗时{1}",records.Count(),watch.ElapsedMilliseconds);
+        //}
 
         public static void TestReadLine()
         {
-            string path = @"C:\temp\LoggingSystemTest\20171009_165554_1.txt";
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("No File");
-                return;
-            }
-            TextFileReadWrite read = new TextFileReadWrite(path);
-            string message = string.Empty;
-            bool isend = false;
-            do
-            {
-                isend = read.ReadLine(ref message);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(message);
-            }
-            while (!isend);
-            Console.WriteLine("End");
-        }
-
-        public static void TestQuerySelect()
-        {
-            FileReadLogger reader = new FileReadLogger(@"C:\temp");
-            List<LogRecord> records = new List<LogRecord>();
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            reader.ReadAllFileRecord(ref records);
-            List<LogRecord> results = new List<LogRecord>();
-            //results = records.Where(s => s.ModuleName == "LoggingSystemTest").ToList();
-            //results = records.Where(s => s.Level == LogLevel.Debug).ToList();
-            //results = records.Where(s => s.DateTime.Year == 2017 && s.DateTime.Month == 10 && s.DateTime.Day == 9).ToList();
+            string path = @"C:\temp\LoggingSystemTest";
+            if (!Directory.Exists(path))
+            {
+                Console.WriteLine("No Dir");
+                return;
+            }
+            ILogTextReader reader = new LogTextReader(path);
+            List<LogRecord> records = reader.ReadAllLogRecords() as List<LogRecord>;
+            //reader.ReadAllLogRecords();
             watch.Stop();
-            Console.WriteLine("查询到的数据量：{0},共耗时{1}",results.Count(),watch.ElapsedMilliseconds);
+            Console.WriteLine("已读完，数量：{0},时间：{1}", records.Count(),watch.ElapsedMilliseconds);
         }
+
+        //public static void TestQuerySelect()
+        //{
+        //    LogFileReader reader = new LogFileReader(@"C:\temp");
+        //    List<LogRecord> records = new List<LogRecord>();
+        //    Stopwatch watch = new Stopwatch();
+        //    watch.Start();
+        //    reader.ReadAllFileRecord(ref records);
+        //    List<LogRecord> results = new List<LogRecord>();
+        //    //results = records.Where(s => s.ModuleName == "LoggingSystemTest").ToList();
+        //    //results = records.Where(s => s.Level == LogLevel.Debug).ToList();
+        //    //results = records.Where(s => s.DateTime.Year == 2017 && s.DateTime.Month == 10 && s.DateTime.Day == 9).ToList();
+        //    watch.Stop();
+        //    Console.WriteLine("查询到的数据量：{0},共耗时{1}",results.Count(),watch.ElapsedMilliseconds);
+        //}
 
 
         public static void TestInsertIntoSql()

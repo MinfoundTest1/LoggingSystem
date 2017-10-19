@@ -56,7 +56,7 @@
     <Compile Include="Base\BlockingAction.cs" />
     <Compile Include="Desktop\ConsoleLogger.cs" />
     <Compile Include="Desktop\MinLogger.cs" />
-    <Compile Include="FileReadWrite\FileReadLogger.cs" />
+    <Compile Include="FileReadWrite\LogFileReader.cs" />
     <Compile Include="FileReadWrite\FileWriteLogger.cs" />
     <Compile Include="FileReadWrite\FilePathHelper.cs" />
     <Compile Include="FileReadWrite\ILogTextReader.cs" />
