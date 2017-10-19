@@ -93,7 +93,7 @@ namespace LoggingSystemTest
             logger.Fatal("This is a test message with {0}.", "Fatal");
         }
 
-        public static void TestWriteFile()
+        public static void TestFileWriteLogger()
         {
             
             LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");

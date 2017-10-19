@@ -28,7 +28,7 @@ namespace CoreWinSubLog
         public WcfLogger(string ipAddress)
         {
             _remoteAddress = ipAddress;
-            _logService = new LogHttpClient(ipAddress);
+            _logService = CreateLogClient();
             _blockingAction = new BlockingAction<LogRecord>(r => TryLog(r));
         }
 
@@ -65,6 +65,15 @@ namespace CoreWinSubLog
                 return (client.State != CommunicationState.Closed) && (client.State != CommunicationState.Faulted);
             }
             return false;
+        }
+
+        /// <summary>
+        /// Create the client of log service.
+        /// </summary>
+        /// <returns></returns>
+        private ILogService CreateLogClient()
+        {
+            return new LogTcpClient(_remoteAddress);
         }
 
         /// <summary>
@@ -124,7 +133,7 @@ namespace CoreWinSubLog
         /// <param name="o"></param>
         private void tryReconnect(object o)
         {
-            var client = new LogHttpClient(_remoteAddress);
+            var client = CreateLogClient();
             try
             {
                 Console.WriteLine("Timer is running...");
