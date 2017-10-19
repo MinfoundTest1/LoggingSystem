@@ -288,8 +288,8 @@ namespace CoreWinSubLog
         /// <returns>the first record</returns>
         public LogRecord DeleteFirstLine()
         {
-            _readAndWriterLock.EnterUpgradeableReadLock();
             LogRecord record = null;
+            _readAndWriterLock.EnterUpgradeableReadLock();
             try
             {
                 List<string> allTexts = File.ReadAllLines(FilePath).ToList();

@@ -12,40 +12,35 @@ namespace CoreWinSubLog
     {
         private TextFileReadWrite _fileReader;
 
-        public string DirectoryPath { private set; get; }
+        public string DirectoryRoot { private set; get; }
+
+        private string[] _directoryFiles = { };
 
         private int _fileIndex = 0;
 
-        public FileReadLogger(string directoryName, string modelName = null)
+        public FileReadLogger(string directoryName)
         {
-            DirectoryPath = CheckDirectoryPath(directoryName, modelName);
+             CheckDirectoryPath(directoryName);
         }
 
-        private string CheckDirectoryPath(string pDirectory, string modelName)
+        private void  CheckDirectoryPath(string pDirectory)
         {
             if (pDirectory == null)
             {
                 throw new ArgumentNullException(nameof(pDirectory));
             }
 
-            string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
-
-            if (!pDirectory.EndsWith(moduleName))
-            {
-                pDirectory = Path.Combine(pDirectory, moduleName);
-            }
-
             if (!Directory.Exists(pDirectory))
             {
                 throw new DirectoryNotFoundException(pDirectory);
             }
-
-            return pDirectory;
+            DirectoryRoot = pDirectory;
+            _directoryFiles = Directory.GetDirectories(DirectoryRoot);
         }
 
         public string ReadLine()
         {
-            string[] files = Directory.GetFiles(DirectoryPath);
+            string[] files = Directory.GetFiles(DirectoryRoot);
             if (files.Count() == 0)
             {
                 return string.Empty;
@@ -70,32 +65,39 @@ namespace CoreWinSubLog
 
         public void ReadAllFileRecord(ref List<LogRecord> records)
         {
+            if (_directoryFiles.Count() == 0)
+                return;
             records = records ?? new List<LogRecord>();
-            string[] files = Directory.GetFiles(DirectoryPath);
-            foreach (string item in files)
+            
+            foreach (string  fileDirectory in _directoryFiles)
             {
-                _fileReader = new TextFileReadWrite(item);
-                records.AddRange(_fileReader.ReadAllRecord());
+                string[] files = Directory.GetFiles(fileDirectory);
+                foreach (string item in files)
+                {
+                    _fileReader = new TextFileReadWrite(item);
+                    records.AddRange(_fileReader.ReadAllRecord());
+                }
             }
+           
         }
 
-        public IEnumerable<LogRecord> ReadLogWithLimit(int offset, int count)
-        {
-            LogRecord[] record = { };
-            while (count > 0)
-            {
-                string message = ReadLine();
-                if (offset <= 0)
-                {
-                    yield return LogRecord.FromString(message);
-                    count--;
-                }
-                else
-                {
-                    offset--;
-                }
-            }
-        }
+        //public IEnumerable<LogRecord> ReadLogWithLimit(int offset, int count)
+        //{
+        //    LogRecord[] record = { };
+        //    while (count > 0)
+        //    {
+        //        string message = ReadLine();
+        //        if (offset <= 0)
+        //        {
+        //            yield return LogRecord.FromString(message);
+        //            count--;
+        //        }
+        //        else
+        //        {
+        //            offset--;
+        //        }
+        //    }
+        //}
 
     }
 }
