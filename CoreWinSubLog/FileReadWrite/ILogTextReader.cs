@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreWinSubLog.FileReadWrite
+namespace CoreWinSubLog
 {
     /// <summary>
     /// Interface representing to read the log records from the text file. 
     /// </summary>
-    interface ILogTextReader
+    public  interface ILogTextReader
     {
         /// <summary>
         /// Get all the log records from the text file.
