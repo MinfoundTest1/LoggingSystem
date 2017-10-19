@@ -81,23 +81,23 @@ namespace CoreWinSubLog
            
         }
 
-        public IEnumerable<LogRecord> ReadLogWithLimit(int offset, int count)
-        {
-            LogRecord[] record = { };
-            while (count > 0)
-            {
-                string message = ReadLine();
-                if (offset <= 0)
-                {
-                    yield return LogRecord.FromString(message);
-                    count--;
-                }
-                else
-                {
-                    offset--;
-                }
-            }
-        }
+        //public IEnumerable<LogRecord> ReadLogWithLimit(int offset, int count)
+        //{
+        //    LogRecord[] record = { };
+        //    while (count > 0)
+        //    {
+        //        string message = ReadLine();
+        //        if (offset <= 0)
+        //        {
+        //            yield return LogRecord.FromString(message);
+        //            count--;
+        //        }
+        //        else
+        //        {
+        //            offset--;
+        //        }
+        //    }
+        //}
 
     }
 }

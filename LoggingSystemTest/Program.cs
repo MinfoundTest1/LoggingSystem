@@ -20,7 +20,7 @@ namespace LoggingSystemTest
                 Console.WriteLine();
                 LoggerTest.TestConsoleLogger();
                 LoggerTest.TestWcfLogger();
-                LoggerTest.TestLogRecordString();
+                //LoggerTest.TestLogRecordString();
                 LoggerTest.TestWriteFile();
                 LoggerTest.TestAsyWriteFile();
                 LoggerTest.TestDeleteFirstLine();

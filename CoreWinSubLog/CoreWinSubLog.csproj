@@ -52,12 +52,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BatchAction.cs" />
     <Compile Include="Base\BlockingAction.cs" />
     <Compile Include="Desktop\ConsoleLogger.cs" />
     <Compile Include="Desktop\MinLogger.cs" />
     <Compile Include="FileReadWrite\FileReadLogger.cs" />
     <Compile Include="FileReadWrite\FileWriteLogger.cs" />
     <Compile Include="FileReadWrite\FilePathHelper.cs" />
+    <Compile Include="FileReadWrite\ILogTextReader.cs" />
+    <Compile Include="FileReadWrite\ILogTextWriter.cs" />
     <Compile Include="FileReadWrite\NewFileWithSizeHelper.cs" />
     <Compile Include="FileReadWrite\NewFileWithTimeHelper.cs" />
     <Compile Include="Logger.cs" />

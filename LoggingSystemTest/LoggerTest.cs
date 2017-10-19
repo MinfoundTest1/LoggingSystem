@@ -71,16 +71,18 @@ namespace LoggingSystemTest
             }
         }
 
-        public static void TestLogRecordString()
-        {
-            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
-            string recordString = record.ToString();
-            LogRecord r2 = LogRecord.FromString(recordString);
-            Debug.Assert(r2.Level == LogLevel.Fatal);
-            Debug.Assert((r2.DateTime - record.DateTime) < TimeSpan.FromSeconds(0.01));
-            Debug.Assert(r2.ModuleName == record.ModuleName);
-            Debug.Assert(r2.Message == "message");
-        }
+        //public static void TestLogRecordString()
+        //{
+        //    LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
+        //    string recordString = record.ToString();
+        //    LogRecord r2 = LogRecord.FromString(recordString);
+        //    r2.ResetModuleName(Process.GetCurrentProcess().ProcessName);
+
+        //    Debug.Assert(r2.Level == LogLevel.Fatal);
+        //    Debug.Assert((r2.DateTime - record.DateTime) < TimeSpan.FromSeconds(0.01));
+        //    Debug.Assert(r2.ModuleName == record.ModuleName);
+        //    Debug.Assert(r2.Message == "message");
+        //}
 
         private static void TestLogger(Logger logger)
         {
@@ -282,5 +284,44 @@ namespace LoggingSystemTest
         //    Console.WriteLine(wtch.ElapsedMilliseconds);
         //    //result:
         //}
+        public static void TestBatchAction()
+        {
+            Action<int[]> action = new Action<int[]>(array =>
+            {
+                string s = string.Empty;
+                foreach (var item in array)
+                {
+                    s += $" {item}";
+                }
+                Console.WriteLine(s);
+            });
+
+            BatchAction<int> batchAction = new BatchAction<int>(action, 10);
+            batchAction.Batch(Enumerable.Range(1, 10003));
+        }
+
+        public static void TestTextFileWrite()
+        {
+            string filename = "C:\\Temp\\Log\\1.txt";
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            using (File.Create(filename))
+            { }
+            
+            TextFileReadWrite textFileReadWrite = new TextFileReadWrite(filename);
+            //// Write module name 10 times. The result should be only one module name.
+            //Enumerable.Range(0, 10).ToList().ForEach(i => textFileReadWrite.WriteModuleName(Process.GetCurrentProcess().ProcessName));
+
+            Parallel.ForEach(Enumerable.Range(0, 10), i =>
+            {
+                LogRecord recordFatal = LogRecordFactory.Create(LogLevel.Fatal, $"{Task.CurrentId} wirte this is a test message {i} with Fatal");
+                textFileReadWrite.WriteLogLine(recordFatal);
+            });
+
+            // Write module name 10 times after the log records inserted. 
+            Enumerable.Range(0, 10).ToList().ForEach(i => textFileReadWrite.WriteModuleName(Process.GetCurrentProcess().ProcessName));
+        }
     }
 }

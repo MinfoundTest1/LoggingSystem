@@ -9,7 +9,7 @@ namespace CoreWinSubLog
 {
     public class FileWriteLogger : Logger
     {
-        private TextFileReadWrite _fileWriter;
+        private ILogTextWriter _logTextWriter;
         private FilePathHelper _filePathHelper;
         private readonly BlockingAction<LogRecord> _blockingAction;
 
@@ -21,7 +21,7 @@ namespace CoreWinSubLog
         {
             string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
             _filePathHelper = new NewFileWithSizeHelper(directoryPath, moduleName);
-            _fileWriter = new TextFileReadWrite(_filePathHelper.FilePath);
+            _logTextWriter = new TextFileReadWrite(_filePathHelper.FilePath);
             _blockingAction = new BlockingAction<LogRecord>(r => WriteLog(r));
         }
 
@@ -47,9 +47,10 @@ namespace CoreWinSubLog
         {
             if (_filePathHelper.CreateNewOrDefualt())
             {
-                _fileWriter = new TextFileReadWrite(_filePathHelper.FilePath);
+                _logTextWriter = new TextFileReadWrite(_filePathHelper.FilePath);
+                _logTextWriter.WriteModuleName(record.ModuleName);
             }
-            _fileWriter.Write(record);
+            _logTextWriter.WriteLogLine(record);
         }
     }
 
