@@ -52,7 +52,7 @@ namespace LoggingSystemTest
         {
             LogManager.SetImplementation(new MinLoggerManager("127.0.0.1", "C:\\Temp\\Log"));
             Logger logger = LogManager.GetLogger("");
-            Parallel.For(0, 20000, t =>
+            Parallel.For(0, 2000, t =>
             {
                 TestLogger(logger);
             });
@@ -167,6 +167,17 @@ namespace LoggingSystemTest
           
         }
 
+        public static void TestReadMuiltFile()
+        {
+            FileReadLogger reader = new FileReadLogger(@"C:\temp\Log");
+            List<LogRecord> records = new List<LogRecord>();
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            reader.ReadAllFileRecord(ref records);
+            watch.Stop();
+            Console.WriteLine("共有数据{0}条  共耗时{1}",records.Count(),watch.ElapsedMilliseconds);
+        }
+
         public static void TestReadLine()
         {
             string path = @"C:\temp\LoggingSystemTest\20171009_165554_1.txt";
@@ -183,31 +194,46 @@ namespace LoggingSystemTest
                 isend = read.ReadLine(ref message);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(message);
-                Thread.Sleep(TimeSpan.FromSeconds(2));
             }
             while (!isend);
             Console.WriteLine("End");
         }
 
+        public static void TestQuerySelect()
+        {
+            FileReadLogger reader = new FileReadLogger(@"C:\temp");
+            List<LogRecord> records = new List<LogRecord>();
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            reader.ReadAllFileRecord(ref records);
+            List<LogRecord> results = new List<LogRecord>();
+            //results = records.Where(s => s.ModuleName == "LoggingSystemTest").ToList();
+            //results = records.Where(s => s.Level == LogLevel.Debug).ToList();
+            //results = records.Where(s => s.DateTime.Year == 2017 && s.DateTime.Month == 10 && s.DateTime.Day == 9).ToList();
+            watch.Stop();
+            Console.WriteLine("查询到的数据量：{0},共耗时{1}",results.Count(),watch.ElapsedMilliseconds);
+        }
+
+
         public static void TestInsertIntoSql()
         {
-            LogRepository _logRepository = new LogRepository();
-            Parallel.For(0, 10000, i =>
-            {
-                LogRecord recordFatal = LogRecordFactory.Create(LogLevel.Fatal, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Fatal"));
-                _logRepository.Save(Transform(recordFatal));
+            //SqlWriteLogger write = new SqlWriteLogger();
+            //Parallel.For(0, 200000, i =>
+            //{
+            //    LogRecord recordFatal = LogRecordFactory.Create(LogLevel.Fatal, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Fatal"));
+            //    write.WriteToSql(Transform(recordFatal));
 
-                LogRecord recordDebug = LogRecordFactory.Create(LogLevel.Debug, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Debug"));
-                _logRepository.Save(Transform(recordDebug));
+            //    LogRecord recordDebug = LogRecordFactory.Create(LogLevel.Debug, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Debug"));
+            //    write.WriteToSql(Transform(recordDebug));
 
-                LogRecord recordInfo = LogRecordFactory.Create(LogLevel.Info, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Info"));
-                _logRepository.Save(Transform(recordInfo));
+            //    LogRecord recordInfo = LogRecordFactory.Create(LogLevel.Info, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Info"));
+            //    write.WriteToSql(Transform(recordInfo));
 
-                LogRecord recordWarning = LogRecordFactory.Create(LogLevel.Warning, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Warning"));
-                _logRepository.Save(Transform(recordWarning));
-            });
+            //    LogRecord recordWarning = LogRecordFactory.Create(LogLevel.Warning, string.Format("{0} wirte this is a test message with {1}", Task.CurrentId, "Warning"));
+            //    write.WriteToSql(Transform(recordWarning));
+            //});
 
-            Console.WriteLine("OK");
+            //Console.WriteLine("OK");
 
         }
 
@@ -222,27 +248,27 @@ namespace LoggingSystemTest
             return record;
         }
 
-        public static void TestReadLogFromSql()
-        {
-            LogRepository _logRepository = new LogRepository();
-            Console.WriteLine("正在读取……");
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            CoreWinSubDataLib.LogRecord[] records = _logRepository.QueryLogWithLimit(0,300000);
-            watch.Stop();
-            Console.WriteLine("cout:" + records.Count() + "Time:" + watch.ElapsedMilliseconds);
-        }
+        //public static void TestReadLogFromSql()
+        //{
+        //    LogRepository _logRepository = new LogRepository();
+        //    Console.WriteLine("正在读取……");
+        //    Stopwatch watch = new Stopwatch();
+        //    watch.Start();
+        //    CoreWinSubDataLib.LogRecord[] records = _logRepository.QueryLogWithLimit(0,300000);
+        //    watch.Stop();
+        //    Console.WriteLine("cout:" + records.Count() + "Time:" + watch.ElapsedMilliseconds);
+        //}
 
-        public static void TestWcfReadLogger()
-        {
+        //public static void TestWcfReadLogger()
+        //{
 
-            //LogManager.SetImplementation(new WcfLoggerManager("127.0.0.1"));
-            Console.WriteLine("正在读取……");
-            WcfLogger logger = new WcfLogger("127.0.0.1");
-            LogRecord [] records= logger.QueryLogWithLimit(0,250000);
-            Console.WriteLine(records.Count());
+        //    //LogManager.SetImplementation(new WcfLoggerManager("127.0.0.1"));
+        //    Console.WriteLine("正在读取……");
+        //    WcfLogger logger = new WcfLogger("127.0.0.1");
+        //    LogRecord [] records= logger.QueryLogWithLimit(0,250000);
+        //    Console.WriteLine(records.Count());
 
-        }
+        //}
 
         //public static void TestFileOpenTime()
         //{

@@ -16,16 +16,14 @@ namespace LoggingSystemTest
         {
             try
             {
-                //LoggerTest.TestNullLogger();
-                //Console.WriteLine();
-                //LoggerTest.TestConsoleLogger();
-                //LoggerTest.TestWcfLogger();
-                //LoggerTest.TestLogRecordString();
-                //LoggerTest.TestWriteFile();
-                //LoggerTest.TestAsyWriteFile();
-                //LoggerTest.TestDeleteFirstLine();s
-                LoggerTest.TestMinLogger();
-
+                LoggerTest.TestNullLogger();
+                Console.WriteLine();
+                LoggerTest.TestConsoleLogger();
+                LoggerTest.TestWcfLogger();
+                LoggerTest.TestLogRecordString();
+                LoggerTest.TestWriteFile();
+                LoggerTest.TestAsyWriteFile();
+                LoggerTest.TestDeleteFirstLine();
             }
             catch (Exception ex)
             {
