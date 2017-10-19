@@ -93,7 +93,7 @@ namespace LoggingSystemTest
             logger.Fatal("This is a test message with {0}.", "Fatal");
         }
 
-        public static void TestFileWriteLogger()
+        public static void TestWriteFile()
         {
             
             LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
@@ -318,6 +318,18 @@ namespace LoggingSystemTest
 
             // Write module name 10 times after the log records inserted. 
             Enumerable.Range(0, 10).ToList().ForEach(i => textFileReadWrite.WriteModuleName(Process.GetCurrentProcess().ProcessName));
+        }
+
+        public static void TestAutoRemoveFile()
+        {
+            string path = @"C:\temp\LoggingSystemTest.vshost";
+            if (!Directory.Exists(path))
+            {
+                Console.WriteLine("No Dir");
+                return;
+            }
+            LogAutoRemove remove = new LogAutoRemove(3,path);
+
         }
     }
 }

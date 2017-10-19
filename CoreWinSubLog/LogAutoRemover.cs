@@ -17,6 +17,7 @@ namespace CoreWinSubLog
         // Log keep days
         private readonly int _keepDays;
 
+
         /// <summary>
         /// Initialize a <see cref="LogAutoRemover"/> with given keep days.
         /// </summary>
@@ -25,6 +26,7 @@ namespace CoreWinSubLog
         {
             _keepDays = keepDays > 0 ? keepDays : 0;
             StartCleanTick();
+
         }
 
         /// <summary>
