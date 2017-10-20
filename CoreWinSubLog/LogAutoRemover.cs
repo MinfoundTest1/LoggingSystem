@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace CoreWinSubLog
 {
@@ -12,11 +8,12 @@ namespace CoreWinSubLog
     /// The logs before keep days will be removed, and
     /// the removing process is auto running every day.
     /// </summary>
-    public abstract class LogAutoRemover
+    public abstract class LogAutoRemover : IDisposable
     {
         // Log keep days
         private readonly int _keepDays;
-
+        // Timer to remove logs
+        private Timer _timer;
 
         /// <summary>
         /// Initialize a <see cref="LogAutoRemover"/> with given keep days.
@@ -25,22 +22,28 @@ namespace CoreWinSubLog
         public LogAutoRemover(int keepDays)
         {
             _keepDays = keepDays > 0 ? keepDays : 0;
-            StartCleanTick();
-
         }
 
         /// <summary>
         /// Create a timer to do the removing every 24 hours.
         /// Do once immediately.
         /// </summary>
-        private void StartCleanTick()
+        public void StartCleanTick()
         {
             // 24 hours
             int periodInMs = 24 * 60 * 60 * 1000;
             // Removing action.
             TimerCallback callback = new TimerCallback(o => RemoveLogsBefore(_keepDays));
             // Create the timer.
-            Timer timer = new Timer(callback, null, 0, periodInMs);
+            _timer = new Timer(callback, null, 0, periodInMs);
+        }
+
+        /// <summary>
+        /// Release the removing process.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            _timer.Dispose();
         }
 
         /// <summary>
