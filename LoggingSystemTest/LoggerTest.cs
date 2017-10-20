@@ -98,7 +98,7 @@ namespace LoggingSystemTest
             
             LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
             string directoryPath = @"C:\temp";
-            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
             Logger logger = LogManager.GetLogger("");
             Console.WriteLine(record.ModuleName);
             for (int i = 0; i < 40000; i++)
@@ -115,7 +115,7 @@ namespace LoggingSystemTest
         {
             LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
             string directoryPath = @"C:\temp";
-            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
             Logger logger = LogManager.GetLogger("");
             Parallel.For(0, 60000, i =>
             {
@@ -182,19 +182,19 @@ namespace LoggingSystemTest
 
         public static void TestReadLine()
         {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            string path = @"C:\temp\LoggingSystemTest";
-            if (!Directory.Exists(path))
-            {
-                Console.WriteLine("No Dir");
-                return;
-            }
-            ILogTextReader reader = new LogTextReader(path);
-            List<LogRecord> records = reader.ReadAllLogRecords() as List<LogRecord>;
-            //reader.ReadAllLogRecords();
-            watch.Stop();
-            Console.WriteLine("已读完，数量：{0},时间：{1}", records.Count(),watch.ElapsedMilliseconds);
+            //Stopwatch watch = new Stopwatch();
+            //watch.Start();
+            //string path = @"C:\temp\LoggingSystemTest";
+            //if (!Directory.Exists(path))
+            //{
+            //    Console.WriteLine("No Dir");
+            //    return;
+            //}
+            //ILogTextReader reader = new LogTextReader(path);
+            //List<LogRecord> records = reader.ReadAllLogRecords() as List<LogRecord>;
+            ////reader.ReadAllLogRecords();
+            //watch.Stop();
+            //Console.WriteLine("已读完，数量：{0},时间：{1}", records.Count(),watch.ElapsedMilliseconds);
         }
 
         //public static void TestQuerySelect()
@@ -322,13 +322,13 @@ namespace LoggingSystemTest
 
         public static void TestAutoRemoveFile()
         {
-            string path = @"C:\temp\LoggingSystemTest.vshost";
+            string path = @"C:\temp\LoggingSystemTest";
             if (!Directory.Exists(path))
             {
                 Console.WriteLine("No Dir");
                 return;
             }
-            LogAutoRemove remove = new LogAutoRemove(3,path);
+            TextLogAutoRemove remove = new TextLogAutoRemove(1, path);
 
         }
     }

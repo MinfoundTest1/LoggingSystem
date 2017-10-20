@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace CoreWinSubLog
 {
-    public class LogAutoRemove : LogAutoRemover
+    public class TextLogAutoRemove : LogAutoRemover
     {
-        private string _directoryPath;
+        private string _directoryPath;//the process log directory
 
-        public LogAutoRemove(int keepDays, string directoryPath)
+        /// <summary>
+        /// init the class
+        /// </summary>
+        /// <param name="keepDays">the log file keep days</param>
+        /// <param name="directoryPath">the process log directory, accurate to sub folder</param>
+        public TextLogAutoRemove(int keepDays, string directoryPath)
              : base(keepDays)
         {
             if (directoryPath == null)
@@ -26,14 +31,19 @@ namespace CoreWinSubLog
             _directoryPath = directoryPath;
         }
 
+        /// <summary>
+        /// remove the log before days
+        /// </summary>
+        /// <param name="daysBefore">the log file keep days</param>
         protected override void RemoveLogsBefore(int daysBefore)
         {
             string[] files = Directory.GetFiles(_directoryPath);
             foreach (string filePath in files)
             {
                 FileInfo info = new FileInfo(filePath);
-                DateTime createTime = info.CreationTime;
-                TimeSpan diffSpan = createTime.Subtract(DateTime.Now).Duration();
+                DateTime createTimeDay = new DateTime(info.CreationTime.Year, info.CreationTime.Month, info.CreationTime.Day);
+                DateTime currentDays = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                TimeSpan diffSpan = createTimeDay.Subtract(currentDays).Duration();
                 double diffDays = diffSpan.Days;
                 if (diffDays >= daysBefore)
                 {
@@ -41,5 +51,6 @@ namespace CoreWinSubLog
                 }
             }
         }
+
     }
 }

@@ -40,7 +40,7 @@ namespace CoreWinSubLog
             foreach (string item in files)
             {
                 _fileReader = new TextFileReadWrite(item);
-                records.AddRange(_fileReader.ReadAllRecord());
+                records.AddRange(_fileReader.ReadAllLogRecords());
             }
             return records;
         }

@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -56,11 +58,10 @@
     <Compile Include="Base\BlockingAction.cs" />
     <Compile Include="Desktop\ConsoleLogger.cs" />
     <Compile Include="Desktop\MinLogger.cs" />
-    <Compile Include="FileReadWrite\LogFileReader.cs" />
     <Compile Include="FileReadWrite\FileWriteLogger.cs" />
     <Compile Include="FileReadWrite\FilePathHelper.cs" />
     <Compile Include="FileReadWrite\ILogTextReader.cs" />
-    <Compile Include="LogAutoRemove.cs" />
+    <Compile Include="FileReadWrite\TextLogAutoRemove.cs" />
     <Compile Include="LogAutoRemover.cs" />
     <Compile Include="FileReadWrite\ILogTextWriter.cs" />
     <Compile Include="FileReadWrite\NewFileWithSizeHelper.cs" />

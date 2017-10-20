@@ -24,7 +24,7 @@ namespace LoggingSystemTest
                 //LoggerTest.TestWriteFile();
                 //LoggerTest.TestAsyWriteFile();
                 //LoggerTest.TestDeleteFirstLine();
-                LoggerTest.TestAutoRemoveFile();
+                LoggerTest.TestWriteFile();
             }
             catch (Exception ex)
             {

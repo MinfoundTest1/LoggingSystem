@@ -58,14 +58,17 @@ namespace CoreWinSubLog
         /// </summary>
         public void CheckFile()
         {
-            string[] files = Directory.GetFiles(DirectoryPath);
-            if (files.Count() == 0)
+            //FileInfo[] files = Directory.GetFiles(DirectoryPath);
+            DirectoryInfo dirinfo = new DirectoryInfo(DirectoryPath);
+            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
+            if (arrFi.Count() == 0)
             {
                 CreateNewFilePath();
             }
             else
             {
-                FilePath = files.Last();
+                //FilePath = files.OrderBy(s=>).Last();
+                FilePath = arrFi.OrderBy(s => s.CreationTime).Last().FullName;
             }
         }
 
@@ -76,8 +79,7 @@ namespace CoreWinSubLog
         public void CreateNewFilePath()
         {
             string[] files = Directory.GetFiles(DirectoryPath);
-            int index = files.Count() + 1;
-            string fileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + index + ".txt";
+            string fileName = ModelName + DateTime.Now.ToString("_yyyyMMdd") + ".txt";
             FilePath = Path.Combine(DirectoryPath, fileName);
             if (!File.Exists(FilePath))
             {

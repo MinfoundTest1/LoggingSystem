@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace CoreWinSubLog
 {
-    public class TextFileReadWrite : ILogTextWriter
+    public class TextFileReadWrite : ILogTextWriter, ILogTextReader
     {
         #region property
         /// <summary>
@@ -260,7 +260,7 @@ namespace CoreWinSubLog
         /// read all log in the file
         /// </summary>
         /// <returns>the all recod log</returns>
-        public IEnumerable<LogRecord> ReadAllRecord()
+        public IEnumerable<LogRecord> ReadAllLogRecords()
         {
             string message = string.Empty;
             _readAndWriterLock.EnterReadLock();
@@ -332,7 +332,7 @@ namespace CoreWinSubLog
         /// <returns>the log cout</returns>
         public double GetDefualtFileLogCout()
         {
-            List<LogRecord> records = ReadAllRecord() as List<LogRecord>;
+            List<LogRecord> records = ReadAllLogRecords() as List<LogRecord>;
             return records.Count();
         }
 

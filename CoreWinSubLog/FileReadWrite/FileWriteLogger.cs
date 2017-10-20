@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,18 +10,17 @@ namespace CoreWinSubLog
 {
     public class FileWriteLogger : Logger
     {
-        private ILogTextWriter _logTextWriter;
-        private FilePathHelper _filePathHelper;
+        private ILogTextWriter _logTextWriter;//write log
+        private FilePathHelper _filePathHelper;//create new log or defualt
         private readonly BlockingAction<LogRecord> _blockingAction;
 
         /// <summary>
         ///  Initializes an instance of the <see cref="FileWriteLogger"/>.
         /// </summary>
         /// <param name="fileWriter">the file writer class</param>
-        protected internal FileWriteLogger(string directoryPath, string modelName = null)
+        protected internal FileWriteLogger(string directoryPath)
         {
-            string moduleName = modelName ?? Process.GetCurrentProcess().ProcessName;
-            _filePathHelper = new NewFileWithSizeHelper(directoryPath, moduleName);
+            _filePathHelper = new NewFileWithTimeHelper(directoryPath);
             _logTextWriter = new TextFileReadWrite(_filePathHelper.FilePath);
             _blockingAction = new BlockingAction<LogRecord>(r => WriteLog(r));
         }
@@ -38,6 +38,10 @@ namespace CoreWinSubLog
             _blockingAction.Post(record);
         }
 
+        /// <summary>
+        /// write log
+        /// </summary>
+        /// <param name="record"></param>
         public void Log(LogRecord record)
         {
             _blockingAction.Post(record);
@@ -45,27 +49,45 @@ namespace CoreWinSubLog
 
         private void WriteLog(LogRecord record)
         {
-            if (_filePathHelper.CreateNewOrDefualt())
+            try
             {
-                _logTextWriter = new TextFileReadWrite(_filePathHelper.FilePath);
-                _logTextWriter.WriteModuleName(record.ModuleName);
+                if (_filePathHelper.CreateNewOrDefualt())
+                {
+                    _logTextWriter = new TextFileReadWrite(_filePathHelper.FilePath);
+                    _logTextWriter.WriteModuleName(record.ModuleName);
+                }
+                _logTextWriter.WriteLogLine(record);
             }
-            _logTextWriter.WriteLogLine(record);
+            catch
+            {
+                if (!File.Exists(_filePathHelper.FilePath))
+                {
+                    File.Create(_filePathHelper.FilePath);
+                }
+            }
+
         }
     }
 
-    public class FileWriterLogManager:LogManager
+    public class FileWriterLogManager : LogManager
     {
         private readonly Logger _loggerImpl;
+        private readonly LogAutoRemover _txtLogRemove;
 
-        public FileWriterLogManager(string directoryPath, string modelName=null)
+        /// <summary>
+        /// init file write manager class
+        /// </summary>
+        /// <param name="directoryPath"> the log directory accurate to sub folder</param>
+        /// <param name="keepDays">the log keep days</param>
+        public FileWriterLogManager(string directoryPath, int keepDays)
         {
-            _loggerImpl = new FileWriteLogger(directoryPath, modelName);
+            _loggerImpl = new FileWriteLogger(directoryPath);
+            _txtLogRemove = new TextLogAutoRemove(keepDays, directoryPath);
         }
 
         protected override Logger GetLoggerImpl(string name)
         {
-             return _loggerImpl;
+            return _loggerImpl;
         }
     }
 }

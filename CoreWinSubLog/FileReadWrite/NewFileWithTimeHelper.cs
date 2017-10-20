@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,12 @@ namespace CoreWinSubLog
     {
 
         #region Property
-        private double _maxFileHour = 2;//Hour
+        private double _maxFileDay = 1;//day
         #endregion
 
-        public NewFileWithTimeHelper(string pDirectory, string pModelName)
+        public NewFileWithTimeHelper(string pDirectory)
         {
-            ModelName = pModelName;
+            ModelName = Process.GetCurrentProcess().ProcessName;
             DirectoryPath = pDirectory;
             CheckDirectory();
             CheckFile();
@@ -30,10 +31,11 @@ namespace CoreWinSubLog
         public override bool CreateNewOrDefualt()
         {
             FileInfo info = new FileInfo(FilePath);
-            DateTime fileTime = info.CreationTime;
-            TimeSpan diffSpan = fileTime.Subtract(DateTime.Now).Duration();
-            double hour = diffSpan.Hours;
-            if (hour >= _maxFileHour)
+            DateTime createTimeDay = new DateTime(info.CreationTime.Year, info.CreationTime.Month, info.CreationTime.Day);
+            DateTime currentDays = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            TimeSpan diffSpan = createTimeDay.Subtract(currentDays).Duration();
+            double day = diffSpan.Days;
+            if (day >= _maxFileDay)
             {
                 CreateNewFilePath();
                 return true;
