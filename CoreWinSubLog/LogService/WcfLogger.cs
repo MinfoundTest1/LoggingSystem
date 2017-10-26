@@ -90,14 +90,15 @@ namespace CoreWinSubLog
                 var client = _logService as ClientBase<ILogService>;
                 if (client != null)
                 {
-                    lock (client)
-                    {
-                        if (client.State != CommunicationState.Closed || client.State != CommunicationState.Closing)
+                    lock (_mutex)
+                    {                       
+                        if (client.State != CommunicationState.Closing && client.State != CommunicationState.Closed)
                         {
-                            client.Close();
+                            client.Abort();
                             // Try re-connect the service.
                             AutoReconnectionAsync();
-                        }                       
+                        }
+                        _logService = null;
                     }
                 }
                 _backupAction?.Invoke(record);
