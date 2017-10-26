@@ -54,7 +54,7 @@ namespace LoggingSystemTest
             Logger logger = LogManager.GetLogger("");
             Parallel.For(0, 20000, t =>
             {
-                TestLogger(logger);
+                TestLogger(logger, t);
             });
         }
 
@@ -84,13 +84,13 @@ namespace LoggingSystemTest
         //    Debug.Assert(r2.Message == "message");
         //}
 
-        private static void TestLogger(Logger logger)
+        private static void TestLogger(Logger logger, int round = 0)
         {
-            logger.Debug("This is a test message with {0}.", "Debug");
-            logger.Info("This is a test message with {0}.", "Info");
-            logger.Warn("This is a test message with {0}.", "Warn");
-            logger.Error("This is a test message with {0}.", "Error");
-            logger.Fatal("This is a test message with {0}.", "Fatal");
+            logger.Debug("This is a test message with {0}. {i}", "Debug", round);
+            logger.Info("This is a test message with {0}. {i}", "Info", round);
+            logger.Warn("This is a test message with {0}. {i}", "Warn", round);
+            logger.Error("This is a test message with {0}. {i}", "Error", round);
+            logger.Fatal("This is a test message with {0}. {i}", "Fatal", round);
         }
 
         public static void TestWriteFile()
@@ -328,7 +328,7 @@ namespace LoggingSystemTest
                 Console.WriteLine("No Dir");
                 return;
             }
-            TextLogAutoRemove remove = new TextLogAutoRemove(1, path);
+            TextLogAutoRemover remove = new TextLogAutoRemover(1, path);
 
         }
     }

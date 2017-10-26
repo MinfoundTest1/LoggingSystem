@@ -82,7 +82,7 @@ namespace CoreWinSubLog
         public FileWriterLogManager(string directoryPath, int keepDays)
         {
             _loggerImpl = new FileWriteLogger(directoryPath);
-            _txtLogRemove = new TextLogAutoRemove(keepDays, directoryPath);
+            _txtLogRemove = new TextLogAutoRemover(keepDays, directoryPath);
         }
 
         protected override Logger GetLoggerImpl(string name)

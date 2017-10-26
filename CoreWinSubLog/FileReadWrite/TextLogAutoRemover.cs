@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CoreWinSubLog
 {
-    public class TextLogAutoRemove : LogAutoRemover
+    public class TextLogAutoRemover : LogAutoRemover
     {
         private string _directoryPath;//the process log directory
 
@@ -16,7 +16,7 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="keepDays">the log file keep days</param>
         /// <param name="directoryPath">the process log directory, accurate to sub folder</param>
-        public TextLogAutoRemove(int keepDays, string directoryPath)
+        public TextLogAutoRemover(int keepDays, string directoryPath)
              : base(keepDays)
         {
             if (directoryPath == null)
