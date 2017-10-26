@@ -116,7 +116,7 @@ namespace CoreWinSubLog
         /// <returns></returns>
         private Task AutoReconnectionAsync()
         {
-            return Task.Run(() =>
+            return Task.Factory.StartNew(() =>
             {
                 // event to notice the service connected
                 var autoEvent = new AutoResetEvent(false);
@@ -170,7 +170,7 @@ namespace CoreWinSubLog
         {
             _loggerImpl = new WcfLogger(ipAddress);
         }
-
+        
         /// <summary>
         /// Get logger from the current log manager implementation.
         /// </summary>

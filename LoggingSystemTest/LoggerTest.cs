@@ -1,5 +1,4 @@
 ﻿using CoreWinSubLog;
-using CoreWinSubLogService;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -95,7 +94,7 @@ namespace LoggingSystemTest
 
         public static void TestWriteFile()
         {
-            
+            //FilePathHelper w = new NewFileWithTimeHelper(@"C:\temp\Log");
             LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
             string directoryPath = @"C:\temp";
             LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
@@ -328,8 +327,21 @@ namespace LoggingSystemTest
                 Console.WriteLine("No Dir");
                 return;
             }
-            TextLogAutoRemover remove = new TextLogAutoRemover(1, path);
+            //TextLogAutoRemove remove = new TextLogAutoRemove(1, path);
 
+        }
+
+        public static void TestSingleClass()
+        {
+            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
+            string directoryPath = @"C:\temp";
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
         }
     }
 }

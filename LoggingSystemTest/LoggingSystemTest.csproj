@@ -57,10 +57,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreWinSubLogService\CoreWinSubLogService.csproj">
-      <Project>{9b400fdb-441f-4afd-8210-13a40aa524c0}</Project>
-      <Name>CoreWinSubLogService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CoreWinSubLog\CoreWinSubLog.csproj">
       <Project>{00133e43-abb0-4987-a1e4-a241c274283f}</Project>
       <Name>CoreWinSubLog</Name>
