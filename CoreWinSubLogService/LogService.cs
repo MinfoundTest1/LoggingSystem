@@ -19,10 +19,6 @@ namespace CoreWinSubLogService
 
         public void Log(LogRecord logRecord)
         {
-            if (logRecord.IsNull())
-            {
-                Console.WriteLine("Null record got.");
-            }
             _actionBlock.Post(Transform(logRecord));
         }
 
@@ -31,7 +27,7 @@ namespace CoreWinSubLogService
             foreach (var item in logRecords)
             {
                 _actionBlock.Post(Transform(item));
-            }            
+            }
         }
 
         //static DateTime _firstTime = DateTime.MinValue;

@@ -35,10 +35,6 @@ namespace CoreWinSubLog
             {
                 _directoryPath = Path.Combine(_directoryPath, modelName);
             }
-            if (!Directory.Exists(directoryPath))
-            {
-                throw new DirectoryNotFoundException();
-            } 
         }
 
         /// <summary>
@@ -47,19 +43,23 @@ namespace CoreWinSubLog
         /// <param name="daysBefore">the log file keep days</param>
         protected override void RemoveLogsBefore(int daysBefore)
         {
-            string[] files = Directory.GetFiles(_directoryPath);
-            foreach (string filePath in files)
+            if (Directory.Exists(_directoryPath))
             {
-                FileInfo info = new FileInfo(filePath);
-                DateTime createTimeDay = new DateTime(info.CreationTime.Year, info.CreationTime.Month, info.CreationTime.Day);
-                DateTime currentDays = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                TimeSpan diffSpan = createTimeDay.Subtract(currentDays).Duration();
-                double diffDays = diffSpan.Days;
-                if (diffDays > daysBefore)
+                string[] files = Directory.GetFiles(_directoryPath);
+                foreach (string filePath in files)
                 {
-                    File.Delete(filePath);
+                    FileInfo info = new FileInfo(filePath);
+                    DateTime createTimeDay = new DateTime(info.CreationTime.Year, info.CreationTime.Month, info.CreationTime.Day);
+                    DateTime currentDays = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                    TimeSpan diffSpan = createTimeDay.Subtract(currentDays).Duration();
+                    double diffDays = diffSpan.Days;
+                    if (diffDays > daysBefore)
+                    {
+                        File.Delete(filePath);
+                    }
                 }
             }
+           
         }
 
         public static TextLogAutoRemover Create(int keepDays, string directoryPath)
