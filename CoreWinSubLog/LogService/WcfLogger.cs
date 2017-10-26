@@ -17,6 +17,7 @@ namespace CoreWinSubLog
         private readonly BlockingAction<LogRecord> _blockingAction;
         private readonly Action<LogRecord> _backupAction;
 
+        // 30 seconds to re-connect the service
         private readonly int _timerPeriod = 30 * 1000;
 
         private readonly object _mutex = new object();
@@ -123,7 +124,6 @@ namespace CoreWinSubLog
                 Timer reconnectTimer = new Timer(tryReconnect, autoEvent, 1000, _timerPeriod);   
                 // Wait connected event.
                 autoEvent.WaitOne();
-                Console.WriteLine("Reconnect");
                 reconnectTimer.Dispose();
             });
         }
@@ -137,7 +137,6 @@ namespace CoreWinSubLog
             var client = CreateLogClient();
             try
             {
-                Console.WriteLine("Timer is running...");
                 AutoResetEvent auto = (AutoResetEvent)o;
                 // Try log to service.
                 client.Log(LogRecord.NullRecord());

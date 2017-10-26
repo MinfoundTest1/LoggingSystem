@@ -24,7 +24,7 @@ namespace CoreWinSubLog
         /// </summary>
         public string DirectoryPath { get; protected set; }
 
-        private string _defaultDirectory = @"C:\temp";//the default directory
+        private string _defaultDirectory = @"C:\Temp\Log";//the default directory
 
         /// <summary>
         /// new file or defualt
