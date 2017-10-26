@@ -29,7 +29,7 @@ namespace CoreWinSubLog
         /// Create a timer to do the removing every 24 hours.
         /// Do once immediately.
         /// </summary>
-        public void StartCleanTick()
+        protected void StartCleanTick()
         {
             // 24 hours
             int periodInMs = 24 * 60 * 60 * 1000;

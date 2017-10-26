@@ -21,7 +21,6 @@ namespace CoreWinSubLog
              : base(keepDays)
         {
             CheckDirectory(directoryPath);
-
         }
 
         private void CheckDirectory(string directoryPath)
