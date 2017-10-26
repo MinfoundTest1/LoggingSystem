@@ -11,13 +11,13 @@ namespace CoreWinSubLog
     public class TextLogAutoRemover : LogAutoRemover
     {
         private string _directoryPath;//the process log directory
-        private static TextLogAutoRemove _textLogAutoRemove;
+        private static TextLogAutoRemover _textLogAutoRemove;
         /// <summary>
         /// init the class
         /// </summary>
         /// <param name="keepDays">the log file keep days</param>
         /// <param name="directoryPath">the process log directory, accurate to sub folder</param>
-        private  TextLogAutoRemove(int keepDays, string directoryPath)
+        private  TextLogAutoRemover(int keepDays, string directoryPath)
              : base(keepDays)
         {
             CheckDirectory(directoryPath);
@@ -63,11 +63,11 @@ namespace CoreWinSubLog
             }
         }
 
-        public static TextLogAutoRemove Create(int keepDays, string directoryPath)
+        public static TextLogAutoRemover Create(int keepDays, string directoryPath)
         {
             if (_textLogAutoRemove == null)
             {
-                _textLogAutoRemove = new TextLogAutoRemove(keepDays, directoryPath);
+                _textLogAutoRemove = new TextLogAutoRemover(keepDays, directoryPath);
             }
             return _textLogAutoRemove;
         }
