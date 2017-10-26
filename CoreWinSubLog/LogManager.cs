@@ -45,7 +45,7 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="name">Classifier name, typically namespace or type name.</param>
         /// <returns>Logger from the current log manager implementation.</returns>
-        public static Logger GetLogger(string name)
+        public static Logger GetLogger(string name = null)
         {
             return implementation.GetLoggerImpl(name);
         }
@@ -55,7 +55,7 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="name">Classifier name, typically namespace or type name.</param>
         /// <returns>Logger from the current log manager implementation.</returns>
-        protected abstract Logger GetLoggerImpl(string name);
+        protected abstract Logger GetLoggerImpl(string name = null);
 
         #endregion
 
@@ -91,7 +91,7 @@ namespace CoreWinSubLog
             /// </summary>
             /// <param name="name">Classifier name, typically namespace or type name.</param>
             /// <returns>Logger from the current log manager implementation.</returns>
-            protected override Logger GetLoggerImpl(string name)
+            protected override Logger GetLoggerImpl(string name = null)
             {
                 return NullLogger.Instance;
             }
