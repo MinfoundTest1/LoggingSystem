@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CoreWinSubLog")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("This library provides the logger for Minfound software system.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Minfound")]
 [assembly: AssemblyProduct("CoreWinSubLog")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
