@@ -22,6 +22,7 @@ namespace CoreWinSubLog
         public LogAutoRemover(int keepDays)
         {
             _keepDays = keepDays > 0 ? keepDays : 0;
+            StartCleanTick();
         }
 
         /// <summary>

@@ -51,8 +51,8 @@ namespace CoreWinSubLog
         {
         }
 
-        public LogHttpClient(string ipAddress)
-            : this(LogServiceBinding.HttpBinding(), ipAddress)
-        { }
+        //public LogHttpClient(string ipAddress)
+        //    : this(LogServiceBinding.HttpBinding(), ipAddress)
+        //{ }
     }
 }

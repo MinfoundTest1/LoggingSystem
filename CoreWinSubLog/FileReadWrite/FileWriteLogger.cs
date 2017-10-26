@@ -13,7 +13,6 @@ namespace CoreWinSubLog
         private ILogTextWriter _logTextWriter;//write log
         private FilePathHelper _filePathHelper;//create new log or defualt
         private readonly BlockingAction<LogRecord> _blockingAction;
-
         /// <summary>
         ///  Initializes an instance of the <see cref="FileWriteLogger"/>.
         /// </summary>
@@ -82,7 +81,7 @@ namespace CoreWinSubLog
         public FileWriterLogManager(string directoryPath, int keepDays)
         {
             _loggerImpl = new FileWriteLogger(directoryPath);
-            _txtLogRemove = new TextLogAutoRemove(keepDays, directoryPath);
+            _txtLogRemove = TextLogAutoRemove.Create(keepDays, directoryPath);
         }
 
         protected override Logger GetLoggerImpl(string name)

@@ -37,6 +37,43 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
+        /// read all log in the file
+        /// </summary>
+        /// <returns>the all recod log</returns>
+        public IEnumerable<LogRecord> ReadAllLogRecords()
+        {
+            string message = string.Empty;
+            _readAndWriterLock.EnterReadLock();
+            try
+            {
+                using (StreamReader read = new StreamReader(FilePath))
+                {
+                    while (read.Peek() >= 0)
+                    {
+                        message = read.ReadLine();
+
+                        if (message != null)
+                        {
+                            if (message.Contains(" "))
+                            {
+                                yield return FromString(message);
+                            }
+                            else
+                            {
+                                _moduleName = message;
+                            }
+
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _readAndWriterLock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
         /// Write the module information in first line. Do nothing if there is already module name in the file.
         /// If only logs without module name, the log records will be lost after writing module name.
         /// </summary>
@@ -256,42 +293,7 @@ namespace CoreWinSubLog
             return isReadEnd;
         }
 
-        /// <summary>
-        /// read all log in the file
-        /// </summary>
-        /// <returns>the all recod log</returns>
-        public IEnumerable<LogRecord> ReadAllLogRecords()
-        {
-            string message = string.Empty;
-            _readAndWriterLock.EnterReadLock();
-            try
-            {
-                using (StreamReader read = new StreamReader(FilePath))
-                {
-                    while (read.Peek() >= 0)
-                    {
-                        message = read.ReadLine();
-                        
-                        if (message != null)
-                        {
-                            if (message.Contains(" "))
-                            {
-                                yield return FromString(message);
-                            }
-                            else
-                            {
-                                _moduleName = message;
-                            }
-                           
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                _readAndWriterLock.ExitReadLock();
-            }
-        }
+
 
         /// <summary>
         /// delete first line 

@@ -58,7 +58,6 @@ namespace CoreWinSubLog
         /// </summary>
         public void CheckFile()
         {
-            //FileInfo[] files = Directory.GetFiles(DirectoryPath);
             DirectoryInfo dirinfo = new DirectoryInfo(DirectoryPath);
             FileInfo[] arrFi = dirinfo.GetFiles("*.*");
             if (arrFi.Count() == 0)
@@ -67,7 +66,6 @@ namespace CoreWinSubLog
             }
             else
             {
-                //FilePath = files.OrderBy(s=>).Last();
                 FilePath = arrFi.OrderBy(s => s.CreationTime).Last().FullName;
             }
         }
