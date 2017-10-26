@@ -62,6 +62,12 @@ namespace CoreWinSubLog
            
         }
 
+        /// <summary>
+        /// create a TextLogAutoRemover by singleton pattern
+        /// </summary>
+        /// <param name="keepDays">the log file save days</param>
+        /// <param name="directoryPath">the log save total path, or accurate to sub folder</param>
+        /// <returns></returns>
         public static TextLogAutoRemover Create(int keepDays, string directoryPath)
         {
             if (_textLogAutoRemove == null)
