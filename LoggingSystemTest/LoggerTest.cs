@@ -343,5 +343,84 @@ namespace LoggingSystemTest
             LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
             LogManager.SetImplementation(new FileWriterLogManager(directoryPath, 1));
         }
+
+        public static void TestWriteFile()
+        {
+            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
+            string directoryPath = @"C:\temp";
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
+            Logger logger = LogManager.GetLogger("");
+            Console.WriteLine(record.ModuleName);
+            for (int i = 0; i < 10000; i++)
+            {
+                logger.Debug("This is a test message with {level}.", "Debug");
+                logger.Info("This is a test message with {level}.", "Info");
+                logger.Warn("This is a test message with {level}.", "Warn");
+                logger.Error("This is a test message with {level}.", "Error");
+                logger.Fatal("This is a test message with {level}.", "Fatal");
+            }
+        }
+
+        public static void TestAsyWriteFile()
+        {
+            LogRecord record = LogRecordFactory.Create(LogLevel.Fatal, "message");
+            string directoryPath = @"C:\temp";
+            LogManager.SetImplementation(new FileWriterLogManager(directoryPath, record.ModuleName));
+            Logger logger = LogManager.GetLogger("");
+            Parallel.For(0, 10000, i =>
+            {
+                logger.Debug("{0} wirte this is a test message with {1}.",Task.CurrentId, "Debug");
+                logger.Info("{0} wirte this is a test message with {1}.", Task.CurrentId, "Info");
+                logger.Warn("{0} wirte this is a test message with {1}.", Task.CurrentId, "Warn");
+                logger.Error("{0} wirte this is a test message with {1}.", Task.CurrentId, "Error");
+                logger.Fatal("{0} wirte this is a test message with {1}.", Task.CurrentId, "Fatal");
+            });
+        }
+
+        public static void TestDeleteFirstLine()
+        {
+            string path = @"C:\temp\LoggingSystemTest\20171009_102217_3.txt";
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("No File");
+                return;
+            }
+            TextFileReadWrite read = new TextFileReadWrite(path);
+            while (true)
+            {
+                Console.WriteLine(read.DeleteFirstLine().Message);
+                Thread.Sleep(TimeSpan.FromSeconds(0.5));
+            }
+
+        }
+
+        public static void TestReadLine()
+        {
+            string path = @"C:\temp\LoggingSystemTest\20171009_102217_3.txt";
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("No File");
+                return;
+            }
+            TextFileReadWrite read = new TextFileReadWrite(path);
+            for (int i = 0; i < 20; i++)
+            {
+                Console.WriteLine(read.ReadLine());
+                Thread.Sleep(TimeSpan.FromSeconds(0.5));
+            }
+        }
+        //public static void TestFileOpenTime()
+        //{
+        //    string path = @"C:\temp\LoggingSystemTest.vshost\20170929{1}.txt";
+        //    TextFileReadWrite read = new TextFileReadWrite(path);
+        //    Stopwatch wtch = new Stopwatch();
+        //    wtch.Start();
+        //    double size = read.GetFileSize(path);
+        //    string msg = read.ReadLine();
+        //    wtch.Stop();
+        //    Console.WriteLine(wtch.ElapsedMilliseconds);
+
+        //    //result:
+        //}
     }
 }
