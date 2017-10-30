@@ -11,6 +11,9 @@ namespace CoreWinSubLog
     [DataContract]
     public class LogRecord
     {
+        /// <summary>
+        /// Log id in database
+        /// </summary>
         [DataMember]
         public int LogId { get; protected set; }
 
@@ -72,51 +75,6 @@ namespace CoreWinSubLog
         {
             LogId = id;
         }
-
-        ///// <summary>
-        ///// Reset the module name.
-        ///// </summary>
-        ///// <param name="moduleName"></param>
-        //public void ResetModuleName(string moduleName)
-        //{
-        //    ModuleName = moduleName;
-        //}
-
-        ////Commit by Yuqing as the string doesn't contain an integral information of log record.
-        ///// <summary>
-        ///// Get a log record form given string
-        ///// </summary>
-        ///// <param name="content">string matched to a log record</param>
-        ///// <returns></returns>
-        //public static LogRecord FromString(string content)
-        //{
-        //    if (string.IsNullOrEmpty(content))
-        //    {
-        //        return NullRecord();
-        //    }
-
-        //    string timeString = content.Substring(0, 23);
-        //    DateTime dateTime;
-        //    DateTime.TryParseExact(timeString, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
-
-        //    string otherString = content.Substring(24);
-
-        //    LogLevel logLevel = LogLevel.Info;
-        //    string theMessage = string.Empty;
-        //    if (otherString.StartsWith("["))
-        //    {
-        //        string[] msgs = otherString.Split(new string[] { " " }, 2, StringSplitOptions.None);
-        //        string levelString = msgs[0].TrimStart('[').TrimEnd(']');
-        //        Enum.TryParse(levelString, out logLevel);
-        //        theMessage = msgs[1];
-        //    }
-        //    else
-        //    {
-        //        theMessage = otherString;
-        //    }
-
-        //    return new LogRecord(logLevel, dateTime, "", theMessage);
-        //}
 
         /// <summary>
         /// Convert log record to string (DateTime ("yyyy-MM-dd HH:mm:ss.fff")).
