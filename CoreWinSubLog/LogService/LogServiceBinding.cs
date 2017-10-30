@@ -33,28 +33,28 @@ namespace CoreWinSubLog
             return myBinding;
         }
 
-        ///// <summary>
-        ///// Http binding for WCF service.
-        ///// </summary>
-        ///// <returns></returns>
-        //public static NetHttpBinding HttpBinding()
-        //{
-        //    NetHttpBinding myBinding = new NetHttpBinding(BasicHttpSecurityMode.None);
+        /// <summary>
+        /// Http binding for WCF service.
+        /// </summary>
+        /// <returns></returns>
+        public static NetHttpBinding HttpBinding()
+        {
+            NetHttpBinding myBinding = new NetHttpBinding(BasicHttpSecurityMode.None);
 
-        //    myBinding.ReceiveTimeout = TimeSpan.FromDays(14);
-        //    myBinding.ReliableSession.InactivityTimeout = TimeSpan.FromDays(14);
-        //    myBinding.SendTimeout = TimeSpan.FromMinutes(1);
-        //    myBinding.MaxReceivedMessageSize = int.MaxValue;
-        //    myBinding.MaxBufferSize = int.MaxValue;
-        //    myBinding.TransferMode = TransferMode.Buffered;
+            myBinding.ReceiveTimeout = TimeSpan.FromDays(14);
+            myBinding.ReliableSession.InactivityTimeout = TimeSpan.FromDays(14);
+            myBinding.SendTimeout = TimeSpan.FromMinutes(1);
+            myBinding.MaxReceivedMessageSize = int.MaxValue;
+            myBinding.MaxBufferSize = int.MaxValue;
+            myBinding.TransferMode = TransferMode.Buffered;
 
-        //    myBinding.ReaderQuotas.MaxDepth = int.MaxValue;
-        //    myBinding.ReaderQuotas.MaxStringContentLength = int.MaxValue;
-        //    myBinding.ReaderQuotas.MaxBytesPerRead = int.MaxValue;
-        //    myBinding.ReaderQuotas.MaxArrayLength = int.MaxValue;
+            myBinding.ReaderQuotas.MaxDepth = int.MaxValue;
+            myBinding.ReaderQuotas.MaxStringContentLength = int.MaxValue;
+            myBinding.ReaderQuotas.MaxBytesPerRead = int.MaxValue;
+            myBinding.ReaderQuotas.MaxArrayLength = int.MaxValue;
 
-        //    return myBinding;
-        //}
+            return myBinding;
+        }
 
         /// <summary>
         /// WCF service remote address which is tcp connection.

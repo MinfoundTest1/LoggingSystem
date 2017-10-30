@@ -116,7 +116,7 @@ namespace CoreWinSubLog
         /// <returns></returns>
         private Task AutoReconnectionAsync()
         {
-            return Task.Factory.StartNew(() =>
+            return Task.Run(() =>
             {
                 // event to notice the service connected
                 var autoEvent = new AutoResetEvent(false);

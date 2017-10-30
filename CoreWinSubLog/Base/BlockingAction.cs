@@ -40,7 +40,7 @@ namespace CoreWinSubLog
         /// </summary>
         private Task ConsumeAsync()
         {
-            return Task.Factory.StartNew(() =>
+            return Task.Run(() =>
             {
                 foreach (var item in _blockCollection.GetConsumingEnumerable())
                 {
