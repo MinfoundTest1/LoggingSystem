@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,10 +20,12 @@ namespace LoggingSystemTest
                 //Console.WriteLine();
                 //LoggerTest.TestConsoleLogger();
                 //LoggerTest.TestWcfLogger();
-                //LoggerTest.TestLogRecordString();
-                LoggerTest.TestWriteFile();
+                ////LoggerTest.TestLogRecordString();
+                //LoggerTest.TestWriteFile();
                 //LoggerTest.TestAsyWriteFile();
                 //LoggerTest.TestDeleteFirstLine();
+                // LoggerTest.TestAutoRemoveFile();
+                LoggerTest.TestMinLogger();
             }
             catch (Exception ex)
             {

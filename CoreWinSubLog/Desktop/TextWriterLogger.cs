@@ -25,7 +25,7 @@ namespace CoreWinSubLog
         /// <param name="args">Log message arguments.</param>
         public override void Log(LogLevel level, string msg, params object[] args)
         {
-            _textWriter.Write($"[{level.ToString().ToUpperInvariant()}] ");
+            _textWriter.Write($"[{level.ToString()}] ");
             _textWriter.WriteLine(NameFormatToPositionalFormat(msg), args);
         }
     }

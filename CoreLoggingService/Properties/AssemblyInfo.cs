@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CoreWinSubLog")]
-[assembly: AssemblyDescription("This library provides the logger for Minfound software system.")]
+[assembly: AssemblyTitle("CoreLoggingService")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Minfound")]
-[assembly: AssemblyProduct("CoreWinSubLog")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("CoreLoggingService")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("00133e43-abb0-4987-a1e4-a241c274283f")]
+[assembly: Guid("e580b9a2-7441-4588-acbc-054fc2d82974")]
 
 // Version information for an assembly consists of the following four values:
 //

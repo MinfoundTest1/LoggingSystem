@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 
 namespace CoreWinSubLog
@@ -6,16 +7,12 @@ namespace CoreWinSubLog
     /// <summary>
     /// Log client of WCF connection.
     /// </summary>
-    class LogClient : ClientBase<ILogService>, ILogService
+    class LogClientBase : ClientBase<ILogService>, ILogService
     {
-        public LogClient(Binding binding, string ipAddress)
-            : base(binding, new EndpointAddress(LogServiceBinding.Uri(ipAddress)))
+        public LogClientBase(Binding binding, EndpointAddress endpointAddress)
+            : base(binding, endpointAddress)
         {
         }
-
-        public LogClient(string ipAddress)
-            : this(LogServiceBinding.TcpBinding(), ipAddress)
-        { }
 
         public void Log(LogRecord logRecord)
         {
@@ -24,7 +21,37 @@ namespace CoreWinSubLog
 
         public void Log(LogRecord[] logRecords)
         {
-            Channel.Log(logRecords);
+            Channel.Log(logRecords);         
         }
+    }
+
+    /// <summary>
+    /// Log client of WCF with Tcp connection.
+    /// </summary>
+    class LogTcpClient : LogClientBase
+    {
+        public LogTcpClient(Binding binding, string ipAddress)
+            : base(binding, new EndpointAddress(LogServiceBinding.TcpUri(ipAddress)))
+        {
+        }
+
+        public LogTcpClient(string ipAddress)
+            : this(LogServiceBinding.TcpBinding(), ipAddress)
+        { }
+    }
+
+    /// <summary>
+    /// Log client of WCF with Http connection.
+    /// </summary>
+    class LogHttpClient : LogClientBase
+    {
+        public LogHttpClient(Binding binding, string ipAddress)
+            : base(binding, new EndpointAddress(LogServiceBinding.HttpUri(ipAddress)))
+        {
+        }
+
+        //public LogHttpClient(string ipAddress)
+        //    : this(LogServiceBinding.HttpBinding(), ipAddress)
+        //{ }
     }
 }

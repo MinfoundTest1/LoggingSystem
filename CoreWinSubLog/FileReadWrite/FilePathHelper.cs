@@ -12,25 +12,25 @@ namespace CoreWinSubLog
         /// <summary>
         /// the log file path
         /// </summary>
-        public string FilePath { get; set; }
+        public string FilePath { get; private set; }
 
         /// <summary>
         /// the log file path
         /// </summary>
-        public string ModelName { get; set; }
+        public string ModelName { get; protected set; }
 
         /// <summary>
         /// the log directory path
         /// </summary>
-        public string DirectoryPath { get; set; }
+        public string DirectoryPath { get; protected set; }
 
-        private string _defaultDirectory = @"C:\temp";//the default directory
+        private string _defaultDirectory = @"C:\Temp\Log";//the default directory
 
         /// <summary>
         /// new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public abstract bool NewFileOrDefualt();
+        public abstract bool CreateNewOrDefualt();
 
         /// <summary>
         /// check the defualt directory
@@ -58,14 +58,15 @@ namespace CoreWinSubLog
         /// </summary>
         public void CheckFile()
         {
-            string[] files = Directory.GetFiles(DirectoryPath);
-            if (files.Count() == 0)
+            DirectoryInfo dirinfo = new DirectoryInfo(DirectoryPath);
+            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
+            if (arrFi.Count() == 0)
             {
                 CreateNewFilePath();
             }
             else
             {
-                FilePath = files.Last();
+                FilePath = arrFi.OrderBy(s => s.CreationTime).Last().FullName;
             }
         }
 
@@ -76,8 +77,7 @@ namespace CoreWinSubLog
         public void CreateNewFilePath()
         {
             string[] files = Directory.GetFiles(DirectoryPath);
-            int index = files.Count() + 1;
-            string fileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + index + ".txt";
+            string fileName = ModelName + DateTime.Now.ToString("_yyyyMMdd") + ".txt";
             FilePath = Path.Combine(DirectoryPath, fileName);
             if (!File.Exists(FilePath))
             {

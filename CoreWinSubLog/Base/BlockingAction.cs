@@ -7,7 +7,7 @@ namespace CoreWinSubLog
     /// <summary>
     /// Class to do the <see cref="Action&lt;"/> in another task.
     /// </summary>
-    internal class BlockingAction<T>
+    public class BlockingAction<T>
     {
         // Input buffer.
         private readonly BlockingCollection<T> _blockCollection = new BlockingCollection<T>();
@@ -40,7 +40,7 @@ namespace CoreWinSubLog
         /// </summary>
         private Task ConsumeAsync()
         {
-            return Task.Run(() =>
+            return Task.Factory.StartNew(() =>
             {
                 foreach (var item in _blockCollection.GetConsumingEnumerable())
                 {

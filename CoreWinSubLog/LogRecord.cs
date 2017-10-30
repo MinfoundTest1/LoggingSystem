@@ -12,31 +12,31 @@ namespace CoreWinSubLog
     public class LogRecord
     {
         [DataMember]
-        public int LogId { get; private set; }
+        public int LogId { get; protected set; }
 
         /// <summary>
         /// Log level
         /// </summary>
         [DataMember]
-        public LogLevel Level { get; private set; }
+        public LogLevel Level { get; protected set; }
 
         /// <summary>
         /// DateTime when log create
         /// </summary>
         [DataMember]
-        public DateTime DateTime { get; private set; }
+        public DateTime DateTime { get; protected set; }
 
         /// <summary>
         /// Name of module (Process) 
         /// </summary>
         [DataMember]
-        public string ModuleName { get; private set; }
+        public string ModuleName { get; protected set; }
 
         /// <summary>
         /// Message
         /// </summary>
         [DataMember]
-        public string Message { get; private set; }
+        public string Message { get; protected set; }
 
         public LogRecord(LogLevel level, DateTime dateTime, string moduleName, string message)
         {
@@ -45,10 +45,23 @@ namespace CoreWinSubLog
             ModuleName = moduleName;
             Message = message;
         }
-       
+
+        /// <summary>
+        /// Get the null record.
+        /// </summary>
+        /// <returns>Default log record</returns>
         public static LogRecord NullRecord()
         {
-            return new LogRecord(LogLevel.Debug, DateTime.MinValue, "Default", "Null");
+            return new LogRecord(LogLevel.Debug, DateTime.MinValue, "Null", "Null");
+        }
+       
+        /// <summary>
+        /// Check if this log record is null record.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsNull()
+        {
+            return (DateTime == DateTime.MinValue) && (ModuleName == "Null");
         }
 
         /// <summary>
@@ -60,37 +73,50 @@ namespace CoreWinSubLog
             LogId = id;
         }
 
-        /// <summary>
-        /// Get log string
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public static LogRecord FromString(string content)
-        {
-            const int len = 5;
-            string[] msg = content.Split(new string[] { "] [" }, len, StringSplitOptions.None);
-            if (msg.Count() >= len - 1)
-            {
-                LogLevel level = LogLevel.Debug;
-                Enum.TryParse(msg[1], out level);
+        ///// <summary>
+        ///// Reset the module name.
+        ///// </summary>
+        ///// <param name="moduleName"></param>
+        //public void ResetModuleName(string moduleName)
+        //{
+        //    ModuleName = moduleName;
+        //}
 
-                DateTime dateTime;
-                DateTime.TryParseExact(msg[2], "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
+        ////Commit by Yuqing as the string doesn't contain an integral information of log record.
+        ///// <summary>
+        ///// Get a log record form given string
+        ///// </summary>
+        ///// <param name="content">string matched to a log record</param>
+        ///// <returns></returns>
+        //public static LogRecord FromString(string content)
+        //{
+        //    if (string.IsNullOrEmpty(content))
+        //    {
+        //        return NullRecord();
+        //    }
 
-                string mouduleName = msg[3];
-                string message = (msg.Length == len) ? msg[4].Substring(0, msg[4].Length - 1) : "";
+        //    string timeString = content.Substring(0, 23);
+        //    DateTime dateTime;
+        //    DateTime.TryParseExact(timeString, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture, DateTimeStyles.None, out dateTime);
 
-                LogRecord logRecord = new LogRecord(level, dateTime, mouduleName, message);
-                int id = 0;
-                int.TryParse(msg[0].Substring(1), out id);
-                logRecord.LogId = id;
-                return logRecord;
-            }
-            else
-            {
-                return NullRecord();
-            }
-        }
+        //    string otherString = content.Substring(24);
+
+        //    LogLevel logLevel = LogLevel.Info;
+        //    string theMessage = string.Empty;
+        //    if (otherString.StartsWith("["))
+        //    {
+        //        string[] msgs = otherString.Split(new string[] { " " }, 2, StringSplitOptions.None);
+        //        string levelString = msgs[0].TrimStart('[').TrimEnd(']');
+        //        Enum.TryParse(levelString, out logLevel);
+        //        theMessage = msgs[1];
+        //    }
+        //    else
+        //    {
+        //        theMessage = otherString;
+        //    }
+
+        //    return new LogRecord(logLevel, dateTime, "", theMessage);
+        //}
 
         /// <summary>
         /// Convert log record to string (DateTime ("yyyy-MM-dd HH:mm:ss.fff")).
@@ -98,7 +124,7 @@ namespace CoreWinSubLog
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format($"[{LogId}] [{Level}] [{DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture)}] [{ModuleName}] [{Message}]");
+            return string.Format($"{DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.CurrentCulture)} [{Level}] {Message}");
         }
     }
 }
