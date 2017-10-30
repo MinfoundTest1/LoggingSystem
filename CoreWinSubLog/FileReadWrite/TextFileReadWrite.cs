@@ -177,7 +177,6 @@ namespace CoreWinSubLog
             return message;
         }
 
-
         public bool ReadLine(ref string message)
         {
             int index = 0;
@@ -292,9 +291,7 @@ namespace CoreWinSubLog
             reocrd = FromString(message);
             return isReadEnd;
         }
-
-
-
+        
         /// <summary>
         /// delete first line 
         /// </summary>

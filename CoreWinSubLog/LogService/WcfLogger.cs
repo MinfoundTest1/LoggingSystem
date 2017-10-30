@@ -55,6 +55,7 @@ namespace CoreWinSubLog
         {
             _blockingAction.Post(logRecord);
         }
+
         /// <summary>
         /// Check if the WCF connection is valid.
         /// </summary>
@@ -170,7 +171,7 @@ namespace CoreWinSubLog
         {
             _loggerImpl = new WcfLogger(ipAddress);
         }
-        
+
         /// <summary>
         /// Get logger from the current log manager implementation.
         /// </summary>

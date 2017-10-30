@@ -21,8 +21,7 @@ namespace CoreWinSubLog
 
         public void Log(LogRecord[] logRecords)
         {
-            Channel.Log(logRecords);
-         
+            Channel.Log(logRecords);         
         }
     }
 
