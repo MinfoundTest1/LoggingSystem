@@ -13,7 +13,6 @@ namespace CoreWinSubLog
         private ILogTextWriter _logTextWriter;//write log
         private FilePathHelper _filePathHelper;//to create new log or defualt
         private readonly BlockingAction<LogRecord> _blockingAction;
-        
         /// <summary>
         ///  Initializes an instance of the <see cref="FileWriteLogger"/>.
         /// </summary>

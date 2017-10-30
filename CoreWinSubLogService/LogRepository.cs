@@ -30,7 +30,6 @@ namespace CoreWinSubLogService
         {
             return _loggerMySqlProxy.QueryLogWithLimit(offset, count);
         }
-      
         LoggerMySqlProxy _loggerMySqlProxy;
 
         private LoggerMySqlProxy GetOrCreateMySqlProxy()
