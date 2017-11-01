@@ -16,11 +16,9 @@ namespace CoreWinSubLog
         #endregion
 
         public NewFileWithTimeHelper(string pDirectory)
+            : base(pDirectory)
         {
-            ModelName = Process.GetCurrentProcess().ProcessName;
-            DirectoryPath = pDirectory;
-            CheckDirectory();
-            CheckFile();
+
         }
 
 
@@ -28,19 +26,32 @@ namespace CoreWinSubLog
         /// create new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public override bool CreateNewOrDefualt()
+        public override bool CreateNewOrDefualt(ref string pFileName)
         {
-            FileInfo info = new FileInfo(FilePath);
-            DateTime createTimeDay = new DateTime(info.CreationTime.Year, info.CreationTime.Month, info.CreationTime.Day);
-            DateTime currentDays = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            TimeSpan diffSpan = createTimeDay.Subtract(currentDays).Duration();
-            double day = diffSpan.Days;
-            if (day >= _maxFileDay)
+            DirectoryInfo dirinfo = new DirectoryInfo(_fullDirectory);
+            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
+            if (arrFi.Count() == 0)
             {
-                CreateNewFilePath();
+                pFileName = CreateNewFile();
                 return true;
             }
-            return false;
+            else
+            {
+                string fileName = arrFi.OrderBy(s => s.CreationTime).Last().FullName;
+                FileInfo info = new FileInfo(fileName);
+                DateTime createTimeDay = info.CreationTime.Date;
+                //DateTime currentDays = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                TimeSpan diffSpan = createTimeDay.Subtract(DateTime.Now.Date).Duration();
+                double day = diffSpan.Days;
+                if (day >= _maxFileDay)
+                {
+                    pFileName = CreateNewFile();
+                    return true;
+                }
+                pFileName = fileName;
+                return false;
+            }
+
         }
     }
 }

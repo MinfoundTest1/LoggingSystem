@@ -13,31 +13,40 @@ namespace CoreWinSubLog
         /// <summary>
         /// the log file path
         /// </summary>
-        private double _maxFileSize = 10;//M
+        private double _maxFileSize = 1;//M
         #endregion
 
-        public NewFileWithSizeHelper(string pDirectory, string pModelName)
+        public NewFileWithSizeHelper(string pDirectory)
+            : base(pDirectory)
         {
-            ModelName = pModelName;
-            DirectoryPath = pDirectory;
-            CheckDirectory();
-            CheckFile();
         }
 
         /// <summary>
         /// create new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public override bool CreateNewOrDefualt()
+        public override bool CreateNewOrDefualt(ref string pFileName)
         {
-            FileInfo info = new FileInfo(FilePath);
-            double filesize = info.Length / 1024.00 / 1024.00;
-            if (filesize > _maxFileSize)
+            DirectoryInfo dirinfo = new DirectoryInfo(_fullDirectory);
+            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
+            if (arrFi.Count() == 0)
             {
-                CreateNewFilePath();
+                pFileName = CreateNewFile();
                 return true;
             }
-            return false;
+            else
+            {
+                string fileName = arrFi.OrderByDescending(s => s.Length).Last().FullName;
+                FileInfo info = new FileInfo(fileName);
+                double filesize = info.Length / 1024.00 / 1024.00;
+                if (filesize >= _maxFileSize)
+                {
+                    pFileName = CreateNewFile();
+                    return true;
+                }
+                pFileName = fileName;
+                return false;
+            }
         }
     }
 }

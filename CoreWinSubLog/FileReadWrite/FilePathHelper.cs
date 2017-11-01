@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,64 +10,50 @@ namespace CoreWinSubLog
 {
     public abstract class FilePathHelper
     {
-        /// <summary>
-        /// the log file path
-        /// </summary>
-        public string FilePath { get; private set; }
 
         /// <summary>
         /// the log file path
         /// </summary>
-        public string ModelName { get; protected set; }
+        private string _modelName;
 
         /// <summary>
         /// the log directory path
         /// </summary>
-        public string DirectoryPath { get; protected set; }
+        protected string _fullDirectory;
 
-        private string _defaultDirectory = @"C:\Temp\Log";//the default directory
+        private string _totalDirectory = @"C:\Temp\Log";
 
         /// <summary>
         /// new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public abstract bool CreateNewOrDefualt();
+        public abstract bool CreateNewOrDefualt(ref string pFileName);
+
+        public FilePathHelper(string pDirectory)
+        {
+            _modelName = Process.GetCurrentProcess().ProcessName;
+            _fullDirectory = pDirectory;
+            CheckDirectory();
+        }
 
         /// <summary>
         /// check the defualt directory
         /// </summary>
         public void CheckDirectory()
         {
-            if (DirectoryPath == null)
+            if (_fullDirectory == null)
             {
-                DirectoryPath = _defaultDirectory;
+                _fullDirectory = _totalDirectory;
             }
 
-            if (!DirectoryPath.EndsWith(ModelName))
+            if (!_fullDirectory.EndsWith(_modelName))
             {
-                DirectoryPath = Path.Combine(DirectoryPath, ModelName);
+                _fullDirectory = Path.Combine(_fullDirectory, _modelName);
             }
 
-            if (!Directory.Exists(DirectoryPath))
+            if (!Directory.Exists(_fullDirectory))
             {
-                Directory.CreateDirectory(DirectoryPath);
-            }
-        }
-
-        /// <summary>
-        /// check the file
-        /// </summary>
-        public void CheckFile()
-        {
-            DirectoryInfo dirinfo = new DirectoryInfo(DirectoryPath);
-            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
-            if (arrFi.Count() == 0)
-            {
-                CreateNewFilePath();
-            }
-            else
-            {
-                FilePath = arrFi.OrderBy(s => s.CreationTime).Last().FullName;
+                Directory.CreateDirectory(_fullDirectory);
             }
         }
 
@@ -74,17 +61,17 @@ namespace CoreWinSubLog
         /// create the log file
         /// </summary>
         /// <returns>the log file path</returns>
-        public void CreateNewFilePath()
+        public string  CreateNewFile()
         {
-            string[] files = Directory.GetFiles(DirectoryPath);
-            string fileName = ModelName + DateTime.Now.ToString("_yyyyMMdd") + ".txt";
-            FilePath = Path.Combine(DirectoryPath, fileName);
-            if (!File.Exists(FilePath))
+            string fileName = _modelName + DateTime.Now.ToString("_yyyyMMdd") + ".txt";
+            fileName = Path.Combine(_fullDirectory, fileName);
+            if (!File.Exists(fileName))
             {
-                using (File.Create(FilePath))
+                using (File.Create(fileName))
                 {
                 }
             }
+            return fileName;
         }
     }
 }

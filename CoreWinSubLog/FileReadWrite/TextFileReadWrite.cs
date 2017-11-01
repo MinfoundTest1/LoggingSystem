@@ -18,7 +18,7 @@ namespace CoreWinSubLog
         /// <summary>
         /// the log file path
         /// </summary>
-        public string FilePath { get; private set; }
+        public string _fileName;
 
         private string _moduleName = string.Empty;
 
@@ -27,13 +27,13 @@ namespace CoreWinSubLog
 
         #region Public Function
 
-        public TextFileReadWrite(string pFilePath)
+        public TextFileReadWrite(string pFileName)
         {
-            if (pFilePath == null)
+            if (pFileName == null)
             {
-                throw new ArgumentNullException(nameof(pFilePath));
+                throw new ArgumentNullException(nameof(pFileName));
             }
-            FilePath = pFilePath;
+            _fileName = pFileName;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterReadLock();
             try
             {
-                using (StreamReader read = new StreamReader(FilePath))
+                using (StreamReader read = new StreamReader(_fileName))
                 {
                     while (read.Peek() >= 0)
                     {
@@ -85,7 +85,7 @@ namespace CoreWinSubLog
                 _readAndWriterLock.EnterWriteLock();
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(FilePath))
+                    using (StreamWriter writer = new StreamWriter(_fileName))
                     {
                         writer.BaseStream.Seek(0, SeekOrigin.Begin);
                         writer.WriteLine(moduleName);
@@ -107,7 +107,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterWriteLock();
             try
             {
-                using (StreamWriter writer = new StreamWriter(FilePath, true))
+                using (StreamWriter writer = new StreamWriter(_fileName, true))
                 {
                     writer.WriteLine(record.ToString());
                 }
@@ -124,7 +124,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterReadLock();
             try
             {
-                using (StreamReader reader = new StreamReader(FilePath))
+                using (StreamReader reader = new StreamReader(_fileName))
                 {
                     if (reader.Peek() >= 0)
                     {
@@ -149,14 +149,14 @@ namespace CoreWinSubLog
         /// <returns>string msg</returns>
         public string ReadLine()
         {
-            if (FilePath == null)
+            if (_fileName == null)
                 return string.Empty;
             string message = string.Empty;
             int index = 0;
             _readAndWriterLock.EnterReadLock();
             try
             {
-                using (StreamReader read = new StreamReader(FilePath))
+                using (StreamReader read = new StreamReader(_fileName))
                 {
                     while (index < _readLine)
                     {
@@ -185,7 +185,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterReadLock();
             try
             {
-                using (StreamReader read = new StreamReader(FilePath))
+                using (StreamReader read = new StreamReader(_fileName))
                 {
                     while (index < _readLine)
                     {
@@ -217,7 +217,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterReadLock();
             try
             {
-                using (StreamReader read = new StreamReader(FilePath))
+                using (StreamReader read = new StreamReader(_fileName))
                 {
                     message = read.ReadToEnd();
                 }
@@ -240,7 +240,7 @@ namespace CoreWinSubLog
             int index = 0;
             try
             {
-                using (StreamReader read = new StreamReader(FilePath))
+                using (StreamReader read = new StreamReader(_fileName))
                 {
                     while (index < _readLine)
                     {
@@ -270,7 +270,7 @@ namespace CoreWinSubLog
             int index = 0;
             try
             {
-                using (StreamReader read = new StreamReader(FilePath))
+                using (StreamReader read = new StreamReader(_fileName))
                 {
                     while (index < _readLine)
                     {
@@ -305,7 +305,7 @@ namespace CoreWinSubLog
             _readAndWriterLock.EnterUpgradeableReadLock();
             try
             {
-                List<string> allTexts = File.ReadAllLines(FilePath).ToList();
+                List<string> allTexts = File.ReadAllLines(_fileName).ToList();
                 _readAndWriterLock.EnterWriteLock();
                 try
                 {
@@ -313,7 +313,7 @@ namespace CoreWinSubLog
                     {
                         record = FromString(allTexts[0]);
                         allTexts.RemoveAt(0);
-                        File.WriteAllLines(FilePath, allTexts.ToArray());
+                        File.WriteAllLines(_fileName, allTexts.ToArray());
                     }
                 }
                 finally
@@ -383,7 +383,7 @@ namespace CoreWinSubLog
         /// <param name="pMessage"></param>
         private void WriteLine(string pMessage)
         {
-            using (StreamWriter writer = new StreamWriter(FilePath))
+            using (StreamWriter writer = new StreamWriter(_fileName))
             {
                 writer.WriteLine(pMessage);
             }

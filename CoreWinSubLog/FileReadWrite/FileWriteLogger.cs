@@ -11,7 +11,7 @@ namespace CoreWinSubLog
     public class FileWriteLogger : Logger
     {
         private ILogTextWriter _logTextWriter;//write log
-        private FilePathHelper _filePathHelper;//to create new log or defualt
+        private FilePathHelper _filePathHelper;//to create new log file or defualt
         private readonly BlockingAction<LogRecord> _blockingAction;
         /// <summary>
         ///  Initializes an instance of the <see cref="FileWriteLogger"/>.
@@ -20,7 +20,6 @@ namespace CoreWinSubLog
         protected internal FileWriteLogger(string directoryPath)
         {
             _filePathHelper = new NewFileWithTimeHelper(directoryPath);
-            _logTextWriter = new TextFileReadWrite(_filePathHelper.FilePath);
             _blockingAction = new BlockingAction<LogRecord>(r => WriteLog(r));
         }
 
@@ -50,19 +49,18 @@ namespace CoreWinSubLog
         {
             try
             {
-                if (_filePathHelper.CreateNewOrDefualt())
+                string fileName = string.Empty;
+                if (_filePathHelper.CreateNewOrDefualt(ref fileName) || _logTextWriter == null)
                 {
-                    _logTextWriter = new TextFileReadWrite(_filePathHelper.FilePath);
+                    _logTextWriter = new TextFileReadWrite(fileName);
                     _logTextWriter.WriteModuleName(record.ModuleName);
                 }
+
                 _logTextWriter.WriteLogLine(record);
             }
             catch
             {
-                if (!File.Exists(_filePathHelper.FilePath))
-                {
-                    File.Create(_filePathHelper.FilePath);
-                }
+
             }
 
         }

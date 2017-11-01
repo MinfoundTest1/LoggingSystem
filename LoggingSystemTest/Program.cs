@@ -25,7 +25,11 @@ namespace LoggingSystemTest
                 //LoggerTest.TestAsyWriteFile();
                 //LoggerTest.TestDeleteFirstLine();
                 // LoggerTest.TestAutoRemoveFile();
-                LoggerTest.TestMinLogger();
+                LoggerTest.TestAsyWriteFile();
+                //if (ww == null)
+                //{
+                //    Console.Write("4");
+                //}
             }
             catch (Exception ex)
             {
@@ -35,5 +39,7 @@ namespace LoggingSystemTest
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
         }
+
+        public static double? ww { set; get; }
     }
 }
