@@ -21,26 +21,17 @@ namespace CoreWinSubLog
 
         }
 
-
         /// <summary>
         /// create new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public override bool CreateNewOrDefualt(ref string pFileName)
+        public override bool CreateNewOrDefualt(out string pFileName)
         {
-            DirectoryInfo dirinfo = new DirectoryInfo(_fullDirectory);
-            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
-            if (arrFi.Count() == 0)
+            if (!IsDirectoryEmpty())
             {
-                pFileName = CreateNewFile();
-                return true;
-            }
-            else
-            {
-                string fileName = arrFi.OrderBy(s => s.CreationTime).Last().FullName;
-                FileInfo info = new FileInfo(fileName);
+                // if the directory is not empty
+                FileInfo info = new FileInfo(_fileName);
                 DateTime createTimeDay = info.CreationTime.Date;
-                //DateTime currentDays = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                 TimeSpan diffSpan = createTimeDay.Subtract(DateTime.Now.Date).Duration();
                 double day = diffSpan.Days;
                 if (day >= _maxFileDay)
@@ -48,10 +39,15 @@ namespace CoreWinSubLog
                     pFileName = CreateNewFile();
                     return true;
                 }
-                pFileName = fileName;
+                pFileName = _fileName;
                 return false;
             }
-
+            else
+            {
+                // if the directory is empty
+                pFileName = CreateNewFile();
+                return true;
+            }
         }
     }
 }

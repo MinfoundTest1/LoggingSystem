@@ -12,34 +12,46 @@ namespace CoreWinSubLog
     {
 
         /// <summary>
-        /// the log file path
+        /// the process name
         /// </summary>
         private string _modelName;
+
+        /// <summary>
+        /// the file path
+        /// </summary>
+        protected string _fileName;
 
         /// <summary>
         /// the log directory path
         /// </summary>
         protected string _fullDirectory;
 
+        /// <summary>
+        /// the log directory root
+        /// </summary>
         private string _totalDirectory = @"C:\Temp\Log";
 
         /// <summary>
-        /// new file or defualt
+        /// to create new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public abstract bool CreateNewOrDefualt(ref string pFileName);
+        public abstract bool CreateNewOrDefualt(out string pFileName);
 
         public FilePathHelper(string pDirectory)
         {
             _modelName = Process.GetCurrentProcess().ProcessName;
-            _fullDirectory = pDirectory;
+            if (pDirectory != null)
+            {
+                _totalDirectory = pDirectory;
+            }
             CheckDirectory();
+            CheckFile(); 
         }
 
         /// <summary>
-        /// check the defualt directory
+        /// check the directory, if could not find ths directory, then create
         /// </summary>
-        public void CheckDirectory()
+        protected void CheckDirectory()
         {
             if (_fullDirectory == null)
             {
@@ -58,20 +70,44 @@ namespace CoreWinSubLog
         }
 
         /// <summary>
-        /// create the log file
+        /// check if has file in the directory
+        /// </summary>
+        protected void CheckFile()
+        {
+            DirectoryInfo dirinfo = new DirectoryInfo(_fullDirectory);
+            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
+            if (arrFi.Count() != 0)
+            {
+                _fileName = arrFi.OrderBy(s => s.CreationTime).Last().FullName;
+            }
+        }
+
+        /// <summary>
+        /// create the log file, return the file path 
         /// </summary>
         /// <returns>the log file path</returns>
-        public string  CreateNewFile()
+        protected string CreateNewFile()
         {
-            string fileName = _modelName + DateTime.Now.ToString("_yyyyMMdd") + ".txt";
-            fileName = Path.Combine(_fullDirectory, fileName);
-            if (!File.Exists(fileName))
+            _fileName = _modelName + DateTime.Now.ToString("_yyyyMMdd") + ".txt";
+            _fileName = Path.Combine(_fullDirectory, _fileName);
+            if (!File.Exists(_fileName))
             {
-                using (File.Create(fileName))
+                using (File.Create(_fileName))
                 {
                 }
             }
-            return fileName;
+            return _fileName;
+        }
+
+        /// <summary>
+        /// get if directory has file, if the return value is true, means the directory is empty
+        /// </summary>
+        /// <returns>if the directory is empty</returns>
+        protected bool IsDirectoryEmpty()
+        {
+            if (_fileName == null)
+                return true;
+            return false;
         }
     }
 }

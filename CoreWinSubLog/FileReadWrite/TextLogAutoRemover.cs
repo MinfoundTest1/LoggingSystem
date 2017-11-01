@@ -17,7 +17,7 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="keepDays">the log file keep days</param>
         /// <param name="directoryPath">the process log directory, accurate to sub folder</param>
-        private  TextLogAutoRemover(int keepDays, string directoryPath)
+        private TextLogAutoRemover(int keepDays, string directoryPath)
              : base(keepDays)
         {
             CheckDirectory(directoryPath);
@@ -59,7 +59,7 @@ namespace CoreWinSubLog
                     }
                 }
             }
-           
+
         }
 
         /// <summary>

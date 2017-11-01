@@ -25,6 +25,7 @@ namespace LoggingSystemTest
                 //LoggerTest.TestAsyWriteFile();
                 //LoggerTest.TestDeleteFirstLine();
                 // LoggerTest.TestAutoRemoveFile();
+                //LoggerTest.TestAsyWriteFile();
                 LoggerTest.TestAsyWriteFile();
                 //if (ww == null)
                 //{

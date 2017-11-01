@@ -25,27 +25,26 @@ namespace CoreWinSubLog
         /// create new file or defualt
         /// </summary>
         /// <returns>if create new file</returns>
-        public override bool CreateNewOrDefualt(ref string pFileName)
+        public override bool CreateNewOrDefualt(out string pFileName)
         {
-            DirectoryInfo dirinfo = new DirectoryInfo(_fullDirectory);
-            FileInfo[] arrFi = dirinfo.GetFiles("*.*");
-            if (arrFi.Count() == 0)
+            if (IsDirectoryEmpty())
             {
-                pFileName = CreateNewFile();
-                return true;
-            }
-            else
-            {
-                string fileName = arrFi.OrderByDescending(s => s.Length).Last().FullName;
-                FileInfo info = new FileInfo(fileName);
+                // if the directory is not empty
+                FileInfo info = new FileInfo(_fileName);
                 double filesize = info.Length / 1024.00 / 1024.00;
                 if (filesize >= _maxFileSize)
                 {
                     pFileName = CreateNewFile();
                     return true;
                 }
-                pFileName = fileName;
+                pFileName = _fileName;
                 return false;
+            }
+            else
+            {
+                // if the directory is empty
+                pFileName = CreateNewFile();
+                return true;
             }
         }
     }
