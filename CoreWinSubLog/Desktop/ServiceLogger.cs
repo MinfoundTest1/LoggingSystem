@@ -3,9 +3,9 @@ namespace CoreWinSubLog
 {
     /// <summary>
     /// Logger for output to a <see cref="WcfLogger"/> firstly, 
-    /// if any problem, output to textLogger.
-    /// /// </summary>
-    public class MinLogger : Logger
+    /// if any problem, output to <see cref="FileWriteLogger"/>.
+    /// </summary>
+    public class ServiceLogger : Logger
     {
         // Logger to WCF service.
         private readonly WcfLogger _wcfLogger;
@@ -17,7 +17,7 @@ namespace CoreWinSubLog
         /// </summary>
         /// <param name="hostIPAddress">WCF host ip address</param>
         /// <param name="filePath">Text file directory</param>
-        public MinLogger(string hostIPAddress, string filePath)
+        public ServiceLogger(string hostIPAddress, string filePath)
         {
             _localLogger = new FileWriteLogger(filePath);
             _wcfLogger = new WcfLogger(hostIPAddress, r => LogToLocal(r));
@@ -52,9 +52,9 @@ namespace CoreWinSubLog
     }
 
     /// <summary>
-    /// Manager for logging to a <see cref="MinLogger"/> implementation.
+    /// Manager for logging to a <see cref="ServiceLogger"/> implementation.
     /// </summary>
-    public class MinLoggerManager : LogManager
+    public class ServiceLoggerManager : LogManager
     {
         readonly Logger _loggerImpl;
 
@@ -62,9 +62,9 @@ namespace CoreWinSubLog
         /// Initializes an instance for MinLogger.
         /// </summary>
         /// <param name="ipAddress">WCF service ip address</param>
-        public MinLoggerManager(string ipAddress, string filePath)
+        public ServiceLoggerManager(string ipAddress, string filePath)
         {
-            _loggerImpl = new MinLogger(ipAddress, filePath);
+            _loggerImpl = new ServiceLogger(ipAddress, filePath);
         }
 
         /// <summary>
