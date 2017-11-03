@@ -21,7 +21,7 @@ namespace CoreWinSubLog
         /// <param name="keepDays">Log keep days. The logs before keep days will be removed</param>
         public LogAutoRemover(int keepDays)
         {
-            _keepDays = keepDays > 0 ? keepDays : 0;
+            _keepDays = keepDays > 0 ? keepDays : 1;
             StartCleanTick();
         }
 
