@@ -27,7 +27,13 @@ namespace CoreWinSubLog
         /// <returns>if create new file</returns>
         public override bool CreateNewOrDefualt(out string pFileName)
         {
-            if (!IsDirectoryEmpty())
+            if (IsDirectoryEmpty())
+            {
+                // if the directory is empty
+                pFileName = CreateNewFile();
+                return true;
+            }
+            else
             {
                 // if the directory is not empty
                 FileInfo info = new FileInfo(_fileName);
@@ -41,12 +47,6 @@ namespace CoreWinSubLog
                 }
                 pFileName = _fileName;
                 return false;
-            }
-            else
-            {
-                // if the directory is empty
-                pFileName = CreateNewFile();
-                return true;
             }
         }
     }

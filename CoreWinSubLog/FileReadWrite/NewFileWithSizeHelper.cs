@@ -29,6 +29,12 @@ namespace CoreWinSubLog
         {
             if (IsDirectoryEmpty())
             {
+                // if the directory is empty
+                pFileName = CreateNewFile();
+                return true;
+            }
+            else
+            {
                 // if the directory is not empty
                 FileInfo info = new FileInfo(_fileName);
                 double filesize = info.Length / 1024.00 / 1024.00;
@@ -39,12 +45,6 @@ namespace CoreWinSubLog
                 }
                 pFileName = _fileName;
                 return false;
-            }
-            else
-            {
-                // if the directory is empty
-                pFileName = CreateNewFile();
-                return true;
             }
         }
     }
